@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXIOM | منصة الذكاء المهيكل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --onion-bg: #1c1815;
+            --onion-surface: #26211d;
+            --onion-accent: #d4a373;
+            --onion-glow: rgba(212, 163, 115, 0.2);
+
+            --pom-bg: #0f0507;
+            --pom-card: #1a090e;
+            --pom-primary: #e63946;
+            --pom-secondary: #9b2226;
+            --pom-glow: rgba(230, 57, 70, 0.3);
+            
+            --text-main: #f8f9fa;
+            --text-dim: #adb5bd;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+
+        body {
+            background-color: var(--onion-bg);
+            color: var(--text-main);
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #splashScreen {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, var(--onion-surface) 0%, var(--onion-bg) 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .splash-logo-box {
+            width: 85px;
+            height: 85px;
+            background: var(--onion-surface);
+            border: 2px solid var(--onion-accent);
+            border-radius: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 35px var(--onion-glow);
+            animation: pulseLogo 1.5s infinite ease-in-out;
+        }
+
+        .splash-title {
+            font-size: 1.9rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--onion-accent);
+        }
+
+        @keyframes pulseLogo {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 15px var(--onion-glow); }
+            50% { transform: scale(1.04); box-shadow: 0 0 40px var(--onion-glow); }
+        }
+
+        .auth-wrapper {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 20%, var(--pom-card) 0%, var(--pom-bg) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .auth-wrapper.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .auth-card {
+            background: rgba(26, 9, 14, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(230, 57, 70, 0.2);
+            border-radius: 28px;
+            padding: 35px 25px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 30px var(--pom-glow);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transform: translateY(12px);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .auth-wrapper.active .auth-card {
+            transform: translateY(0);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2px;
+        }
+
+        .auth-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .auth-title span {
+            color: var(--pom-primary);
+        }
+
+        .auth-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .auth-input {
+            width: 100%;
+            background: rgba(15, 5, 7, 0.6);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 14px 16px;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .auth-input:focus {
+            border-color: var(--pom-primary);
+            box-shadow: 0 0 15px var(--pom-glow);
+        }
+
+        .btn-pomegranate {
+            background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px var(--pom-glow);
+            transition: transform 0.2s, opacity 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-pomegranate:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+        }
+
+        .btn-google {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+
+        .btn-google:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin: 2px 0;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .divider::before { margin-left: 10px; }
+        .divider::after { margin-right: 10px; }
+
+        .toggle-auth {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            cursor: pointer;
+            margin-top: 2px;
+        }
+
+        .toggle-auth span {
+            color: var(--pom-primary);
+            font-weight: 700;
+        }
+
+        .otp-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .otp-box {
+            width: 50px;
+            height: 55px;
+            background: rgba(15, 5, 7, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 1.4rem;
+            color: var(--text-main);
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .otp-box:focus {
+            border-color: var(--pom-primary);
+            box-shadow: 0 0 15px var(--pom-glow);
+        }
+
+        #googleModal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .google-modal-card {
+            background: #202124;
+            border: 1px solid #5f6368;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 380px;
+            padding: 24px;
+            color: #e8eaed;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .google-account-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border: 1px solid transparent;
+        }
+        .google-account-item:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: #5f6368;
+        }
+        .account-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--pom-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="splashScreen">
+        <div class="splash-logo-box">
+            <i data-lucide="cpu" style="width: 40px; height: 40px; color: var(--onion-accent);"></i>
+        </div>
+        <div class="splash-title">AXIOM</div>
+    </div>
+
+    <!-- نافذة اختيار حسابات قوقل -->
+    <div id="googleModal">
+        <div class="google-modal-card">
+            <div style="display:flex; align-items:center; gap:8px; font-weight:700; font-size:1.1rem;">
+                <svg style="width:20px;height:20px" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.9C6.2 7.3 8.9 5 12 5z"/></svg>
+                اختر حساباً للمتابعة إلى AXIOM
+            </div>
+            <div style="font-size:0.85rem; color:#9aa0a6;">مشاركة بياناتك مع AXIOM الآمنة</div>
+            
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:5px;">
+                <div class="google-account-item" onclick="selectGoogleAccount('أحمد المهندس', 'ahmed.dev@gmail.com')">
+                    <div class="account-avatar">أ</div>
+                    <div>
+                        <div style="font-weight:600; font-size:0.9rem;">أحمد المهندس</div>
+                        <div style="font-size:0.75rem; color:#9aa0a6;">ahmed.dev@gmail.com</div>
+                    </div>
+                </div>
+                <div class="google-account-item" onclick="selectGoogleAccount('سارة الطالبة', 'sara.study@gmail.com')">
+                    <div class="account-avatar" style="background:#34a853;">س</div>
+                    <div>
+                        <div style="font-weight:600; font-size:0.9rem;">سارة الطالبة</div>
+                        <div style="font-size:0.75rem; color:#9aa0a6;">sara.study@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="closeGoogleModal()" style="background:transparent; border:none; color:#8ab4f8; font-weight:600; cursor:pointer; align-self:flex-end; margin-top:10px;">إلغاء</button>
+        </div>
+    </div>
+
+    <!-- 1. واجهة تسجيل الدخول -->
+    <div id="authWrapper" class="auth-wrapper active">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-title">AXIOM<span>.</span></div>
+                <div class="auth-subtitle">بوابة الذكاء المهيكل والمحترف</div>
+            </div>
+
+            <button class="btn-google" onclick="openGoogleModal()">
+                <svg style="width:18px;height:18px" viewBox="0 0 24 24">
+                    <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.9C6.2 7.3 8.9 5 12 5z"/>
+                    <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
+                    <path fill="#FBBC05" d="M5.3 14.7c-.2-.7-.4-1.5-.4-2.7s.2-2 .4-2.7L1.6 6.4C.6 8.4 0 10.6 0 13s.6 4.6 1.6 6.6l3.7-2.9z"/>
+                    <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.3-6.7-5.3L1.6 16c1.9 3.8 5.8 7 10.4 7z"/>
+                </svg>
+                <span>المتابعة باستخدام Google</span>
+            </button>
+
+            <div class="divider">أو عبر البريد الإلكتروني</div>
+
+            <div class="input-group">
+                <input type="text" class="auth-input" placeholder="الاسم الكامل" id="nameInput">
+            </div>
+
+            <div class="input-group">
+                <input type="email" class="auth-input" placeholder="البريد الإلكتروني" id="emailInput">
+            </div>
+
+            <div class="input-group">
+                <input type="password" class="auth-input" placeholder="كلمة المرور">
+            </div>
+
+            <button class="btn-pomegranate" onclick="proceedToVerification()">
+                <span>إنشاء الحساب والمتابعة</span>
+                <i data-lucide="arrow-left" style="width: 18px; height: 18px;"></i>
+            </button>
+
+            <div class="toggle-auth">
+                لديك حساب بالفعل؟ <span>تسجيل الدخول</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. شاشة التحقق OTP -->
+    <div id="verifyWrapper" class="auth-wrapper">
+        <div class="auth-card" style="text-align: center;">
+            <div class="auth-header">
+                <div class="auth-title">التحقق من الهوية</div>
+                <div class="auth-subtitle">أدخل الرمز المكون من 4 أرقام المرسل إلى بريدك</div>
+            </div>
+
+            <div class="otp-inputs">
+                <input type="text" maxlength="1" class="otp-box" autofocus>
+                <input type="text" maxlength="1" class="otp-box">
+                <input type="text" maxlength="1" class="otp-box">
+                <input type="text" maxlength="1" class="otp-box">
+            </div>
+
+            <button class="btn-pomegranate" onclick="enterAppDirectly()" style="margin-top: 10px;">
+                <span>تأكيد والتحويل للمنصة</span>
+            </button>
+
+            <div class="toggle-auth" style="margin-top: 10px;">
+                لم تستلم الرمز؟ <span>إعادة إرسال</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. الشاشة الرئيسية للمنصة -->
+    <div id="appDashboard" class="auth-wrapper" style="background: var(--onion-bg);">
+        <div style="text-align: center; display: flex; flex-direction: column; gap: 15px;">
+            <div style="font-size: 2.2rem; font-weight: 900; color: var(--onion-accent);">مرحباً بك في AXIOM</div>
+            <p style="color: var(--text-dim);" id="welcomeUserText">تم تسجيل الدخول بنجاح. بيئة العمل جاهزة.</p>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // شاشة البداية تختفي بسرعة وسلاسة (1.2 ثانية فقط)
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splashScreen');
+                splash.style.opacity = '0';
+                splash.style.transform = 'scale(1.05)';
+                setTimeout(() => splash.style.display = 'none', 500);
+            }, 1200);
+        });
+
+        function openGoogleModal() { document.getElementById('googleModal').style.display = 'flex'; }
+        function closeGoogleModal() { document.getElementById('googleModal').style.display = 'none'; }
+
+        // عند اختيار حساب قوقل، تغلق النافذة ويدخل التطبيق فورا دون أي تحقق
+        function selectGoogleAccount(name, email) {
+            closeGoogleModal();
+            document.getElementById('welcomeUserText').innerText = `أهلاً بك يا ${name} (${email})، بيئة العمل جاهزة.`;
+            enterAppDirectly();
+        }
+
+        function proceedToVerification() {
+            const email = document.getElementById('emailInput').value;
+            const name = document.getElementById('nameInput').value;
+            if(!name || !email) { alert("يرجى إكمال الاسم والبريد الإلكتروني أولاً"); return; }
+            
+            document.getElementById('authWrapper').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('verifyWrapper').classList.add('active');
+            }, 300);
+        }
+
+        function enterAppDashboard() {
+            enterAppDirectly();
+        }
+
+        function enterAppDirectly() {
+            document.querySelectorAll('.auth-wrapper').forEach(el => el.classList.remove('active'));
+            setTimeout(() => {
+                document.getElementById('appDashboard').classList.add('active');
+            }, 300);
+        }
+    </script>
+</body>
+</html>
