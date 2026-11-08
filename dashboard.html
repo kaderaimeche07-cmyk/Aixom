@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXIOM | لوحة التحكم الرئيسية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --onion-bg: #1c1815;
+            --onion-surface: #26211d;
+            --onion-accent: #d4a373;
+            
+            --pom-primary: #e63946;
+            --pom-secondary: #9b2226;
+            --pom-glow: rgba(230, 57, 70, 0.25);
+            
+            --text-main: #f8f9fa;
+            --text-dim: #adb5bd;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+
+        body {
+            background-color: var(--onion-bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 20px 20px 110px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* رأس اللوحة والترحيب الديناميكي */
+        .header-card {
+            background: var(--onion-surface);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* زر المساعد الذكي في أقصى اليسار */
+        .guide-btn {
+            background: rgba(230, 57, 70, 0.1);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--pom-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .guide-btn:hover {
+            background: rgba(230, 57, 70, 0.2);
+            transform: scale(1.05);
+        }
+
+        .user-info h1 {
+            font-size: 1.12rem;
+            font-weight: 900;
+            color: var(--text-main);
+        }
+        .user-info p {
+            font-size: 0.73rem;
+            color: var(--onion-accent);
+            margin-top: 2px;
+        }
+
+        .stat-badge {
+            background: rgba(212, 163, 115, 0.1);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            padding: 6px 12px;
+            border-radius: 14px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--onion-accent);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* مؤشر حالة الوثائق النشطة */
+        .doc-status-badge {
+            background: rgba(26, 9, 14, 0.7);
+            border: 1px dashed rgba(230, 57, 70, 0.4);
+            border-radius: 14px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.75rem;
+        }
+        .doc-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e63946;
+            box-shadow: 0 0 8px var(--pom-primary);
+            flex-shrink: 0;
+        }
+        .doc-status-dot.active {
+            background: #2a9d8f;
+            box-shadow: 0 0 8px #2a9d8f;
+        }
+        .doc-status-text {
+            color: var(--text-dim);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* بطاقة رفع الملفات (الخزنة) في الصدارة */
+        .upload-vault-card {
+            background: linear-gradient(135deg, rgba(26, 9, 14, 0.9), rgba(15, 5, 7, 0.95));
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 22px;
+            padding: 22px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 20px var(--pom-glow);
+        }
+
+        .upload-icon-box {
+            width: 52px;
+            height: 52px;
+            background: rgba(230, 57, 70, 0.15);
+            border: 1px solid var(--pom-primary);
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--pom-primary);
+        }
+
+        .upload-vault-card h3 { font-size: 1.02rem; font-weight: 900; }
+        .upload-vault-card p { font-size: 0.76rem; color: var(--text-dim); }
+
+        .btn-upload {
+            background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
+            color: white;
+            border: none;
+            padding: 11px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px var(--pom-glow);
+            transition: transform 0.2s;
+        }
+        .btn-upload:active { transform: scale(0.97); }
+
+        /* المحركات الذكية */
+        .section-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            margin-top: 5px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .action-card {
+            background: var(--onion-surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 16px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            transition: border-color 0.3s, transform 0.2s;
+        }
+        .action-card:hover { border-color: var(--onion-accent); }
+        .action-card:active { transform: scale(0.97); }
+        .action-card i { color: var(--onion-accent); }
+        .action-card h4 { font-size: 0.85rem; font-weight: 700; }
+        .action-card span { font-size: 0.7rem; color: var(--text-dim); }
+
+        /* الشريط السفلي العائم المتكامل */
+        .floating-navbar {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            max-width: 440px;
+            margin: 0 auto;
+            background: rgba(38, 33, 29, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 26px;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            z-index: 1000;
+        }
+
+        .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            color: var(--text-dim);
+            font-size: 0.68rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.2s;
+        }
+        .nav-link.active {
+            color: var(--onion-accent);
+            font-weight: 700;
+        }
+        .nav-link i { width: 20px; height: 20px; }
+
+        .nav-link.chat-central {
+            background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
+            color: white;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px var(--pom-glow);
+            margin-top: -15px;
+            border: 3px solid var(--onion-bg);
+            cursor: pointer;
+        }
+        .nav-link.chat-central i { width: 24px; height: 24px; }
+
+        /* 1. تصميم قائمة العوالم المنزلقة السفلي (Bottom Sheet) */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 8, 7, 0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: flex-end;
+            flex-direction: column;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show { display: flex; opacity: 1; }
+
+        .sheet-card {
+            background: linear-gradient(180deg, #2a231e, #1c1815);
+            border-top: 1px solid rgba(230, 57, 70, 0.4);
+            border-radius: 32px 32px 0 0;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px 24px 35px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 -15px 50px rgba(0,0,0,0.9);
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-overlay.show .sheet-card { transform: translateY(0); }
+
+        .sheet-handle { width: 45px; height: 5px; background: rgba(255, 255, 255, 0.25); border-radius: 10px; margin: 0 auto; }
+        .sheet-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        .sheet-header h3 { font-size: 1rem; font-weight: 900; color: var(--text-main); }
+        .close-sheet { background: rgba(255,255,255,0.05); border: none; color: var(--text-dim); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; }
+
+        .world-option-card {
+            background: rgba(26, 9, 14, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 14px 16px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: right;
+            width: 100%;
+            color: var(--text-main);
+        }
+        .world-option-card:hover { border-color: var(--pom-primary); background: rgba(230, 57, 70, 0.1); transform: translateY(-2px); }
+        
+        .world-icon-wrap {
+            width: 44px; height: 44px;
+            background: rgba(230, 57, 70, 0.12);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--pom-primary); flex-shrink: 0;
+        }
+        .world-text h4 { font-size: 0.9rem; font-weight: 800; }
+        .world-text p { font-size: 0.72rem; color: var(--text-dim); margin-top: 2px; }
+
+        /* 2. تصميم نافذة الدليل الذكي الفريدة: نافذة عائمة في منتصف الشاشة (Centered Cyber Popup) */
+        .guide-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 8, 7, 0.85);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2500;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .guide-overlay.show { display: flex; opacity: 1; }
+
+        .guide-dialog {
+            background: linear-gradient(135deg, #26211d, #1c1815);
+            border: 1px solid rgba(230, 57, 70, 0.4);
+            border-radius: 28px;
+            width: 100%;
+            max-width: 400px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 30px var(--pom-glow);
+            transform: scale(0.85);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .guide-overlay.show .guide-dialog { transform: scale(1); }
+
+        .guide-dialog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+        .guide-dialog-header h3 {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: var(--onion-accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .guide-cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            text-align: right;
+        }
+        .guide-mini-card {
+            background: rgba(26, 9, 14, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 12px 14px;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .guide-mini-card h5 {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .guide-mini-card p {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            line-height: 1.4;
+        }
+
+        .btn-close-guide {
+            background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--pom-glow);
+            transition: transform 0.2s;
+        }
+        .btn-close-guide:active { transform: scale(0.97); }
+
+        /* نافذة التحميل المؤقتة لاحتساب الـ XP */
+        .loading-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+            display: none; justify-content: center; align-items: center;
+            flex-direction: column; gap: 15px; z-index: 3000;
+        }
+        .spinner {
+            width: 45px; height: 45px;
+            border: 4px solid rgba(230, 57, 70, 0.2);
+            border-top: 4px solid var(--pom-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading-text { font-size: 0.9rem; font-weight: 700; color: var(--text-main); }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <!-- 1. رأس اللوحة (الاسم الديناميكي + عداد الـ XP + زر المساعد الذكي في أقصى اليسار) -->
+        <div class="header-card">
+            <div class="header-right">
+                <button class="guide-btn" onclick="openGuideModal()" title="دليل AXIOM الذكي">
+                    <i data-lucide="sparkles" style="width: 20px; height: 20px;"></i>
+                </button>
+                <div class="user-info">
+                    <h1 id="userNameDisplay">أهلاً، زائر AXIOM</h1>
+                    <p>مستوى الذكاء: قيد البناء</p>
+                </div>
+            </div>
+            <div class="stat-badge">
+                <i data-lucide="zap" style="width:14px;height:14px;"></i> <span id="xpDisplay">0</span> XP
+            </div>
+        </div>
+
+        <!-- مؤشر حالة الوثائق النشطة -->
+        <div class="doc-status-badge">
+            <div class="doc-status-dot" id="docStatusDot"></div>
+            <div class="doc-status-text" id="docStatusText">لا توجد وثيقة نشطة. ارفع ملفاً لتفعيل العالم الأكاديمي.</div>
+        </div>
+
+        <!-- 2. خزنة المعرفة ورفع الملفات -->
+        <div class="upload-vault-card">
+            <div class="upload-icon-box">
+                <i data-lucide="upload-cloud" style="width: 26px; height: 26px;"></i>
+            </div>
+            <div>
+                <h3>خزنة الوثائق والدروس</h3>
+                <p>ارفع ملفات (PDF) ليبدأ الذكاء في تحليلها وتدريبك عليها.</p>
+            </div>
+            <button class="btn-upload" onclick="performTask('رفع الوثيقة ومعالجة محتواها', 50, true)">اختر ملفاً للرفع (+50 XP)</button>
+        </div>
+
+        <!-- 3. المحركات الذكية -->
+        <div class="section-title">المحركات الذكية</div>
+        <div class="actions-grid">
+            <div class="action-card" onclick="performTask('تلخيص الوثيقة الفوري', 20)">
+                <i data-lucide="file-text" style="width: 22px; height: 22px;"></i>
+                <h4>تلخيص فوري</h4>
+                <span>استخراج زبدة الدروس (+20 XP)</span>
+            </div>
+            <div class="action-card" onclick="performTask('توليد اختبار ذكي للوثيقة', 30)">
+                <i data-lucide="help-circle" style="width: 22px; height: 22px;"></i>
+                <h4>توليد اختبارات</h4>
+                <span>أسئلة ذكية لملفاتك (+30 XP)</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- نافذة الدليل الذكي الفريدة: نافذة عائمة في منتصف الشاشة (Centered Cyber Popup) -->
+    <div class="guide-overlay" id="guideModal" onclick="maybeCloseGuide(event)">
+        <div class="guide-dialog">
+            <div class="guide-dialog-header">
+                <h3>✨ دليل منصة AXIOM الذكي</h3>
+                <button class="close-sheet" onclick="closeGuideModal()">&times;</button>
+            </div>
+            <div class="guide-cards-grid">
+                <div class="guide-mini-card">
+                    <h5>📁 خزنة الوثائق والدروس</h5>
+                    <p>قم بررفع ملفاتك (PDF). يرجى ملاحظة أن <b>العالم الأكاديمي</b> مقفل افتراضياً ولن يُفتح إلا بعد رفع وثيقة نشطة لتحليل محتواها.</p>
+                </div>
+                <div class="guide-mini-card">
+                    <h5>⚡ نظام نقاط الخبرة (XP)</h5>
+                    <p>تفاعل مع المحركات الذكية وأتمم المهام لرفع نقاطك. اجمع <b>500 XP</b> واستمر لـ <b>7 أيام</b> لفتح اختبار تحديد المستوى المخصص!</p>
+                </div>
+                <div class="guide-mini-card">
+                    <h5>🧭 عوالم الاستكشاف</h5>
+                    <p>تنقل بحرية مطلقة بين العوالم المختلفة (الأكاديمي، التقني، والحر) عبر زر المحادثة المركزي أو تبويب العوالم في أي وقت.</p>
+                </div>
+            </div>
+            <button class="btn-close-guide" onclick="closeGuideModal()">فهمت، شكراً لك</button>
+        </div>
+    </div>
+
+    <!-- قائمة العوالم المنزلقة الفاخرة (Bottom Sheet) -->
+    <div class="modal-overlay" id="worldsModal" onclick="maybeCloseWorld(event)">
+        <div class="sheet-card">
+            <div class="sheet-handle"></div>
+            <div class="sheet-header">
+                <h3>اختر العالم لبدء المحادثة</h3>
+                <button class="close-sheet" onclick="closeWorldsModal()">&times;</button>
+            </div>
+            
+            <div class="world-option-card" onclick="selectWorld('العالم الأكاديمي والمهندسي')">
+                <div class="world-icon-wrap"><i data-lucide="graduation-cap" style="width:22px;height:22px;"></i></div>
+                <div class="world-text">
+                    <h4>العالم الأكاديمي والمهندسي 🔒</h4>
+                    <p>مخصص للدروس والوثائق (يتطلب رفع ملف أولاً)</p>
+                </div>
+            </div>
+
+            <div class="world-option-card" onclick="selectWorld('عالم البرمجة والتقنية')">
+                <div class="world-icon-wrap"><i data-lucide="code-2" style="width:22px;height:22px;"></i></div>
+                <div class="world-text">
+                    <h4>عالم البرمجة والتقنية</h4>
+                    <p>مخصص لكتابة الأكواد وحل المشكلات البرمجية</p>
+                </div>
+            </div>
+
+            <div class="world-option-card" onclick="selectWorld('العالم الحر والاستكشاف')">
+                <div class="world-icon-wrap"><i data-lucide="compass" style="width:22px;height:22px;"></i></div>
+                <div class="world-text">
+                    <h4>العالم الحر والاستكشاف</h4>
+                    <p>محادثة عامة مفتوحة لكل الأفكار والإبداع الحر</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة التحميل المؤقتة لاحتساب الـ XP -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text" id="loadingText">جاري المعالجة بواسطة نموذج AXIOM الذكي...</div>
+    </div>
+
+    <!-- الشريط السفلي العائم المتكامل -->
+    <nav class="floating-navbar">
+        <button class="nav-link active">
+            <i data-lucide="home"></i>
+            <span>الرئيسية</span>
+        </button>
+        <button class="nav-link" onclick="openWorldsTab()">
+            <i data-lucide="compass"></i>
+            <span>العوالم</span>
+        </button>
+        <button class="nav-link chat-central" onclick="openWorldsModal()">
+            <i data-lucide="message-square"></i>
+        </button>
+        <button class="nav-link" onclick="openVault()">
+            <i data-lucide="folder-kanban"></i>
+            <span>الخزنة</span>
+        </button>
+        <button class="nav-link" onclick="openProfile()">
+            <i data-lucide="user"></i>
+            <span>حسابي</span>
+        </button>
+    </nav>
+
+    <script>
+        lucide.createIcons();
+
+        window.addEventListener('load', () => {
+            const savedName = localStorage.getItem('axiom_user_name');
+            if(savedName) {
+                document.getElementById('userNameDisplay').innerText = `أهلاً، ${savedName}`;
+            }
+            updateXPUI();
+            checkActiveDocument();
+        });
+
+        let currentXP = parseInt(localStorage.getItem('axiom_xp') || '0');
+
+        function updateXPUI() {
+            document.getElementById('xpDisplay').innerText = currentXP;
+        }
+
+        function checkActiveDocument() {
+            const activeDoc = localStorage.getItem('axiom_active_doc');
+            const dot = document.getElementById('docStatusDot');
+            const text = document.getElementById('docStatusText');
+            
+            if(activeDoc) {
+                dot.classList.add('active');
+                text.innerText = `📄 وثيقة نشطة: ${activeDoc}`;
+            } else {
+                dot.classList.remove('active');
+                text.innerText = `⚠️ لا توجد وثيقة نشطة. ارفع ملفاً لتفعيل العالم الأكاديمي.`;
+            }
+        }
+
+        function performTask(taskName, xpReward, isUpload = false) {
+            const loader = document.getElementById('loadingOverlay');
+            const loadText = document.getElementById('loadingText');
+            
+            loadText.innerText = `جاري ${taskName}...`;
+            loader.style.display = 'flex';
+
+            setTimeout(() => {
+                loader.style.display = 'none';
+                
+                if(isUpload) {
+                    const docName = "درس_الهندسة_المدنية_محور_الخرسانة.pdf";
+                    localStorage.setItem('axiom_active_doc', docName);
+                    checkActiveDocument();
+                }
+
+                currentXP += xpReward;
+                localStorage.setItem('axiom_xp', currentXP);
+                updateXPUI();
+                
+                alert(`✨ تم إتمام (${taskName}) بنجاح!\n🎉 حصلت على +${xpReward} XP. مجموع نقاطك الآن: ${currentXP} XP`);
+            }, 2000);
+        }
+
+        /* تحكم بنافذة الدليل الذكي العائمة في المنتصف */
+        function openGuideModal() {
+            const modal = document.getElementById('guideModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        function closeGuideModal() {
+            const modal = document.getElementById('guideModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        function maybeCloseGuide(event) {
+            if (event.target.id === 'guideModal') {
+                closeGuideModal();
+            }
+        }
+
+        /* تحكم بقائمة العوالم المنزلقة السفلية */
+        function openWorldsModal() {
+            const modal = document.getElementById('worldsModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        function closeWorldsModal() {
+            const modal = document.getElementById('worldsModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        function maybeCloseWorld(event) {
+            if (event.target.id === 'worldsModal') {
+                closeWorldsModal();
+            }
+        }
+
+        function selectWorld(worldName) {
+            if(worldName.includes('الأكاديمي')) {
+                const activeDoc = localStorage.getItem('axiom_active_doc');
+                if(!activeDoc) {
+                    alert("⚠️ تنبيه نظام AXIOM:\nعذراً، العالم الأكاديمي مقفل لعدم وجود وثيقة نشطة. يرجى رفع ملف درس أو PDF أولاً من الخزنة.");
+                    closeWorldsModal();
+                    return;
+                }
+            }
+
+            localStorage.setItem('axiom_current_world', worldName);
+            closeWorldsModal();
+            alert(`🌐 تم تفعيل (${worldName}) بنجاح!\nجاري تهيئة بيئة محادثة AXIOM الذكية...`);
+        }
+
+        function openWorldsTab() { alert("🧭 الانتقال إلى تبويب العوالم لاستعراض المسارات المعرفية بحرية."); }
+        function openVault() { alert("📁 الانتقال إلى خزنة الملفات وإدارة المستندات."); }
+        function openProfile() { alert("👤 الانتقال إلى إعدادات الحساب وشريط إنجاز اختبار المستوى."); }
+    </script>
+</body>
+</html>
