@@ -261,7 +261,7 @@
         }
         .nav-link.chat-central i { width: 24px; height: 24px; }
 
-        /* تصميم قائمة العوالم المنزلقة السفلي (Bottom Sheet) */
+        /* تصميم قائمة العوالم المنزلقة السفلي */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -325,7 +325,7 @@
         .world-text h4 { font-size: 0.9rem; font-weight: 800; }
         .world-text p { font-size: 0.72rem; color: var(--text-dim); margin-top: 2px; }
 
-        /* تصميم نافذة الدليل الذكي الفريدة */
+        /* نافذة الدليل الذكي */
         .guide-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -418,7 +418,7 @@
         }
         .btn-close-guide:active { transform: scale(0.97); }
 
-        /* نافذة التحميل المؤقتة لاحتساب الـ XP */
+        /* نافذة التحميل المؤقتة */
         .loading-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
@@ -440,7 +440,7 @@
 
     <div class="dashboard-container">
         
-        <!-- 1. رأس اللوحة -->
+        <!-- رأس اللوحة -->
         <div class="header-card">
             <div class="header-right">
                 <button class="guide-btn" onclick="openGuideModal()" title="دليل AXIOM الذكي">
@@ -462,7 +462,7 @@
             <div class="doc-status-text" id="docStatusText">لا توجد وثيقة نشطة. ارفع ملفاً لتفعيل العالم الأكاديمي.</div>
         </div>
 
-        <!-- 2. خزنة المعرفة ورفع الملفات -->
+        <!-- خزنة المعرفة ورفع الملفات -->
         <div class="upload-vault-card">
             <div class="upload-icon-box">
                 <i data-lucide="upload-cloud" style="width: 26px; height: 26px;"></i>
@@ -474,7 +474,7 @@
             <button class="btn-upload" onclick="performTask('رفع الوثيقة ومعالجة محتواها', 50, true)">اختر ملفاً للرفع (+50 XP)</button>
         </div>
 
-        <!-- 3. المحركات الذكية -->
+        <!-- المحركات الذكية -->
         <div class="section-title">المحركات الذكية</div>
         <div class="actions-grid">
             <div class="action-card" onclick="performTask('تلخيص الوثيقة الفوري', 20)">
@@ -491,7 +491,7 @@
 
     </div>
 
-    <!-- نافذة الدليل الذكي العائمة -->
+    <!-- نافذة الدليل الذكي -->
     <div class="guide-overlay" id="guideModal" onclick="maybeCloseGuide(event)">
         <div class="guide-dialog">
             <div class="guide-dialog-header">
@@ -516,7 +516,7 @@
         </div>
     </div>
 
-    <!-- قائمة العوالم المنزلقة الفاخرة -->
+    <!-- قائمة العوالم المنزلقة -->
     <div class="modal-overlay" id="worldsModal" onclick="maybeCloseWorld(event)">
         <div class="sheet-card">
             <div class="sheet-handle"></div>
@@ -557,7 +557,7 @@
         <div class="loading-text" id="loadingText">جاري المعالجة بواسطة نموذج AXIOM الذكي...</div>
     </div>
 
-    <!-- الشريط السفلي العائم المتكامل (مُصحح لينتقل للصفحات فوراً) -->
+    <!-- الشريط السفلي العائم المتكامل -->
     <nav class="floating-navbar">
         <button class="nav-link active" onclick="window.location.href='dashboard.html'">
             <i data-lucide="home"></i>
@@ -613,6 +613,15 @@
         }
 
         function performTask(taskName, xpReward, isUpload = false) {
+            // التحقق إذا كان يتطلب وثيقة نشطة ولم يتم رفعها بعد (باستثناء زر الرفع نفسه)
+            if(!isUpload) {
+                const activeDoc = localStorage.getItem('axiom_active_doc');
+                if(!activeDoc) {
+                    alert("⚠️ تنبيه AXIOM:\nعذراً، لا توجد وثيقة نشطة حالياً لإجراء التلخيص أو توليد الاختبارات. يرجى رفع ملف من الخزنة أولاً.");
+                    return;
+                }
+            }
+
             const loader = document.getElementById('loadingOverlay');
             const loadText = document.getElementById('loadingText');
             
@@ -633,7 +642,7 @@
                 updateXPUI();
                 
                 alert(`✨ تم إتمام (${taskName}) بنجاح!\n🎉 حصلت على +${xpReward} XP. مجموع نقاطك الآن: ${currentXP} XP`);
-            }, 2000);
+            }, 1500);
         }
 
         /* تحكم بنافذة الدليل الذكي */
@@ -686,8 +695,6 @@
 
             localStorage.setItem('axiom_current_world', worldName);
             closeWorldsModal();
-            
-            // الانتقال الفوري لصفحة الدردشة مع تمرير العالم المحدد
             window.location.href = targetPage;
         }
     </script>
