@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,14 +11,22 @@
             --onion-bg: #1c1815;
             --onion-surface: #26211d;
             --onion-accent: #d4a373;
-            
             --pom-primary: #e63946;
             --pom-secondary: #9b2226;
             --pom-glow: rgba(230, 57, 70, 0.25);
-            
             --text-main: #f8f9fa;
             --text-dim: #adb5bd;
             --border: rgba(255, 255, 255, 0.08);
+        }
+
+        /* ثيم الوضع الليلي الهادئ */
+        body.theme-space {
+            --onion-bg: #0b131d;
+            --onion-surface: #132235;
+            --onion-accent: #48cae4;
+            --pom-primary: #4361ee;
+            --pom-secondary: #3a0ca3;
+            --pom-glow: rgba(67, 97, 238, 0.3);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -30,6 +38,7 @@
             padding: 20px 20px 100px 20px;
             display: flex;
             justify-content: center;
+            transition: background-color 0.3s ease;
         }
 
         .settings-container {
@@ -66,7 +75,7 @@
         }
         .back-btn:hover { border-color: var(--pom-primary); color: var(--pom-primary); }
 
-        /* الأقسام بدون إطارات صلبة */
+        /* الأقسام */
         .settings-section {
             background: var(--onion-surface);
             border: 1px solid var(--border);
@@ -100,7 +109,6 @@
         .setting-info h4 { font-size: 0.85rem; font-weight: 800; }
         .setting-info p { font-size: 0.68rem; color: var(--text-dim); margin-top: 2px; }
 
-        /* قوائم منبثقة بسيطة بدون إطارات */
         .borderless-trigger {
             background: none;
             border: none;
@@ -181,7 +189,7 @@
         }
         .setting-btn:hover { background: rgba(230, 57, 70, 0.25); }
 
-        /* نافذة منبثقة عامة */
+        /* النوافذ المنبثقة */
         .custom-modal {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -249,24 +257,24 @@
         <!-- رأس الإعدادات -->
         <div class="settings-header">
             <div class="settings-title">
-                <h1>حسابي والإعدادات</h1>
-                <p>إدارة التفضيلات والذاكرة الهندسية</p>
+                <h1 id="txtTitle">حسابي والإعدادات</h1>
+                <p id="txtSub">إدارة التفضيلات والذاكرة الهندسية</p>
             </div>
             <button class="back-btn" onclick="location.href='dashboard.html'" title="الرئيسية">
-                <i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i>
+                <i data-lucide="arrow-right" style="width: 20px; height: 20px;" id="backIcon"></i>
             </button>
         </div>
 
         <!-- 1. المظهر واللغة -->
         <div class="settings-section">
             <div class="section-label">
-                <i data-lucide="palette" style="width: 16px; height: 16px;"></i> المظهر واللغة
+                <i data-lucide="palette" style="width: 16px; height: 16px;"></i> <span id="txtThemeLang">المظهر واللغة</span>
             </div>
             
             <div class="setting-row">
                 <div class="setting-info">
-                    <h4>لغة الواجهة</h4>
-                    <p>اختر لغة عرض التطبيق المفضلة</p>
+                    <h4 id="txtLangTitle">لغة الواجهة</h4>
+                    <p id="txtLangDesc">اختر لغة عرض التطبيق المفضلة</p>
                 </div>
                 <div>
                     <button class="borderless-trigger" onclick="togglePopup('langPopup')">
@@ -282,8 +290,8 @@
 
             <div class="setting-row">
                 <div class="setting-info">
-                    <h4>الوضع البصري</h4>
-                    <p>ثيم الألوان الأساسي للنظام</p>
+                    <h4 id="txtVisualTitle">الوضع البصري</h4>
+                    <p id="txtVisualDesc">ثيم الألوان الأساسي للنظام</p>
                 </div>
                 <div>
                     <button class="borderless-trigger" onclick="togglePopup('themePopup')">
@@ -300,66 +308,66 @@
         <!-- 2. سجل المحادثات السابقة -->
         <div class="settings-section">
             <div class="section-label">
-                <i data-lucide="message-square-history" style="width: 16px; height: 16px;"></i> سجل المحادثات السابقة
+                <i data-lucide="message-square-history" style="width: 16px; height: 16px;"></i> <span id="txtHistoryTitle">سجل المحادثات السابقة</span>
             </div>
-            <p style="font-size:0.7rem; color:var(--text-dim); margin-top:-8px;">انقر على أي جلسة لاستئناف العمل عليها فوراً</p>
+            <p style="font-size:0.7rem; color:var(--text-dim); margin-top:-8px;" id="txtHistoryDesc">انقر على أي جلسة لاستئناف العمل عليها فوراً</p>
             
             <div class="history-list" id="historyListContainer"></div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
-                <button class="setting-btn" onclick="clearHistory()">مسح السجل بالكامل</button>
-                <button class="setting-btn" style="background: rgba(42,157,143,0.15); color:#2a9d8f;" onclick="location.href='chat.html'">محادثة جديدة ✨</button>
+                <button class="setting-btn" onclick="clearHistory()" id="btnClear">مسح السجل بالكامل</button>
+                <button class="setting-btn" style="background: rgba(42,157,143,0.15); color:#2a9d8f;" onclick="location.href='chat.html'" id="btnNewChat">محادثة جديدة ✨</button>
             </div>
         </div>
 
-        <!-- 3. كفاءة المحرك والذاكرة الهندسية (بدلاً من متصل وآمن) -->
+        <!-- 3. كفاءة المحرك والذاكرة الهندسية -->
         <div class="settings-section">
             <div class="section-label">
-                <i data-lucide="cpu" style="width: 16px; height: 16px;"></i> كفاءة المحرك والذاكرة
+                <i data-lucide="cpu" style="width: 16px; height: 16px;"></i> <span id="txtEngineTitle">كفاءة المحرك والذاكرة</span>
             </div>
 
             <div class="setting-row">
                 <div class="setting-info">
-                    <h4>حالة الذاكرة المؤقتة (Cache)</h4>
-                    <p>مساحة تخزين المستندات والأكواد المحلية</p>
+                    <h4 id="txtCacheTitle">حالة الذاكرة المؤقتة (Cache)</h4>
+                    <p id="txtCacheDesc">مساحة تخزين المستندات والأكواد المحلية</p>
                 </div>
                 <span style="font-size: 0.72rem; color: var(--onion-accent); font-weight: 800;" id="cacheSizeIndicator">14.2 MB 📊</span>
             </div>
 
             <div class="setting-row">
                 <div class="setting-info">
-                    <h4>تحليل الأداء والإحصائيات</h4>
-                    <p>عرض عدد المستندات والجلسات المحللة</p>
+                    <h4 id="txtPerfTitle">تحليل الأداء والإحصائيات</h4>
+                    <p id="txtPerfDesc">عرض عدد المستندات والجلسات المحللة</p>
                 </div>
-                <button class="setting-btn" style="background:rgba(255,255,255,0.05); color:var(--onion-accent);" onclick="openAnalyticsModal()">عرض 📈</button>
+                <button class="setting-btn" style="background:rgba(255,255,255,0.05); color:var(--onion-accent);" onclick="openAnalyticsModal()" id="btnShow">عرض 📈</button>
             </div>
         </div>
 
         <!-- 4. حول التطبيق -->
         <div class="settings-section">
             <div class="section-label">
-                <i data-lucide="info" style="width: 16px; height: 16px;"></i> حول التطبيق
+                <i data-lucide="info" style="width: 16px; height: 16px;"></i> <span id="txtAboutTitle">حول التطبيق</span>
             </div>
 
             <div class="setting-row" onclick="openAboutModal()" style="cursor: pointer;">
                 <div class="setting-info">
                     <h4>منصة AXIOM الذكية</h4>
-                    <p>الإصدار v2.6 • انقر لعرض تفاصيل النظام</p>
+                    <p id="txtVersion">الإصدار v2.6 • انقر لعرض تفاصيل النظام</p>
                 </div>
-                <i data-lucide="chevron-left" style="width: 18px; height: 18px; color: var(--text-dim);"></i>
+                <i data-lucide="chevron-left" style="width: 18px; height: 18px; color: var(--text-dim);" id="aboutArrow"></i>
             </div>
         </div>
 
     </div>
 
-    <!-- نافذة منبثقة "إحصائيات الأداء" (ميزة مقترحة جديدة) -->
+    <!-- نافذة منبثقة "إحصائيات الأداء" -->
     <div class="custom-modal" id="analyticsModal" onclick="closeAnalyticsModal()">
         <div class="modal-card" onclick="event.stopPropagation()">
-            <h3>📊 إحصائيات الأداء الهندسي</h3>
-            <p>• إجمالي الملفات المحللة: <b>12 ملفاً</b></p>
-            <p>• الجلسات الدراسية النشطة: <b>5 جلسات</b></p>
-            <p>• استقرار محرك الذكاء الاصطناعي: <b>99.8%</b></p>
-            <button class="setting-btn" style="margin-top: 10px;" onclick="closeAnalyticsModal()">إغلاق</button>
+            <h3 id="anaTitle">📊 إحصائيات الأداء الهندسي</h3>
+            <p id="anaP1">• إجمالي الملفات المحللة: <b>12 ملفاً</b></p>
+            <p id="anaP2">• الجلسات الدراسية النشطة: <b>5 جلسات</b></p>
+            <p id="anaP3">• استقرار محرك الذكاء الاصطناعي: <b>99.8%</b></p>
+            <button class="setting-btn" style="margin-top: 10px;" onclick="closeAnalyticsModal()" id="anaClose">إغلاق</button>
         </div>
     </div>
 
@@ -367,9 +375,9 @@
     <div class="custom-modal" id="aboutModal" onclick="closeAboutModal()">
         <div class="modal-card" onclick="event.stopPropagation()">
             <h3>🚀 AXIOM Intelligence</h3>
-            <p>منصة ذكية متكاملة لإدارة المستندات، التحليل الأكاديمي، والمساعدات الهندسية.</p>
-            <p style="font-size: 0.68rem; color: var(--onion-accent);">تصميم وهندسة مخصصة • جميع الحقوق محفوظة © 2026</p>
-            <button class="setting-btn" style="margin-top: 10px;" onclick="closeAboutModal()">إغلاق</button>
+            <p id="aboutDesc">منصة ذكية متكاملة لإدارة المستندات، التحليل الأكاديمي، والمساعدات الهندسية.</p>
+            <p style="font-size: 0.68rem; color: var(--onion-accent);" id="aboutRights">تصميم وهندسة مخصصة • جميع الحقوق محفوظة © 2026</p>
+            <button class="setting-btn" style="margin-top: 10px;" onclick="closeAboutModal()" id="aboutClose">إغلاق</button>
         </div>
     </div>
 
@@ -377,24 +385,24 @@
     <nav class="floating-navbar">
         <button class="nav-link" onclick="location.href='dashboard.html'">
             <i data-lucide="home"></i>
-            <span>الرئيسية</span>
+            <span id="navHome">الرئيسية</span>
         </button>
         <button class="nav-link" onclick="location.href='vault.html'">
             <i data-lucide="compass"></i>
-            <span>العوالم</span>
+            <span id="navWorlds">العوالم</span>
         </button>
         <button class="nav-link chat-central" onclick="location.href='chat.html'">
             <i data-lucide="message-square"></i>
         </button>
         <button class="nav-link" onclick="location.href='vault.html'">
             <i data-lucide="folder-kanban"></i>
-            <span>الخزنة</span>
+            <span id="navVault">الخزنة</span>
         </button>
         <button class="nav-link active">
             <i data-lucide="user"></i>
-            <span>حسابي</span>
+            <span id="navProfile">حسابي</span>
         </button>
-    </nav>
+    </nav><router></router>
 
     <script>
         lucide.createIcons();
@@ -418,25 +426,121 @@
             }
         });
 
+        // قاموس اللغات لتغيير نصوص واجهة الإعدادات وترجمتها فوراً
+        const translations = {
+            ar: {
+                title: "حسابي والإعدادات", sub: "إدارة التفضيلات والذاكرة الهندسية",
+                themeLang: "المظهر واللغة", langTitle: "لغة الواجهة", langDesc: "اختر لغة عرض التطبيق المفضلة",
+                visualTitle: "الوضع البصري", visualDesc: "ثيم الألوان الأساسي للنظام",
+                historyTitle: "سجل المحادثات السابقة", historyDesc: "انقر على أي جلسة لاستئناف العمل عليها فوراً",
+                btnClear: "مسح السجل بالكامل", btnNewChat: "محادثة جديدة ✨",
+                engineTitle: "كفاءة المحرك والذاكرة", cacheTitle: "حالة الذاكرة المؤقتة (Cache)", cacheDesc: "مساحة تخزين المستندات والأكواد المحلية",
+                perfTitle: "تحليل الأداء والإحصائيات", perfDesc: "عرض عدد المستندات والجلسات المحللة", btnShow: "عرض 📈",
+                aboutTitle: "حول التطبيق", version: "الإصدار v2.6 • انقر لعرض تفاصيل النظام",
+                navHome: "الرئيسية", navWorlds: "العوالم", navVault: "الخزنة", navProfile: "حسابي",
+                close: "إغلاق"
+            },
+            en: {
+                title: "My Account & Settings", sub: "Manage preferences and engineering memory",
+                themeLang: "Appearance & Language", langTitle: "Interface Language", langDesc: "Choose your preferred application language",
+                visualTitle: "Visual Mode", visualDesc: "Primary color theme of the system",
+                historyTitle: "Chat History", historyDesc: "Click any session to resume work instantly",
+                btnClear: "Clear All History", btnNewChat: "New Chat ✨",
+                engineTitle: "Engine & Memory Efficiency", cacheTitle: "Cache Status", cacheDesc: "Local document and code storage space",
+                perfTitle: "Performance & Analytics", perfDesc: "View analyzed documents and active sessions count", btnShow: "View 📈",
+                aboutTitle: "About App", version: "v2.6 • Click to view system details",
+                navHome: "Home", navWorlds: "Worlds", navVault: "Vault", navProfile: "Profile",
+                close: "Close"
+            },
+            fr: {
+                title: "Mon Compte & Paramètres", sub: "Gérer les préférences et la mémoire",
+                themeLang: "Apparence & Langue", langTitle: "Langue de l'interface", langDesc: "Choisissez votre langue préférée",
+                visualTitle: "Mode Visuel", visualDesc: "Thème de couleur principal du système",
+                historyTitle: "Historique des chats", historyDesc: "Cliquez sur une session pour reprendre",
+                btnClear: "Effacer l'historique", btnNewChat: "Nouveau Chat ✨",
+                engineTitle: "Efficacité du Moteur & Mémoire", cacheTitle: "État du Cache", cacheDesc: "Espace de stockage local des documents",
+                perfTitle: "Performance & Analyses", perfDesc: "Afficher les statistiques du système", btnShow: "Voir 📈",
+                aboutTitle: "À propos", version: "v2.6 • Cliquez pour voir les détails",
+                navHome: "Accueil", navWorlds: "Mondes", navVault: "Coffre", navProfile: "Profil",
+                close: "Fermer"
+            }
+        };
+
         function setLanguage(code, name) {
             localStorage.setItem('axiom_lang', code);
             document.getElementById('currentLangLabel').innerText = name;
             document.getElementById('langPopup').classList.remove('show');
+            
+            // تطبيق الاتجاه واللغة فعلياً على الصفحة بالكامل
+            const htmlRoot = document.getElementById('htmlRoot');
+            htmlRoot.setAttribute('lang', code);
+            htmlRoot.setAttribute('dir', code === 'ar' ? 'rtl' : 'ltr');
+            
+            applyTranslations(code);
+        }
+
+        function applyTranslations(code) {
+            const t = translations[code] || translations['ar'];
+            document.getElementById('txtTitle').innerText = t.title;
+            document.getElementById('txtSub').innerText = t.sub;
+            document.getElementById('txtThemeLang').innerText = t.themeLang;
+            document.getElementById('txtLangTitle').innerText = t.langTitle;
+            document.getElementById('txtLangDesc').innerText = t.langDesc;
+            document.getElementById('txtVisualTitle').innerText = t.visualTitle;
+            document.getElementById('txtVisualDesc').innerText = t.visualDesc;
+            document.getElementById('txtHistoryTitle').innerText = t.historyTitle;
+            document.getElementById('txtHistoryDesc').innerText = t.historyDesc;
+            document.getElementById('btnClear').innerText = t.btnClear;
+            document.getElementById('btnNewChat').innerText = t.btnNewChat;
+            document.getElementById('txtEngineTitle').innerText = t.engineTitle;
+            document.getElementById('txtCacheTitle').innerText = t.cacheTitle;
+            document.getElementById('txtCacheDesc').innerText = t.cacheDesc;
+            document.getElementById('txtPerfTitle').innerText = t.perfTitle;
+            document.getElementById('txtPerfDesc').innerText = t.perfDesc;
+            document.getElementById('btnShow').innerText = t.btnShow;
+            document.getElementById('txtAboutTitle').innerText = t.aboutTitle;
+            document.getElementById('txtVersion').innerText = t.version;
+            document.getElementById('navHome').innerText = t.navHome;
+            document.getElementById('navWorlds').innerText = t.navWorlds;
+            document.getElementById('navVault').innerText = t.navVault;
+            document.getElementById('navProfile').innerText = t.navProfile;
+            document.getElementById('anaClose').innerText = t.close;
+            document.getElementById('aboutClose').innerText = t.close;
         }
 
         function setTheme(themeCode, themeName) {
             localStorage.setItem('axiom_theme', themeCode);
             document.getElementById('currentThemeLabel').innerText = themeName;
             document.getElementById('themePopup').classList.remove('show');
+            
+            // تطبيق الثيم بكسر أو إضافة الكلاس البصري للـ body
+            if(themeCode === 'space') {
+                document.body.classList.add('theme-space');
+            } else {
+                document.body.classList.remove('theme-space');
+            }
         }
 
         function loadSettings() {
-            const lang = localStorage.getItem('axiom_lang');
-            if(lang === 'en') document.getElementById('currentLangLabel').innerText = 'English';
-            if(lang === 'fr') document.getElementById('currentLangLabel').innerText = 'Français';
+            const lang = localStorage.getItem('axiom_lang') || 'ar';
+            if(lang === 'en') {
+                document.getElementById('currentLangLabel').innerText = 'English';
+                setLanguage('en', 'English');
+            } else if(lang === 'fr') {
+                document.getElementById('currentLangLabel').innerText = 'Français';
+                setLanguage('fr', 'Français');
+            } else {
+                setLanguage('ar', 'العربية');
+            }
 
             const theme = localStorage.getItem('axiom_theme');
-            if(theme === 'space') document.getElementById('currentThemeLabel').innerText = 'الوضع الليلي الهادئ';
+            if(theme === 'space') {
+                document.body.classList.add('theme-space');
+                document.getElementById('currentThemeLabel').innerText = 'الوضع الليلي الهادئ';
+            } else {
+                document.body.classList.remove('theme-space');
+                document.getElementById('currentThemeLabel').innerText = 'الوضع الداكن العميق';
+            }
         }
 
         function renderHistory() {
