@@ -726,74 +726,104 @@
        }
    }
 
-   // معالجة أزرار المحركات الذكية (التلخيص 
+   
             // معالجة اختيار الملف الحقيقي من الهاتف
         // معالجة اختيار الملف الحقيقي من الهاتف وربطه بالخزنة تلقائياً
-    function handleFileSelected(input) {
-        if (input.files && input.files[0]) {
-            const file = input.files[0];
+    
+        // دالة إظهار إشعار أنيق
+        function showToast(message) {
+            let toast = document.getElementById('axiomToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'axiomToast';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '90px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                toast.style.background = 'var(--onion-surface, #26211d)';
+                toast.style.border = '1px solid var(--onion-accent, #d4a373)';
+                toast.style.color = 'var(--text-main, #f8f9fa)';
+                toast.style.padding = '12px 20px';
+                toast.style.borderRadius = '16px';
+                toast.style.boxShadow = '0 10px 30px rgba(0,0,0,0.6)';
+                toast.style.zIndex = '4000';
+                toast.style.fontSize = '0.82rem';
+                toast.style.fontWeight = '700';
+                toast.style.textAlign = 'center';
+                toast.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                toast.style.opacity = '0';
+                toast.style.maxWidth = '90%';
+                document.body.appendChild(toast);
+            }
+            toast.innerHTML = message;
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+                toast.style.opacity = '1';
+            }, 10);
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                toast.style.opacity = '0';
+            }, 3500);
+        }
+
+        // معالجة اختيار الملف (صور وملفات) وربطه بالخزنة
+        function handleFileSelected(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const loader = document.getElementById('loadingOverlay');
+                const loadText = document.getElementById('loadingText');
+                
+                loadText.innerText = `جاري رفع ومعالجة (${file.name})...`;
+                loader.style.display = 'flex';
+
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    localStorage.setItem('axiom_active_doc', file.name);
+
+                    let vaultFiles = JSON.parse(localStorage.getItem('axiom_vault_files') || '[]');
+                    const fileExists = vaultFiles.some(f => f.name === file.name);
+                    if (!fileExists) {
+                        vaultFiles.push({
+                            name: file.name,
+                            size: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+                            date: 'منذ لحظات'
+                        });
+                        localStorage.setItem('axiom_vault_files', JSON.stringify(vaultFiles));
+                    }
+
+                    checkActiveDocument();
+                    currentXP += 50;
+                    localStorage.setItem('axiom_xp', currentXP);
+                    updateXPUI();
+                    
+                    showToast(`✨ تم رفع (${file.name}) وحفظه في الخزنة! (+50 XP)`);
+                }, 2000);
+            }
+        }
+
+        // معالجة أزرار المحركات الذكية
+        function performTask(taskName, xpReward) {
+            const activeDoc = localStorage.getItem('axiom_active_doc');
+            if(!activeDoc) {
+                showToast("⚠️ تنبيه: يرجى رفع ملف أو صورة أولاً لتفعيل المحرك.");
+                return;
+            }
+
             const loader = document.getElementById('loadingOverlay');
             const loadText = document.getElementById('loadingText');
             
-            loadText.innerText = `جاري رفع ومعالجة (${file.name})...`;
+            loadText.innerText = `جاري ${taskName}...`;
             loader.style.display = 'flex';
 
             setTimeout(() => {
                 loader.style.display = 'none';
-                
-                // 1. حفظ الملف كوثيقة نشطة حالية
-                localStorage.setItem('axiom_active_doc', file.name);
-
-                // 2. إضافة الملف إلى قائمة الخزنة المحلية (Vault) لكي يظهر في صفحة vault.html
-                let vaultFiles = JSON.parse(localStorage.getItem('axiom_vault_files') || '[]');
-                
-                const fileExists = vaultFiles.some(f => f.name === file.name);
-                if (!fileExists) {
-                    vaultFiles.push({
-                        name: file.name,
-                        size: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
-                        date: 'منذ لحظات'
-                    });
-                    localStorage.setItem('axiom_vault_files', JSON.stringify(vaultFiles));
-                }
-
-                checkActiveDocument();
-
-                currentXP += 50;
+                currentXP += xpReward;
                 localStorage.setItem('axiom_xp', currentXP);
                 updateXPUI();
-                
-                alert(`✨ تم رفع الملف (${file.name}) بنجاح وحفظه في الخزنة!\n🎉 حصلت على +50 XP. مجموع نقاطك الآن: ${currentXP} XP`);
+                showToast(`✨ تم إتمام (${taskName}) بنجاح! (+${xpReward} XP)`);
             }, 2000);
         }
-    }
-
-
-    // معالجة أزرار المحركات الذكية (التلخيص والاختبارات)
-    function performTask(taskName, xpReward) {
-        const activeDoc = localStorage.getItem('axiom_active_doc');
-        if(!activeDoc) {
-            alert("⚠️ تنبيه AXIOM:\nعذراً، لا توجد وثيقة نشطة حالياً. يرجى رفع ملف PDF من الزر بالأعلى أولاً.");
-            return;
-        }
-
-        const loader = document.getElementById('loadingOverlay');
-        const loadText = document.getElementById('loadingText');
-        
-        loadText.innerText = `جاري ${taskName}...`;
-        loader.style.display = 'flex';
-
-        setTimeout(() => {
-            loader.style.display = 'none';
-            
-            currentXP += xpReward;
-            localStorage.setItem('axiom_xp', currentXP);
-            updateXPUI();
-            
-            alert(`✨ تم إتمام (${taskName}) بنجاح!\n🎉 حصلت على +${xpReward} XP. مجموع نقاطك الآن: ${currentXP} XP`);
-        }, 2000);
-    }
-
 
     </script>
 </body>
