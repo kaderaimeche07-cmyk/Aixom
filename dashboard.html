@@ -463,6 +463,7 @@
         </div>
 
         <!-- خزنة المعرفة ورفع الملفات -->
+                <!-- خزنة المعرفة ورفع الملفات -->
         <div class="upload-vault-card">
             <div class="upload-icon-box">
                 <i data-lucide="upload-cloud" style="width: 26px; height: 26px;"></i>
@@ -471,8 +472,10 @@
                 <h3>خزنة الوثائق والدروس</h3>
                 <p>ارفع ملفات (PDF) ليبدأ الذكاء في تحليلها وتدريبك عليها.</p>
             </div>
-            <button class="btn-upload" onclick="performTask('رفع الوثيقة ومعالجة محتواها', 50, true)">اختر ملفاً للرفع (+50 XP)</button>
+            <input type="file" id="realFileInput" style="display: none;" accept=".pdf" onchange="handleFileSelected(this)">
+            <button class="btn-upload" onclick="document.getElementById('realFileInput').click()">اختر ملفاً للرفع (+50 XP)</button>
         </div>
+
 
         <!-- المحركات الذكية -->
         <div class="section-title">المحركات الذكية</div>
@@ -697,6 +700,85 @@
             closeWorldsModal();
             window.location.href = targetPage;
         }
+       // معالجة اختيار الملف الحقيقي من الهاتف
+   function handleFileSelected(input) {
+       if (input.files && input.files[0]) {
+           const file = input.files[0];
+           const loader = document.getElementById('loadingOverlay');
+           const loadText = document.getElementById('loadingText');
+           
+           loadText.innerText = `جاري رفع ومعالجة (${file.name})...`;
+           loader.style.display = 'flex';
+
+           setTimeout(() => {
+               loader.style.display = 'none';
+               
+               // حفظ اسم الملف الحقيقي في الذاكرة
+               localStorage.setItem('axiom_active_doc', file.name);
+               checkActiveDocument();
+
+               currentXP += 50;
+               localStorage.setItem('axiom_xp', currentXP);
+               updateXPUI();
+               
+               alert(`✨ تم رفع الملف (${file.name}) بنجاح!\n🎉 حصلت على +50 XP. مجموع نقاطك الآن: ${currentXP} XP`);
+           }, 2000);
+       }
+   }
+
+   // معالجة أزرار المحركات الذكية (التلخيص 
+            // معالجة اختيار الملف الحقيقي من الهاتف
+    function handleFileSelected(input) {
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            const loader = document.getElementById('loadingOverlay');
+            const loadText = document.getElementById('loadingText');
+            
+            loadText.innerText = `جاري رفع ومعالجة (${file.name})...`;
+            loader.style.display = 'flex';
+
+            setTimeout(() => {
+                loader.style.display = 'none';
+                
+                // حفظ اسم الملف الحقيقي في الذاكرة
+                localStorage.setItem('axiom_active_doc', file.name);
+                checkActiveDocument();
+
+                currentXP += 50;
+                localStorage.setItem('axiom_xp', currentXP);
+                updateXPUI();
+                
+                alert(`✨ تم رفع الملف (${file.name}) بنجاح!\n🎉 حصلت على +50 XP. مجموع نقاطك الآن: ${currentXP} XP`);
+            }, 2000);
+        }
+    }
+
+    // معالجة أزرار المحركات الذكية (التلخيص والاختبارات)
+    function performTask(taskName, xpReward) {
+        const activeDoc = localStorage.getItem('axiom_active_doc');
+        if(!activeDoc) {
+            alert("⚠️ تنبيه AXIOM:\nعذراً، لا توجد وثيقة نشطة حالياً. يرجى رفع ملف PDF من الزر بالأعلى أولاً.");
+            return;
+        }
+
+        const loader = document.getElementById('loadingOverlay');
+        const loadText = document.getElementById('loadingText');
+        
+        loadText.innerText = `جاري ${taskName}...`;
+        loader.style.display = 'flex';
+
+        setTimeout(() => {
+            loader.style.display = 'none';
+            
+            currentXP += xpReward;
+            localStorage.setItem('axiom_xp', currentXP);
+            updateXPUI();
+            
+            alert(`✨ تم إتمام (${taskName}) بنجاح!\n🎉 حصلت على +${xpReward} XP. مجموع نقاطك الآن: ${currentXP} XP`);
+        }, 2000);
+    }
+
+
     </script>
 </body>
 </html>
