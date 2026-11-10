@@ -728,6 +728,7 @@
 
    // معالجة أزرار المحركات الذكية (التلخيص 
             // معالجة اختيار الملف الحقيقي من الهاتف
+        // معالجة اختيار الملف الحقيقي من الهاتف وربطه بالخزنة تلقائياً
     function handleFileSelected(input) {
         if (input.files && input.files[0]) {
             const file = input.files[0];
@@ -740,18 +741,33 @@
             setTimeout(() => {
                 loader.style.display = 'none';
                 
-                // حفظ اسم الملف الحقيقي في الذاكرة
+                // 1. حفظ الملف كوثيقة نشطة حالية
                 localStorage.setItem('axiom_active_doc', file.name);
+
+                // 2. إضافة الملف إلى قائمة الخزنة المحلية (Vault) لكي يظهر في صفحة vault.html
+                let vaultFiles = JSON.parse(localStorage.getItem('axiom_vault_files') || '[]');
+                
+                const fileExists = vaultFiles.some(f => f.name === file.name);
+                if (!fileExists) {
+                    vaultFiles.push({
+                        name: file.name,
+                        size: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+                        date: 'منذ لحظات'
+                    });
+                    localStorage.setItem('axiom_vault_files', JSON.stringify(vaultFiles));
+                }
+
                 checkActiveDocument();
 
                 currentXP += 50;
                 localStorage.setItem('axiom_xp', currentXP);
                 updateXPUI();
                 
-                alert(`✨ تم رفع الملف (${file.name}) بنجاح!\n🎉 حصلت على +50 XP. مجموع نقاطك الآن: ${currentXP} XP`);
+                alert(`✨ تم رفع الملف (${file.name}) بنجاح وحفظه في الخزنة!\n🎉 حصلت على +50 XP. مجموع نقاطك الآن: ${currentXP} XP`);
             }, 2000);
         }
     }
+
 
     // معالجة أزرار المحركات الذكية (التلخيص والاختبارات)
     function performTask(taskName, xpReward) {
