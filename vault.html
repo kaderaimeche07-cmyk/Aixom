@@ -518,7 +518,8 @@
     </div>
 
     <!-- مدخل الملفات المخفي (للصورة والمعرض والمستندات) -->
-    <input type="file" id="realFileInput" multiple accept="*/*" onchange="handleFilesSelected(event)">
+    <input type="file" id="vaultFileInput" style="display: none;" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" multiple onchange="handleVaultFilesSelected(this)">
+
 
     <!-- نافذة الدوائر العائمة الرئيسية -->
     <div class="source-modal-overlay" id="sourceModal" onclick="maybeCloseModal(event)">
@@ -601,27 +602,29 @@
     </div>
 
     <!-- الشريط السفلي العائم -->
+        <!-- الشريط السفلي العائم المحدث -->
     <nav class="floating-navbar">
-        <button class="nav-link" onclick="triggerFeedback(); location.href='dashboard.html'">
+        <button class="nav-link" onclick="location.href='dashboard.html'">
             <i data-lucide="home"></i>
             <span>الرئيسية</span>
         </button>
-        <button class="nav-link" onclick="triggerFeedback(); alert('الانتقال إلى العوالم...')">
+        <button class="nav-link" onclick="location.href='vault.html'">
             <i data-lucide="compass"></i>
             <span>العوالم</span>
         </button>
-        <button class="nav-link chat-central" onclick="triggerFeedback(); alert('فتح المحادثة الذكية...')">
+        <button class="nav-link chat-central" onclick="location.href='chat.html'">
             <i data-lucide="message-square"></i>
         </button>
-        <button class="nav-link active">
+        <button class="nav-link active" onclick="location.href='vault.html'">
             <i data-lucide="folder-kanban"></i>
             <span>الخزنة</span>
         </button>
-        <button class="nav-link" onclick="triggerFeedback(); alert('إعدادات الحساب...')">
+        <button class="nav-link" onclick="location.href='settings.html'">
             <i data-lucide="user"></i>
             <span>حسابي</span>
         </button>
     </nav>
+
 
     <script>
         lucide.createIcons();
@@ -894,19 +897,28 @@
             files.forEach((f, i) => f.active = (i === index));
             saveStoredFiles(files);
             renderFiles();
-        }
-
-        function deleteSingleDoc(index) {
-            if(confirm("حذف هذه الوثيقة من الخزنة؟")) {
-                let files = getStoredFiles();
-                files.splice(index, 1);
-                if (files.length > 0 && !files.some(f => f.active)) {
-                    files[0].active = true;
-                }
-                saveStoredFiles(files);
-                renderFiles();
+        
+                // دالة حذف ملف مع إشعار عائم أنيق
+        function deleteFile(index) {
+            let vaultFiles = JSON.parse(localStorage.getItem('axiom_vault_files') || '[]');
+            
+            if (index > -1 && index < vaultFiles.length) {
+                const deletedName = vaultFiles[index].name;
+                vaultFiles.splice(index, 1);
+                localStorage.setItem('axiom_vault_files', JSON.stringify(vaultFiles));
+                
+                // إظهار إشعار أنيق بدل التنبيه المزعج
+                showToast(`🗑️ تم حذف الملف (${deletedName}) بنجاح`);
+                
+                // إعادة تحميل القائمة بعد ثانية
+                setTimeout(() => {
+                    location.reload();
+                }, 1200);
             }
         }
+
+
+        
 
         function deleteAllDocs() {
             let files = getStoredFiles();
