@@ -260,70 +260,7 @@
         }
         .btn-floating-cancel:active { transform: scale(0.96); background: rgba(255, 255, 255, 0.15); }
 
-        /* نافذة فرعية تتيح الاختيار بين المعرض أو التصوير المباشر بالكاميرا */
-        .sub-options-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(10, 8, 7, 0.85);
-            backdrop-filter: blur(10px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 3000;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .sub-options-overlay.show { display: flex; opacity: 1; }
-
-        .sub-options-card {
-            background: var(--onion-surface);
-            border: 1px solid rgba(244, 162, 97, 0.3);
-            border-radius: 28px;
-            width: 100%;
-            max-width: 340px;
-            padding: 26px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.9);
-            transform: scale(0.85);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center;
-        }
-        .sub-options-overlay.show .sub-options-card { transform: scale(1); }
-
-        .sub-options-card h4 {
-            font-size: 1rem;
-            font-weight: 900;
-            color: #f4a261;
-        }
-        .sub-btn-option {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            padding: 14px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            color: var(--text-main);
-            font-weight: 800;
-            font-size: 0.88rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .sub-btn-option:hover { background: rgba(244, 162, 97, 0.15); border-color: #f4a261; }
-        .sub-btn-cancel {
-            background: none;
-            border: none;
-            color: var(--text-dim);
-            font-size: 0.8rem;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        /* شاشة الكاميرا المباشرة داخل التطبيق (تضمن فتح الكاميرا فوراً ودون أخطاء) */
+        /* شاشة الكاميرا المباشرة داخل التطبيق */
         .camera-modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -446,8 +383,26 @@
         .prompt-btn.cancel { background: rgba(255,255,255,0.05); color: var(--text-dim); }
         .prompt-btn.confirm { background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary)); color: #fff; }
 
-        /* مدخل الملفات الحقيقي المخفي */
-        #realFileInput { display: none; }
+        /* Toast Notification */
+        #axiomToast {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--onion-surface, #26211d);
+            border: 1px solid var(--onion-accent, #d4a373);
+            color: var(--text-main, #f8f9fa);
+            padding: 12px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            z-index: 4000;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-align: center;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+            max-width: 90%;
+        }
 
         /* الشريط السفلي العائم */
         .floating-navbar {
@@ -517,30 +472,40 @@
 
     </div>
 
-    <!-- مدخل الملفات المخفي (للصورة والمعرض والمستندات) -->
-     </div>
-    <input type="file" id="vaultFileInput" style="display: none;" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" multiple onchange="handleVaultFilesSelected(this)">
-
+    <!-- مداخل الملفات المستقلة في جذر الصفحة تماماً لمنع حظر المتصفح -->
+    <input type="file" id="globalFileInput" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" multiple style="display: none;" onchange="handleFilesSelected(event)">
+    <input type="file" id="globalGalleryInput" accept="image/*" multiple style="display: none;" onchange="handleGalleryImage(event)">
 
     <!-- نافذة الدوائر العائمة الرئيسية -->
     <div class="source-modal-overlay" id="sourceModal" onclick="maybeCloseModal(event)">
         <div class="floating-circles-container" onclick="event.stopPropagation()">
             
             <div class="circles-grid">
-                <div class="circle-item" onclick="triggerFeedback(); triggerDevicePicker('*/*')">
+                <!-- مستندات -->
+                <div class="circle-item" onclick="triggerFeedback(); triggerGlobalPicker('file')">
                     <div class="circle-bubble pdf">
                         <i data-lucide="files" style="width: 24px; height: 24px;"></i>
                     </div>
                     <span>مستندات</span>
                 </div>
 
-                <div class="circle-item" onclick="triggerFeedback(); openImageSubOptions()">
+                <!-- صور المعرض (تستدعي المدخل المستقل عبر timeout بعد إغلاق النافذة بأمان) -->
+                <div class="circle-item" onclick="triggerFeedback(); triggerGlobalPicker('gallery')">
                     <div class="circle-bubble img">
                         <i data-lucide="image" style="width: 24px; height: 24px;"></i>
                     </div>
-                    <span>صور وكاميرا</span>
+                    <span>صور المعرض</span>
                 </div>
 
+                <!-- التصوير المباشر -->
+                <div class="circle-item" onclick="triggerFeedback(); openCameraModal()">
+                    <div class="circle-bubble img" style="background: linear-gradient(135deg, #e76f51, #9b2226);">
+                        <i data-lucide="camera" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <span>التصوير</span>
+                </div>
+
+                <!-- Google Drive -->
                 <div class="circle-item" onclick="triggerFeedback(); openCloudImport()">
                     <div class="circle-bubble drive">
                         <i data-lucide="cloud" style="width: 24px; height: 24px;"></i>
@@ -548,6 +513,7 @@
                     <span>Google Drive</span>
                 </div>
 
+                <!-- رابط خارجي -->
                 <div class="circle-item" onclick="triggerFeedback(); openWebImport()">
                     <div class="circle-bubble link">
                         <i data-lucide="link" style="width: 24px; height: 24px;"></i>
@@ -560,23 +526,7 @@
         </div>
     </div>
 
-    <!-- نافذة فرعية تتيح الاختيار بين المعرض أو التصوير المباشر الحقيقي -->
-    <div class="sub-options-overlay" id="subOptionsModal" onclick="closeSubOptions()">
-        <div class="sub-options-card" onclick="event.stopPropagation()">
-            <h4>📸 مصدر الصور</h4>
-            <button class="sub-btn-option" onclick="triggerFeedback(); pickFromGallery()">
-                <i data-lucide="image" style="width: 20px; height: 20px; color: #f4a261;"></i>
-                اختيار من المعرض
-            </button>
-            <button class="sub-btn-option" onclick="triggerFeedback(); startLiveCamera()">
-                <i data-lucide="camera" style="width: 20px; height: 20px; color: #f4a261;"></i>
-                التصوير المباشر
-            </button>
-            <button class="sub-btn-cancel" onclick="triggerFeedback(); closeSubOptions()">رجوع</button>
-        </div>
-    </div>
-
-    <!-- شاشة التصوير المباشر الحية (تفتح كاميرا الهاتف حصراً دون مرور بالمعرض) -->
+    <!-- شاشة الكاميرا المباشرة داخل التطبيق -->
     <div class="camera-modal-overlay" id="cameraModal">
         <div style="color: var(--onion-accent); font-weight: 900; font-size: 1rem;">📸 التقط صورة الوثيقة أو الدرس</div>
         <div class="camera-preview-wrap">
@@ -587,10 +537,9 @@
             <button class="capture-btn" onclick="capturePhotoFromStream()" title="التقاط"></button>
         </div>
     </div>
-    <!-- عنصر مخفي لالتقاط الصورة برمجياً -->
     <canvas id="captureCanvas" style="display:none;"></canvas>
 
-    <!-- نافذة إدخال مخصصة وراقية -->
+    <!-- نافذة إدخال مخصصة (للروابط و Drive) -->
     <div class="custom-prompt-overlay" id="customPromptModal">
         <div class="custom-prompt-card">
             <h4 id="promptTitle">عنوان النافذة</h4>
@@ -602,8 +551,19 @@
         </div>
     </div>
 
+    <!-- نافذة تأكيد الحذف المخصصة (نعم / لا) -->
+    <div class="custom-prompt-overlay" id="confirmModal">
+        <div class="custom-prompt-card">
+            <h4 id="confirmTitle" style="color: var(--pom-primary);">⚠️ تأكيد الحذف</h4>
+            <p id="confirmMessage" style="font-size: 0.85rem; color: var(--text-dim); margin: 5px 0 10px 0;">هل أنت متأكد من رغبتك في الحذف؟</p>
+            <div class="prompt-actions">
+                <button class="prompt-btn cancel" id="confirmNoBtn">لا</button>
+                <button class="prompt-btn confirm" id="confirmYesBtn" style="background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));">نعم</button>
+            </div>
+        </div>
+    </div>
+
     <!-- الشريط السفلي العائم -->
-        <!-- الشريط السفلي العائم المحدث -->
     <nav class="floating-navbar">
         <button class="nav-link" onclick="location.href='dashboard.html'">
             <i data-lucide="home"></i>
@@ -626,7 +586,6 @@
         </button>
     </nav>
 
-
     <script>
         lucide.createIcons();
 
@@ -639,6 +598,76 @@
         window.addEventListener('load', () => {
             renderFiles();
         });
+
+        // دالة إظهار إشعار عائم أنيق
+        function showToast(message) {
+            let toast = document.getElementById('axiomToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'axiomToast';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '90px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                toast.style.background = 'var(--onion-surface, #26211d)';
+                toast.style.border = '1px solid var(--onion-accent, #d4a373)';
+                toast.style.color = 'var(--text-main, #f8f9fa)';
+                toast.style.padding = '12px 20px';
+                toast.style.borderRadius = '16px';
+                toast.style.boxShadow = '0 10px 30px rgba(0,0,0,0.6)';
+                toast.style.zIndex = '4000';
+                toast.style.fontSize = '0.82rem';
+                toast.style.fontWeight = '700';
+                toast.style.textAlign = 'center';
+                toast.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                toast.style.opacity = '0';
+                toast.style.maxWidth = '90%';
+                document.body.appendChild(toast);
+            }
+            toast.innerHTML = message;
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+                toast.style.opacity = '1';
+            }, 10);
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                toast.style.opacity = '0';
+            }, 3500);
+        }
+
+        // دالة نافذة التأكيد (نعم / لا)
+        function showConfirmDialog(title, message, onYes) {
+            const modal = document.getElementById('confirmModal');
+            document.getElementById('confirmTitle').innerText = title;
+            document.getElementById('confirmMessage').innerText = message;
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+
+            const yesBtn = document.getElementById('confirmYesBtn');
+            const noBtn = document.getElementById('confirmNoBtn');
+
+            const newYesBtn = yesBtn.cloneNode(true);
+            yesBtn.parentNode.replaceChild(newYesBtn, yesBtn);
+
+            const newNoBtn = noBtn.cloneNode(true);
+            noBtn.parentNode.replaceChild(newNoBtn, noBtn);
+
+            newYesBtn.addEventListener('click', () => {
+                closeConfirmModal();
+                onYes();
+            });
+
+            newNoBtn.addEventListener('click', () => {
+                closeConfirmModal();
+            });
+        }
+
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirmModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
 
         function getStoredFiles() {
             const stored = localStorage.getItem('axiom_vault_files');
@@ -697,7 +726,7 @@
                         <button class="action-icon-btn" onclick="triggerFeedback(); setActiveDoc(${index})" title="تعيين كنشط">
                             <i data-lucide="check" style="width: 16px; height: 16px;"></i>
                         </button>
-                        <button class="action-icon-btn delete" onclick="triggerFeedback(); deleteSingleDoc(${index})" title="حذف">
+                        <button class="action-icon-btn delete" onclick="triggerFeedback(); deleteFile(${index})" title="حذف">
                             <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
                         </button>
                     </div>
@@ -723,39 +752,27 @@
             closeSourceModal();
         }
 
-        function triggerDevicePicker(acceptTypes) {
+        // دالة آمنة تضمن إغلاق النافذة أولاً ثم فتح مستعرض الملفات أو المعرض خارج النافذة تماماً
+        function triggerGlobalPicker(type) {
             closeSourceModal();
-            const fileInput = document.getElementById('realFileInput');
-            fileInput.accept = acceptTypes;
-            fileInput.value = '';
-            fileInput.click();
+            setTimeout(() => {
+                if (type === 'file') {
+                    document.getElementById('globalFileInput').value = '';
+                    document.getElementById('globalFileInput').click();
+                } else if (type === 'gallery') {
+                    document.getElementById('globalGalleryInput').value = '';
+                    document.getElementById('globalGalleryInput').click();
+                }
+            }, 150);
         }
 
-        function openImageSubOptions() {
+        function openCameraModal() {
             closeSourceModal();
-            const subModal = document.getElementById('subOptionsModal');
-            subModal.style.display = 'flex';
-            setTimeout(() => subModal.classList.add('show'), 10);
+            startLiveCamera();
         }
 
-        function closeSubOptions() {
-            const subModal = document.getElementById('subOptionsModal');
-            subModal.classList.remove('show');
-            setTimeout(() => subModal.style.display = 'none', 300);
-        }
-
-        function pickFromGallery() {
-            closeSubOptions();
-            const fileInput = document.getElementById('realFileInput');
-            fileInput.accept = 'image/*';
-            fileInput.value = '';
-            fileInput.click();
-        }
-
-        /* تشغيل كاميرا الهاتف المباشرة داخل المتصفح حصراً */
         let mediaStream = null;
         async function startLiveCamera() {
-            closeSubOptions();
             const cameraModal = document.getElementById('cameraModal');
             const videoElement = document.getElementById('cameraStreamVideo');
             
@@ -767,7 +784,7 @@
                 });
                 videoElement.srcObject = mediaStream;
             } catch (err) {
-                alert("⚠️ تعذر الوصول إلى كاميرا الهاتف. يرجى التحقق من الأذونات.");
+                showToast("⚠️ تعذر الوصول إلى كاميرا الهاتف.");
                 stopLiveCamera();
             }
         }
@@ -792,13 +809,20 @@
             
             canvas.toBlob((blob) => {
                 if (blob) {
-                    const fileName = `تصوير_مباشر_${Date.now().toString().slice(-4)}.jpg`;
-                    const fileSize = (blob.size / (1024 * 1024)).toFixed(1) + ' MB';
-                    
+                    const originalName = `تصوير_مباشر_${Date.now().toString().slice(-4)}.jpg`;
                     let currentFiles = getStoredFiles();
                     currentFiles.forEach(f => f.active = false);
+                    
+                    let finalName = originalName;
+                    let counter = 1;
+                    while (currentFiles.some(f => f.name === finalName)) {
+                        finalName = `تصوير_مباشر_${Date.now().toString().slice(-4)}_${counter}.jpg`;
+                        counter++;
+                    }
+
+                    const fileSize = (blob.size / (1024 * 1024)).toFixed(1) + ' MB';
                     currentFiles.unshift({
-                        name: fileName,
+                        name: finalName,
                         size: fileSize || '1.2 MB',
                         date: 'اليوم',
                         active: true
@@ -806,11 +830,13 @@
 
                     saveStoredFiles(currentFiles);
                     renderFiles();
+                    showToast(`✨ تم حفظ الصورة بنجاح`);
                 }
                 stopLiveCamera();
             }, 'image/jpeg', 0.85);
         }
 
+        // معالجة المستندات
         function handleFilesSelected(event) {
             const uploadedFiles = event.target.files;
             if (uploadedFiles && uploadedFiles.length > 0) {
@@ -819,30 +845,75 @@
 
                 for (let i = 0; i < uploadedFiles.length; i++) {
                     const file = uploadedFiles[i];
-                    let fileName = file.name;
-                    if (!fileName || fileName.startsWith('image')) {
-                        fileName = `صورة_مستوردة_${Date.now().toString().slice(-4)}.jpg`;
-                    }
-                    const fileSize = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+                    let originalName = file.name && file.name.trim() !== '' ? file.name : `ملف_${Date.now().toString().slice(-4)}.pdf`;
                     
-                    if (!currentFiles.some(f => f.name === fileName)) {
-                        currentFiles.unshift({
-                            name: fileName,
-                            size: fileSize,
-                            date: 'اليوم',
-                            active: (i === 0)
-                        });
+                    let finalName = originalName;
+                    let counter = 1;
+                    while (currentFiles.some(f => f.name === finalName)) {
+                        const parts = originalName.split('.');
+                        const ext = parts.length > 1 ? `.${parts.pop()}` : '';
+                        const base = parts.join('.');
+                        finalName = `${base}_(${counter})${ext}`;
+                        counter++;
                     }
+
+                    const fileSize = file.size ? (file.size / (1024 * 1024)).toFixed(1) + ' MB' : '1.5 MB';
+                    
+                    currentFiles.unshift({
+                        name: finalName,
+                        size: fileSize,
+                        date: 'اليوم',
+                        active: (i === 0)
+                    });
                 }
 
                 saveStoredFiles(currentFiles);
                 renderFiles();
+                showToast(`✨ تم حفظ المستندات بنجاح`);
+                event.target.value = '';
+            }
+        }
+
+        // معالجة وحفظ صور المعرض بضمان تشغيل مباشر ومستقل
+        function handleGalleryImage(event) {
+            const uploadedFiles = event.target.files;
+            if (uploadedFiles && uploadedFiles.length > 0) {
+                let currentFiles = getStoredFiles();
+                currentFiles.forEach(f => f.active = false);
+
+                for (let i = 0; i < uploadedFiles.length; i++) {
+                    const file = uploadedFiles[i];
+                    let originalName = file.name && file.name.trim() !== '' ? file.name : `صورة_معرض_${Date.now().toString().slice(-4)}.jpg`;
+                    
+                    let finalName = originalName;
+                    let counter = 1;
+                    while (currentFiles.some(f => f.name === finalName)) {
+                        const parts = originalName.split('.');
+                        const ext = parts.length > 1 ? `.${parts.pop()}` : '';
+                        const base = parts.join('.');
+                        finalName = `${base}_(${counter})${ext}`;
+                        counter++;
+                    }
+
+                    const fileSize = file.size ? (file.size / (1024 * 1024)).toFixed(1) + ' MB' : '1.2 MB';
+                    
+                    currentFiles.unshift({
+                        name: finalName,
+                        size: fileSize,
+                        date: 'اليوم',
+                        active: (i === 0)
+                    });
+                }
+
+                saveStoredFiles(currentFiles);
+                renderFiles();
+                showToast(`✨ تم حفظ الصورة من المعرض بنجاح`);
+                event.target.value = '';
             }
         }
 
         function showCustomPrompt(title, placeholder, callback) {
             closeSourceModal();
-            closeSubOptions();
             const modal = document.getElementById('customPromptModal');
             const titleEl = document.getElementById('promptTitle');
             const inputEl = document.getElementById('promptInput');
@@ -880,6 +951,7 @@
                 currentFiles.unshift({ name: docName, size: '3.1 MB', date: 'اليوم', active: true });
                 saveStoredFiles(currentFiles);
                 renderFiles();
+                showToast(`✨ تم استيراد المستند بنجاح`);
             });
         }
 
@@ -890,6 +962,7 @@
                 currentFiles.unshift({ name: "مستند_من_الويب.pdf", size: '1.8 MB', date: 'اليوم', active: true });
                 saveStoredFiles(currentFiles);
                 renderFiles();
+                showToast(`✨ تم استيراد الرابط بنجاح`);
             });
         }
 
@@ -898,37 +971,33 @@
             files.forEach((f, i) => f.active = (i === index));
             saveStoredFiles(files);
             renderFiles();
-        
-                // دالة حذف ملف مع إشعار عائم أنيق
+            showToast(`✨ تم تعيين المستند كنشط`);
+        }
+
+        // حذف ملف مع نافذة تأكيد (نعم / لا)
         function deleteFile(index) {
-            let vaultFiles = JSON.parse(localStorage.getItem('axiom_vault_files') || '[]');
-            
+            let vaultFiles = getStoredFiles();
             if (index > -1 && index < vaultFiles.length) {
                 const deletedName = vaultFiles[index].name;
-                vaultFiles.splice(index, 1);
-                localStorage.setItem('axiom_vault_files', JSON.stringify(vaultFiles));
-                
-                // إظهار إشعار أنيق بدل التنبيه المزعج
-                showToast(`🗑️ تم حذف الملف (${deletedName}) بنجاح`);
-                
-                // إعادة تحميل القائمة بعد ثانية
-                setTimeout(() => {
-                    location.reload();
-                }, 1200);
+                showConfirmDialog("🗑️ تأكيد الحذف", `هل أنت متأكد من رغبتك في حذف (${deletedName})؟`, () => {
+                    vaultFiles.splice(index, 1);
+                    saveStoredFiles(vaultFiles);
+                    showToast(`🗑️ تم حذف الملف (${deletedName}) بنجاح`);
+                    renderFiles();
+                });
             }
-        
+        }
 
-
-        
-
+        // حذف الكل مع نافذة تأكيد (نعم / لا)
         function deleteAllDocs() {
             let files = getStoredFiles();
             if (files.length === 0) return;
-            if(confirm("⚠️ إفراغ الخزنة وحذف جميع الوثائق؟")) {
+            showConfirmDialog("⚠️ إفراغ الخزنة", "هل أنت متأكد من رغبتك في حذف جميع الوثائق؟", () => {
                 localStorage.removeItem('axiom_vault_files');
                 localStorage.removeItem('axiom_active_doc');
                 renderFiles();
-            }
+                showToast(`🗑️ تم تفريغ الخزنة بالكامل`);
+            });
         }
     </script>
 </body>
