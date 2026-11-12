@@ -11,11 +11,9 @@
             --onion-bg: #1c1815;
             --onion-surface: #26211d;
             --onion-accent: #d4a373;
-            
             --pom-primary: #e63946;
             --pom-secondary: #9b2226;
             --pom-glow: rgba(230, 57, 70, 0.35);
-            
             --text-main: #f8f9fa;
             --text-dim: #adb5bd;
             --border: rgba(255, 255, 255, 0.08);
@@ -43,86 +41,43 @@
             position: relative;
         }
 
-        .bg-blobs {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
+        .bg-blobs { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
         .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
+            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4;
             animation: float 10s infinite alternate ease-in-out;
         }
         .blob-1 { width: 320px; height: 320px; background: var(--pom-secondary); top: -80px; right: -80px; }
         .blob-2 { width: 280px; height: 280px; background: #3d2c2e; bottom: -60px; left: -60px; animation-delay: -5s; }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(30px, 40px) scale(1.1); }
-        }
+        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, 40px) scale(1.1); } }
 
         #splashScreen {
-            position: fixed;
-            inset: 0;
-            background: var(--onion-bg);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            position: fixed; inset: 0; background: var(--onion-bg); z-index: 1000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: opacity 0.45s ease, transform 0.45s ease;
         }
         .splash-logo {
             width: 85px; height: 85px;
             background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
-            border-radius: 26px;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 15px 40px var(--pom-glow);
-            margin-bottom: 20px;
+            border-radius: 26px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 15px 40px var(--pom-glow); margin-bottom: 20px;
             animation: pulseLogo 2s infinite;
         }
-        @keyframes pulseLogo {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.06); }
-        }
+        @keyframes pulseLogo { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
         .splash-title {
-            font-size: 2rem;
-            font-weight: 900;
-            letter-spacing: 3px;
+            font-size: 2rem; font-weight: 900; letter-spacing: 3px;
             background: linear-gradient(to left, #fff, var(--onion-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
         .auth-wrapper {
-            position: relative;
-            z-index: 10;
-            width: 90%;
-            max-width: 400px;
-            background: rgba(38, 33, 29, 0.88);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            padding: 30px 24px;
+            position: relative; z-index: 10; width: 90%; max-width: 400px;
+            background: rgba(38, 33, 29, 0.88); backdrop-filter: blur(24px);
+            border: 1px solid var(--border); border-radius: 28px; padding: 30px 24px;
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
-            display: none;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.35s ease;
+            display: none; opacity: 0; transform: translateY(20px); transition: all 0.35s ease;
         }
-        body.theme-space .auth-wrapper {
-            background: rgba(19, 34, 53, 0.88);
-        }
-        .auth-wrapper.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
+        body.theme-space .auth-wrapper { background: rgba(19, 34, 53, 0.88); }
+        .auth-wrapper.active { display: block; opacity: 1; transform: translateY(0); }
 
         .brand-header { text-align: center; margin-bottom: 22px; }
         .brand-badge {
@@ -136,34 +91,18 @@
         .brand-header p { font-size: 0.8rem; color: var(--text-dim); }
 
         .quick-resume-btn {
-            width: 100%;
-            background: rgba(212, 163, 115, 0.14);
-            border: 1px solid var(--onion-accent);
-            color: var(--onion-accent);
-            border-radius: 16px;
-            padding: 12px;
-            font-size: 0.85rem;
-            font-weight: 800;
-            margin-bottom: 14px;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            width: 100%; background: rgba(212, 163, 115, 0.14);
+            border: 1px solid var(--onion-accent); color: var(--onion-accent);
+            border-radius: 16px; padding: 12px; font-size: 0.85rem; font-weight: 800;
+            margin-bottom: 14px; cursor: pointer;
+            display: none; align-items: center; justify-content: center; gap: 8px;
         }
 
         .google-btn {
-            width: 100%;
-            background: #fff;
-            color: #1f1f1f;
-            border: none;
-            border-radius: 16px;
-            padding: 13px;
-            font-size: 0.9rem;
-            font-weight: 800;
+            width: 100%; background: #fff; color: #1f1f1f; border: none; border-radius: 16px;
+            padding: 13px; font-size: 0.9rem; font-weight: 800;
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            cursor: pointer;
-            transition: transform 0.2s;
+            cursor: pointer; transition: transform 0.2s;
         }
         .google-btn:active { transform: scale(0.98); }
 
@@ -178,33 +117,24 @@
         .input-group { margin-bottom: 14px; }
         .input-group label { display: block; font-size: 0.75rem; color: var(--onion-accent); margin-bottom: 6px; font-weight: 700; }
         .input-field {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 12px 16px;
-            color: var(--text-main);
-            font-size: 0.88rem;
-            outline: none;
+            width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+            border-radius: 14px; padding: 12px 16px; color: var(--text-main); font-size: 0.88rem; outline: none;
         }
         .input-field:focus { border-color: var(--onion-accent); background: rgba(255, 255, 255, 0.08); }
 
         .primary-btn {
-            width: 100%;
-            background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
+            width: 100%; background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
             color: #fff; border: none; border-radius: 16px; padding: 14px;
             font-size: 0.92rem; font-weight: 800; cursor: pointer; margin-top: 8px;
             box-shadow: 0 8px 25px var(--pom-glow);
         }
 
         .modal-backdrop {
-            position: fixed; inset: 0;
-            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
             z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px;
         }
         .google-card {
-            background: var(--onion-surface);
-            border: 1px solid rgba(212, 163, 115, 0.3);
+            background: var(--onion-surface); border: 1px solid rgba(212, 163, 115, 0.3);
             border-radius: 24px; width: 100%; max-width: 350px; padding: 24px; text-align: center;
         }
         .google-card h3 { font-size: 1rem; margin-bottom: 6px; color: var(--onion-accent); }
