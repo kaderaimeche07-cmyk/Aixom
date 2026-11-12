@@ -11,11 +11,9 @@
             --onion-bg: #1c1815;
             --onion-surface: #26211d;
             --onion-accent: #d4a373;
-            
             --pom-primary: #e63946;
             --pom-secondary: #9b2226;
             --pom-glow: rgba(230, 57, 70, 0.25);
-            
             --text-main: #f8f9fa;
             --text-dim: #adb5bd;
             --border: rgba(255, 255, 255, 0.08);
@@ -41,247 +39,129 @@
         }
 
         .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 20px;
-            background: rgba(28, 24, 21, 0.88);
-            backdrop-filter: blur(20px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 20px; background: rgba(28, 24, 21, 0.88);
+            backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100;
             border-bottom: 1px solid var(--border);
         }
+        body.theme-space .top-bar { background: rgba(11, 19, 29, 0.88); }
 
-        body.theme-space .top-bar {
-            background: rgba(11, 19, 29, 0.88);
-        }
-
-        .user-greeting h2 { font-size: 1.08rem; font-weight: 900; }
+        .user-greeting h2 { font-size: 1.05rem; font-weight: 900; }
         .user-greeting p { font-size: 0.72rem; color: var(--onion-accent); font-weight: 700; }
 
         .top-actions { display: flex; align-items: center; gap: 10px; }
-
         .xp-pill {
             background: rgba(212, 163, 115, 0.12);
             border: 1px solid rgba(212, 163, 115, 0.3);
-            padding: 6px 14px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.82rem;
-            font-weight: 900;
-            color: var(--onion-accent);
+            padding: 6px 14px; border-radius: 20px;
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.8rem; font-weight: 900; color: var(--onion-accent);
         }
 
         .icon-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            width: 38px; height: 38px;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+            color: var(--text-main); width: 38px; height: 38px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
+            cursor: pointer; transition: all 0.2s;
         }
         .icon-btn:hover { border-color: var(--onion-accent); color: var(--onion-accent); }
 
         .container {
-            padding: 18px 20px;
-            max-width: 500px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            padding: 18px 20px; max-width: 500px; margin: 0 auto;
+            display: flex; flex-direction: column; gap: 18px;
         }
 
-        /* بطاقة حالة الوثيقة النشطة */
         .status-card {
-            background: var(--onion-surface);
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            padding: 16px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
+            background: var(--onion-surface); border: 1px solid var(--border);
+            border-radius: 22px; padding: 16px 18px;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
         }
         .status-left { display: flex; align-items: center; gap: 12px; overflow: hidden; }
-        .status-dot {
-            width: 10px; height: 10px;
-            border-radius: 50%;
-            background: #e63946;
-            flex-shrink: 0;
-        }
-        .status-dot.active {
-            background: #2a9d8f;
-            box-shadow: 0 0 12px #2a9d8f;
-        }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; background: #e63946; flex-shrink: 0; }
+        .status-dot.active { background: #2a9d8f; box-shadow: 0 0 12px #2a9d8f; }
         .status-text {
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--text-dim);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 0.78rem; font-weight: 700; color: var(--text-dim);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
 
-        /* منطقة الرفع السريع */
         .upload-hero {
             background: var(--onion-surface);
             border: 1.5px dashed rgba(212, 163, 115, 0.45);
-            border-radius: 26px;
-            padding: 26px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.25s ease;
+            border-radius: 26px; padding: 26px 20px; text-align: center;
+            cursor: pointer; transition: all 0.25s ease;
         }
-        .upload-hero:hover {
-            border-color: var(--onion-accent);
-            transform: translateY(-2px);
-        }
+        .upload-hero:hover { border-color: var(--onion-accent); transform: translateY(-2px); }
         .upload-icon-wrap {
-            width: 54px; height: 54px;
-            border-radius: 18px;
+            width: 54px; height: 54px; border-radius: 18px;
             background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
             display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 12px auto;
-            box-shadow: 0 10px 25px var(--pom-glow);
+            margin: 0 auto 12px auto; box-shadow: 0 10px 25px var(--pom-glow);
         }
         .upload-hero h3 { font-size: 0.98rem; font-weight: 900; margin-bottom: 4px; }
         .upload-hero p { font-size: 0.75rem; color: var(--text-dim); }
 
-        /* شبكة الأدوات الهندسية */
-        .section-title {
-            font-size: 0.9rem;
-            font-weight: 900;
-            color: var(--onion-accent);
-            margin-bottom: 10px;
-        }
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
+        .section-title { font-size: 0.9rem; font-weight: 900; color: var(--onion-accent); margin-bottom: 10px; }
+        .tools-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .tool-card {
-            background: var(--onion-surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: var(--onion-surface); border: 1px solid var(--border);
+            border-radius: 20px; padding: 16px;
+            display: flex; flex-direction: column; gap: 8px;
+            cursor: pointer; transition: all 0.2s;
         }
-        .tool-card:hover {
-            border-color: var(--onion-accent);
-            transform: translateY(-2px);
-        }
+        .tool-card:hover { border-color: var(--onion-accent); transform: translateY(-2px); }
         .tool-card i { color: var(--pom-primary); }
         .tool-card h4 { font-size: 0.84rem; font-weight: 800; }
         .tool-card span { font-size: 0.68rem; color: var(--text-dim); }
 
-        /* الشريط السفلي العائم */
         .floating-navbar {
-            position: fixed;
-            bottom: 18px; left: 16px; right: 16px;
+            position: fixed; bottom: 18px; left: 16px; right: 16px;
             max-width: 450px; margin: 0 auto;
-            background: rgba(38, 33, 29, 0.92);
-            backdrop-filter: blur(25px);
-            border: 1px solid var(--border);
-            border-radius: 26px;
-            padding: 10px 16px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
-            z-index: 1000;
+            background: rgba(38, 33, 29, 0.92); backdrop-filter: blur(25px);
+            border: 1px solid var(--border); border-radius: 26px; padding: 10px 16px;
+            display: flex; justify-content: space-around; align-items: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7); z-index: 1000;
         }
         .nav-link {
-            background: none;
-            border: none;
-            color: var(--text-dim);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            cursor: pointer;
+            background: none; border: none; color: var(--text-dim);
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            font-size: 0.65rem; font-weight: 700; cursor: pointer;
         }
         .nav-link.active { color: var(--onion-accent); }
         .nav-link.chat-central {
             background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
-            color: #fff;
-            width: 50px; height: 50px;
-            border-radius: 50%;
-            justify-content: center;
-            margin-top: -22px;
-            box-shadow: 0 8px 20px var(--pom-glow);
+            color: #fff; width: 50px; height: 50px; border-radius: 50%;
+            justify-content: center; margin-top: -22px; box-shadow: 0 8px 20px var(--pom-glow);
         }
 
-        /* شاشة التحميل */
         #loadingOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 12, 10, 0.88);
-            backdrop-filter: blur(10px);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 3000;
-            gap: 14px;
+            position: fixed; inset: 0; background: rgba(15, 12, 10, 0.88);
+            backdrop-filter: blur(10px); display: none; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 3000; gap: 14px;
         }
         .spinner {
-            width: 44px; height: 44px;
-            border: 4px solid rgba(212, 163, 115, 0.2);
-            border-top-color: var(--pom-primary);
-            border-radius: 50%;
+            width: 44px; height: 44px; border: 4px solid rgba(212, 163, 115, 0.2);
+            border-top-color: var(--pom-primary); border-radius: 50%;
             animation: spin 0.9s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* النوافذ المنبثقة */
         .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(10, 8, 7, 0.85);
-            backdrop-filter: blur(12px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            z-index: 2500;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            position: fixed; inset: 0; background: rgba(10, 8, 7, 0.85);
+            backdrop-filter: blur(12px); display: none; align-items: center; justify-content: center;
+            padding: 20px; z-index: 2500; opacity: 0; transition: opacity 0.3s ease;
         }
         .modal-overlay.show { opacity: 1; }
         .modal-box {
-            background: var(--onion-surface);
-            border: 1px solid rgba(212, 163, 115, 0.3);
-            border-radius: 26px;
-            width: 100%;
-            max-width: 360px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            background: var(--onion-surface); border: 1px solid rgba(212, 163, 115, 0.3);
+            border-radius: 26px; width: 100%; max-width: 360px; padding: 24px;
+            display: flex; flex-direction: column; gap: 12px;
         }
         .modal-box h3 { font-size: 1rem; color: var(--onion-accent); text-align: center; margin-bottom: 4px; }
         .world-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            padding: 13px;
-            border-radius: 16px;
-            color: var(--text-main);
-            font-weight: 800;
-            font-size: 0.85rem;
-            text-align: right;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+            padding: 13px; border-radius: 16px; color: var(--text-main);
+            font-weight: 800; font-size: 0.85rem; text-align: right;
+            cursor: pointer; transition: all 0.2s;
         }
         .world-btn:hover { border-color: var(--onion-accent); background: rgba(212, 163, 115, 0.12); }
     </style>
@@ -291,7 +171,7 @@
     <header class="top-bar">
         <div class="user-greeting">
             <h2 id="userNameDisplay">أهلاً، زائر AXIOM</h2>
-            <p>بيئة العمل الهندسية والأكاديمية</p>
+            <p id="userRankDisplay">🏅 الرتبة: مبتدئ AXIOM</p>
         </div>
         <div class="top-actions">
             <div class="xp-pill">
@@ -325,17 +205,17 @@
         </div>
 
         <div>
-            <div class="section-title">⚡ أدوات التحليل السريع</div>
+            <div class="section-title">⚡ أدوات التحليل الفوري</div>
             <div class="tools-grid">
-                <div class="tool-card" onclick="launchSmartAction('لخّص لي الوثيقة النشطة في نقاط واضحة ومنظمة مع أبرز القوانين والاستنتاجات.', 30)">
+                <div class="tool-card" onclick="launchSmartAction('summarize', 30)">
                     <i data-lucide="file-text" style="width: 22px; height: 22px;"></i>
-                    <h4>تلخيص ذكي</h4>
+                    <h4>تلخيص فوري</h4>
                     <span>استخراج أهم الأفكار والقوانين</span>
                 </div>
-                <div class="tool-card" onclick="launchSmartAction('أنشئ لي اختبار مراجعة من 5 أسئلة متنوعة بناءً على الوثيقة النشطة مع الحلول النموذجية.', 40)">
+                <div class="tool-card" onclick="launchSmartAction('quiz', 40)">
                     <i data-lucide="brain-circuit" style="width: 22px; height: 22px;"></i>
-                    <h4>اختبار سريع</h4>
-                    <span>أسئلة مراجعة من محتوى الملف</span>
+                    <h4>توليد اختبار</h4>
+                    <span>5 أسئلة تقييمية مع الحلول</span>
                 </div>
                 <div class="tool-card" onclick="openWorldsModal()">
                     <i data-lucide="compass" style="width: 22px; height: 22px;"></i>
@@ -378,7 +258,6 @@
         <p id="loadingText" style="font-size: 0.85rem; color: var(--onion-accent); font-weight: 700;">جاري المعالجة...</p>
     </div>
 
-    <!-- نافذة العوالم -->
     <div class="modal-overlay" id="worldsModal" onclick="maybeCloseWorld(event)">
         <div class="modal-box" onclick="event.stopPropagation()">
             <h3>🌍 اختر بيئة العمل (العالم)</h3>
@@ -389,14 +268,13 @@
         </div>
     </div>
 
-    <!-- نافذة الدليل -->
     <div class="modal-overlay" id="guideModal" onclick="maybeCloseGuide(event)">
         <div class="modal-box" onclick="event.stopPropagation()">
             <h3>📘 دليل AXIOM السريع</h3>
             <p style="font-size: 0.78rem; color: var(--text-dim); line-height: 1.7;">
                 1. ارفع أي ملف أو صورة لتعيينها <b>كوثيقة نشطة</b>.<br>
-                2. افتح المحادثة الذكية لطرح أسئلتك مباشرة حول الملف أو أي موضوع هندسي.<br>
-                3. أدر ملفاتك المحفوظة في أي وقت عبر <b>الخزنة</b>.
+                2. اضغط على <b>تلخيص فوري</b> أو <b>توليد اختبار</b> لتحليل الوثيقة مباشرة.<br>
+                3. يمكنك تصدير ملخصاتك واختباراتك كملف نصي من داخل المحادثة.
             </p>
             <button class="world-btn" style="text-align:center; color:var(--onion-accent);" onclick="closeGuideModal()">فهمت ذلك</button>
         </div>
@@ -404,6 +282,20 @@
 
     <script>
         lucide.createIcons();
+
+        let currentXP = parseInt(localStorage.getItem('axiom_xp') || '0');
+
+        function getRankTitle(xp) {
+            if (xp >= 500) return '👑 كبير المهندسين';
+            if (xp >= 250) return '⚡ مهندس محترف';
+            if (xp >= 100) return '📘 باحث نشط';
+            return '🏅 مبتدئ AXIOM';
+        }
+
+        function updateXPUI() {
+            document.getElementById('xpDisplay').innerText = currentXP;
+            document.getElementById('userRankDisplay').innerText = `الرتبة: ${getRankTitle(currentXP)}`;
+        }
 
         window.addEventListener('load', () => {
             if (localStorage.getItem('axiom_theme') === 'space') {
@@ -417,23 +309,16 @@
             checkActiveDocument();
         });
 
-        let currentXP = parseInt(localStorage.getItem('axiom_xp') || '0');
-
-        function updateXPUI() {
-            document.getElementById('xpDisplay').innerText = currentXP;
-        }
-
         function checkActiveDocument() {
             const activeDoc = localStorage.getItem('axiom_active_doc');
             const dot = document.getElementById('docStatusDot');
             const text = document.getElementById('docStatusText');
-            
             if (activeDoc) {
                 dot.classList.add('active');
                 text.innerText = `📄 وثيقة نشطة: ${activeDoc}`;
             } else {
                 dot.classList.remove('active');
-                text.innerText = `⚠️ لا توجد وثيقة نشطة. ارفع ملفاً لتفعيل العالم الأكاديمي.`;
+                text.innerText = `⚠️ لا توجد وثيقة نشطة. ارفع ملفاً لتفعيل التحليل.`;
             }
         }
 
@@ -442,18 +327,12 @@
             if (!toast) {
                 toast = document.createElement('div');
                 toast.id = 'axiomToast';
-                toast.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--onion-surface,#26211d);border:1px solid var(--onion-accent,#d4a373);color:var(--text-main,#f8f9fa);padding:12px 20px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.6);z-index:4000;font-size:0.82rem;font-weight:700;text-align:center;transition:transform 0.3s ease,opacity 0.3s ease;opacity:0;max-width:90%;';
+                toast.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--onion-surface);border:1px solid var(--onion-accent);color:var(--text-main);padding:12px 20px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.6);z-index:4000;font-size:0.82rem;font-weight:700;text-align:center;transition:transform 0.3s ease,opacity 0.3s ease;opacity:0;max-width:90%;';
                 document.body.appendChild(toast);
             }
             toast.innerHTML = message;
-            setTimeout(() => {
-                toast.style.transform = 'translateX(-50%) translateY(0)';
-                toast.style.opacity = '1';
-            }, 10);
-            setTimeout(() => {
-                toast.style.transform = 'translateX(-50%) translateY(100px)';
-                toast.style.opacity = '0';
-            }, 3500);
+            setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(0)'; toast.style.opacity = '1'; }, 10);
+            setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(100px)'; toast.style.opacity = '0'; }, 3500);
         }
 
         function readFilePayload(file) {
@@ -477,9 +356,7 @@
             if (input.files && input.files[0]) {
                 const file = input.files[0];
                 const loader = document.getElementById('loadingOverlay');
-                const loadText = document.getElementById('loadingText');
-                
-                loadText.innerText = `جاري قراءة وتفعيل (${file.name})...`;
+                document.getElementById('loadingText').innerText = `جاري قراءة وتفعيل (${file.name})...`;
                 loader.style.display = 'flex';
 
                 const extracted = await readFilePayload(file);
@@ -490,11 +367,8 @@
                     localStorage.removeItem('axiom_active_doc_content');
                 } else {
                     localStorage.removeItem('axiom_active_image_base64');
-                    if (extracted.content) {
-                        localStorage.setItem('axiom_active_doc_content', extracted.content);
-                    } else {
-                        localStorage.removeItem('axiom_active_doc_content');
-                    }
+                    if (extracted.content) localStorage.setItem('axiom_active_doc_content', extracted.content);
+                    else localStorage.removeItem('axiom_active_doc_content');
                 }
 
                 let vaultFiles = JSON.parse(localStorage.getItem('axiom_vault_files') || '[]');
@@ -527,13 +401,12 @@
                 currentXP += 50;
                 localStorage.setItem('axiom_xp', currentXP);
                 updateXPUI();
-                
-                showToast(`✨ تم رفع (${file.name}) وتفعيل محتواه للمحادثة! (+50 XP)`);
+                showToast(`✨ تم رفع (${file.name}) وتفعيله للتحليل! (+50 XP)`);
                 input.value = '';
             }
         }
 
-        function launchSmartAction(promptText, xpReward) {
+        function launchSmartAction(actionType, xpReward) {
             const activeDoc = localStorage.getItem('axiom_active_doc');
             if (!activeDoc) {
                 showToast("⚠️ تنبيه: يرجى رفع ملف أو صورة أولاً لتفعيل المحرك.");
@@ -544,7 +417,12 @@
             localStorage.setItem('axiom_xp', currentXP);
             updateXPUI();
 
-            localStorage.setItem('axiom_auto_prompt', promptText);
+            const promptMap = {
+                summarize: `قم بعمل تلخيص فوري ومنظم للوثيقة النشطة (${activeDoc}) في نقاط رئيسية واضحة تشمل المفاهيم الأساسية، القوانين، والاستنتاجات المهمة.`,
+                quiz: `ولّد اختباراً تقييمياً شاملاً من 5 أسئلة متنوعة (اختيار من متعدد وأسئلة تحليلية) مستخرجة من الوثيقة النشطة (${activeDoc})، مع وضع الإجابات النموذجية والشرح في نهاية الاختبار.`
+            };
+
+            localStorage.setItem('axiom_auto_prompt', promptMap[actionType] || actionType);
             window.location.href = 'chat.html';
         }
 
@@ -558,9 +436,7 @@
             modal.classList.remove('show');
             setTimeout(() => modal.style.display = 'none', 300);
         }
-        function maybeCloseGuide(event) {
-            if (event.target.id === 'guideModal') closeGuideModal();
-        }
+        function maybeCloseGuide(event) { if (event.target.id === 'guideModal') closeGuideModal(); }
 
         function openWorldsModal() {
             const modal = document.getElementById('worldsModal');
@@ -572,9 +448,7 @@
             modal.classList.remove('show');
             setTimeout(() => modal.style.display = 'none', 300);
         }
-        function maybeCloseWorld(event) {
-            if (event.target.id === 'worldsModal') closeWorldsModal();
-        }
+        function maybeCloseWorld(event) { if (event.target.id === 'worldsModal') closeWorldsModal(); }
 
         function selectWorld(worldName, targetPage) {
             if (worldName.includes('الأكاديمي')) {
