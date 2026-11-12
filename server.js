@@ -1,20 +1,18 @@
 const express = require('express');
 const path = require('path');
-const fetch = require('node-fetch');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+app.use(express.json({ limit: '15mb' }));
 app.use(express.static(path.join(__dirname)));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'Login.html'));
 });
 
-// 🧠 نقطة الاتصال الذكية المزدوجة (توزيع الأدوار + حقن سياق العالم والوثيقة)
 app.post('/api/chat', async (req, res) => {
-    const { prompt, hasImage, world, activeDoc } = req.body;
+    const { prompt, hasImage, imageBase64, world, activeDoc, docContent, history } = req.body;
 
     if (!prompt || typeof prompt !== 'string') {
         return res.status(400).json({ error: "نص الطلب مفقود أو غير صالح." });
@@ -22,26 +20,44 @@ app.post('/api/chat', async (req, res) => {
 
     const keyVision = process.env.VISION_API_KEY;
     const keyThinking = process.env.THINKING_API_KEY;
+    const apiBaseUrl = process.env.AI_API_BASE_URL || "https://api.openai.com/v1/chat/completions";
 
-    let activeKey, activeModel, roleDescription;
-    const contextNote = `العالم النشط حالياً: (${world || 'العالم الحر'}). الوثيقة النشطة: (${activeDoc || 'لا توجد وثيقة'}).`;
+    let activeKey, activeModel, systemPrompt;
+    const worldContext = `العالم النشط حالياً: (${world || 'العالم الحر'}).`;
+    const docContext = docContent
+        ? `\n\n--- محتوى الوثيقة النشطة (${activeDoc}) ---\n${docContent.slice(0, 14000)}\n--- نهاية الوثيقة ---`
+        : (activeDoc ? `\nالوثيقة النشطة حالياً: (${activeDoc}).` : '');
 
-    if (hasImage) {
+    if (hasImage && imageBase64) {
         activeKey = keyVision || keyThinking;
         activeModel = "Qwen/Qwen3-VL-32B-Instruct";
-        roleDescription = `أنت مساعد AXIOM البصري، مختص بقراءة وتحليل الصور والمستندات الهندسية بدقة. ${contextNote}`;
+        systemPrompt = `أنت مساعد AXIOM البصري، مختص بقراءة وتحليل الصور والمخططات الهندسية بدقة وتنظيم. ${worldContext}`;
     } else {
         activeKey = keyThinking || keyVision;
         activeModel = "Qwen3-30B-A3B-Thinking";
-        roleDescription = `أنت مساعد AXIOM الهندسي والأكاديمي، مختص بالتفكير المنطقي، الحسابات، وكتابة الأكواد. ${contextNote}`;
+        systemPrompt = `أنت مساعد AXIOM الهندسي والأكاديمي، مختص بالتفكير المنطقي، التلخيص المنظم، توليد الاختبارات، والحسابات الهندسية. ${worldContext}${docContext}`;
     }
 
     if (!activeKey) {
-        return res.status(500).json({ error: "مفاتيح الذكاء الاصطناعي غير معرّفة بشكل صحيح على السيرفر." });
+        return res.status(500).json({ error: "مفاتيح الذكاء الاصطناعي غير معرّفة على السيرفر." });
     }
 
+    const recentHistory = Array.isArray(history)
+        ? history.slice(-6).map(m => ({
+            role: m.role === 'ai' ? 'assistant' : 'user',
+            content: String(m.text || '')
+        }))
+        : [];
+
+    const userMessageContent = (hasImage && imageBase64)
+        ? [
+            { type: "text", text: prompt },
+            { type: "image_url", image_url: { url: imageBase64 } }
+          ]
+        : prompt;
+
     try {
-        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        const response = await fetch(apiBaseUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -50,10 +66,11 @@ app.post('/api/chat', async (req, res) => {
             body: JSON.stringify({
                 model: activeModel,
                 messages: [
-                    { role: "system", content: roleDescription },
-                    { role: "user", content: prompt }
+                    { role: "system", content: systemPrompt },
+                    ...recentHistory,
+                    { role: "user", content: userMessageContent }
                 ],
-                temperature: 0.7
+                temperature: 0.65
             })
         });
 
@@ -74,5 +91,5 @@ app.post('/api/chat', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 AXIOM Dual-Engine Server running on port ${PORT}`);
+    console.log(`🚀 AXIOM Dual-Engine Server v2.0 running on port ${PORT}`);
 });
