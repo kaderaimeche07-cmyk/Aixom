@@ -11,11 +11,9 @@
             --onion-bg: #1c1815;
             --onion-surface: #26211d;
             --onion-accent: #d4a373;
-            
             --pom-primary: #e63946;
             --pom-secondary: #9b2226;
             --pom-glow: rgba(230, 57, 70, 0.25);
-            
             --text-main: #f8f9fa;
             --text-dim: #adb5bd;
             --border: rgba(255, 255, 255, 0.08);
@@ -44,292 +42,148 @@
             position: relative;
         }
 
-        /* الرأس العلوي العائم المنظم */
         .chat-floating-header {
-            position: fixed;
-            top: 12px; left: 15px; right: 15px;
-            max-width: 480px; margin: 0 auto;
+            position: fixed; top: 12px; left: 15px; right: 15px;
+            max-width: 500px; margin: 0 auto;
             background: rgba(38, 33, 29, 0.92);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            padding: 10px 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.55);
-            z-index: 1000;
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border); border-radius: 22px;
+            padding: 10px 16px; display: flex;
+            justify-content: space-between; align-items: center;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.55); z-index: 1000;
         }
+        body.theme-space .chat-floating-header { background: rgba(19, 34, 53, 0.92); }
 
-        body.theme-space .chat-floating-header {
-            background: rgba(19, 34, 53, 0.92);
-        }
-
-        .header-left-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
+        .header-left-group { display: flex; align-items: center; gap: 10px; cursor: pointer; }
         .ai-pulse-dot {
-            width: 9px; height: 9px;
-            background: #2a9d8f;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #2a9d8f;
-            animation: pulseGlow 2s infinite;
-            flex-shrink: 0;
+            width: 9px; height: 9px; background: #2a9d8f; border-radius: 50%;
+            box-shadow: 0 0 10px #2a9d8f; animation: pulseGlow 2s infinite; flex-shrink: 0;
         }
         @keyframes pulseGlow {
-            0% { transform: scale(0.95); opacity: 0.8; }
+            0%, 100% { transform: scale(0.95); opacity: 0.8; }
             50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 15px #2a9d8f; }
-            100% { transform: scale(0.95); opacity: 0.8; }
         }
 
         .header-title-wrap h2 {
-            font-size: 0.84rem;
-            font-weight: 900;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            font-size: 0.84rem; font-weight: 900; color: var(--text-main);
+            display: flex; align-items: center; gap: 4px;
         }
         .header-title-wrap p {
-            font-size: 0.65rem;
-            color: var(--onion-accent);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 195px;
+            font-size: 0.65rem; color: var(--onion-accent);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 185px;
         }
 
+        .header-actions { display: flex; align-items: center; gap: 8px; }
         .floating-icon-btn {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border);
-            width: 36px; height: 36px;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border);
+            width: 36px; height: 36px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            color: var(--text-main);
-            cursor: pointer;
-            transition: all 0.2s;
+            color: var(--text-main); cursor: pointer; transition: all 0.2s;
         }
         .floating-icon-btn:hover { background: rgba(255, 255, 255, 0.14); color: var(--onion-accent); }
 
-        /* منطقة الرسائل */
         .chat-messages-area {
-            flex: 1;
-            width: 100%;
-            max-width: 520px;
-            margin: 0 auto;
-            padding: 88px 18px 105px 18px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
+            flex: 1; width: 100%; max-width: 520px; margin: 0 auto;
+            padding: 88px 18px 105px 18px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 18px;
+            scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
         }
 
-        .message {
-            display: flex;
-            flex-direction: column;
-            max-width: 86%;
-            animation: fadeIn 0.25s ease;
-        }
+        .message { display: flex; flex-direction: column; max-width: 88%; animation: fadeIn 0.25s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
         .message.user { align-self: flex-end; }
         .message.ai { align-self: flex-start; }
 
-        .message-text {
-            font-size: 0.88rem;
-            line-height: 1.65;
-            color: var(--text-main);
-            word-wrap: break-word;
-            white-space: pre-wrap;
-        }
+        .message-text { font-size: 0.88rem; line-height: 1.68; color: var(--text-main); word-wrap: break-word; white-space: pre-wrap; }
 
         .message.user .message-text {
             background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
-            padding: 12px 16px;
-            border-radius: 20px 20px 4px 20px;
-            color: #fff;
-            box-shadow: 0 6px 20px var(--pom-glow);
+            padding: 12px 16px; border-radius: 20px 20px 4px 20px;
+            color: #fff; box-shadow: 0 6px 20px var(--pom-glow);
         }
 
         .message.ai .message-text {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            padding: 12px 16px;
-            border-radius: 20px 20px 20px 4px;
-            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+            padding: 12px 16px; border-radius: 20px 20px 20px 4px; color: var(--text-main);
         }
 
-        .message-footer {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-top: 6px;
-            padding: 0 4px;
-        }
-
+        .message-footer { display: flex; align-items: center; gap: 10px; margin-top: 6px; padding: 0 4px; }
         .message-time { font-size: 0.62rem; color: var(--text-dim); }
 
-        .speak-audio-btn {
-            background: none;
-            border: none;
-            color: var(--onion-accent);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 8px;
+        .mini-action-btn {
+            background: none; border: none; color: var(--onion-accent); cursor: pointer;
+            display: flex; align-items: center; gap: 4px; font-size: 0.65rem;
+            padding: 2px 6px; border-radius: 8px; transition: background 0.2s;
         }
+        .mini-action-btn:hover { background: rgba(212, 163, 115, 0.12); }
 
-        /* اقتراحات إكمال الموضوع */
-        .suggestions-row {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-        }
+        .suggestions-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
         .suggestion-chip {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            color: var(--onion-accent);
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 6px 12px;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+            color: var(--onion-accent); font-size: 0.72rem; font-weight: 700;
+            padding: 6px 12px; border-radius: 14px; cursor: pointer; transition: all 0.2s;
         }
-        .suggestion-chip:hover {
-            background: rgba(212, 163, 115, 0.15);
-            border-color: var(--onion-accent);
-        }
+        .suggestion-chip:hover { background: rgba(212, 163, 115, 0.15); border-color: var(--onion-accent); }
 
-        /* الشريط السفلي المثبت والمضمون الظهور دائماً */
+        /* الشريط السفلي المثبت */
         .chat-input-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            max-width: 520px;
-            margin: 0 auto;
-            background: var(--onion-surface);
-            border-top: 1px solid var(--border);
+            position: fixed; bottom: 0; left: 0; right: 0;
+            width: 100%; max-width: 520px; margin: 0 auto;
+            background: var(--onion-surface); border-top: 1px solid var(--border);
             padding: 10px 14px calc(12px + env(safe-area-inset-bottom, 0px)) 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 2000;
+            display: flex; align-items: center; gap: 8px; z-index: 2000;
             box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
         }
 
         .chat-input-field {
-            flex: 1;
-            min-width: 0;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 11px 16px;
-            color: var(--text-main);
-            font-size: 0.88rem;
-            outline: none;
-            font-family: 'Cairo', sans-serif;
-            resize: none;
-            max-height: 110px;
-            line-height: 1.4;
+            flex: 1; min-width: 0; background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border); border-radius: 20px; padding: 11px 16px;
+            color: var(--text-main); font-size: 0.88rem; outline: none;
+            resize: none; max-height: 110px; line-height: 1.4;
         }
-        .chat-input-field:focus {
-            border-color: var(--onion-accent);
-            background: rgba(255, 255, 255, 0.09);
-        }
+        .chat-input-field:focus { border-color: var(--onion-accent); background: rgba(255, 255, 255, 0.09); }
 
         .action-icon-circle {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border);
-            color: var(--onion-accent);
-            width: 42px; height: 42px;
-            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border);
+            color: var(--onion-accent); width: 42px; height: 42px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            flex-shrink: 0;
+            cursor: pointer; transition: all 0.2s; flex-shrink: 0;
         }
         .action-icon-circle:hover { background: rgba(212, 163, 115, 0.16); }
 
         .action-icon-circle.recording {
-            background: var(--pom-primary);
-            color: #fff;
-            border-color: var(--pom-primary);
-            box-shadow: 0 0 15px var(--pom-primary);
-            animation: pulseRec 1.2s infinite;
+            background: var(--pom-primary); color: #fff; border-color: var(--pom-primary);
+            box-shadow: 0 0 15px var(--pom-primary); animation: pulseRec 1.2s infinite;
         }
-        @keyframes pulseRec {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-        }
+        @keyframes pulseRec { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
         .send-btn {
             background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
-            color: #fff;
-            border: none;
-            width: 44px; height: 44px;
-            border-radius: 50%;
+            color: #fff; border: none; width: 44px; height: 44px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 6px 20px var(--pom-glow);
-            transition: transform 0.2s;
-            flex-shrink: 0;
+            cursor: pointer; box-shadow: 0 6px 20px var(--pom-glow); flex-shrink: 0;
         }
         .send-btn:active { transform: scale(0.92); }
 
-        /* نافذة تبديل العالم */
         .world-switcher-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(10, 8, 7, 0.85);
-            backdrop-filter: blur(12px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 3000;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 0.25s ease;
+            position: fixed; inset: 0; background: rgba(10, 8, 7, 0.85);
+            backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center;
+            z-index: 3000; padding: 20px; opacity: 0; transition: opacity 0.25s ease;
         }
         .world-switcher-modal.show { display: flex; opacity: 1; }
 
         .switcher-card {
-            background: var(--onion-surface);
-            border: 1px solid rgba(212, 163, 115, 0.3);
-            border-radius: 26px;
-            width: 100%;
-            max-width: 340px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.9);
-            text-align: center;
+            background: var(--onion-surface); border: 1px solid rgba(212, 163, 115, 0.3);
+            border-radius: 26px; width: 100%; max-width: 340px; padding: 24px;
+            display: flex; flex-direction: column; gap: 12px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9); text-align: center;
         }
         .switcher-card h3 { font-size: 1rem; font-weight: 900; color: var(--onion-accent); }
         .world-option-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            padding: 12px;
-            border-radius: 14px;
-            color: var(--text-main);
-            font-weight: 800;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+            padding: 12px; border-radius: 14px; color: var(--text-main);
+            font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;
         }
         .world-option-btn:hover { background: rgba(212, 163, 115, 0.15); border-color: var(--onion-accent); }
         .close-switcher { background: none; border: none; color: var(--text-dim); font-size: 0.82rem; cursor: pointer; margin-top: 4px; }
@@ -346,24 +200,27 @@
             </div>
         </div>
         <div class="header-actions">
+            <button class="floating-icon-btn" onclick="exportChatSession()" title="تصدير الملخص والاختبار">
+                <i data-lucide="download" style="width: 17px; height: 17px;"></i>
+            </button>
             <button class="floating-icon-btn" onclick="location.href='dashboard.html'" title="الرئيسية">
-                <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+                <i data-lucide="home" style="width: 17px; height: 17px;"></i>
             </button>
         </div>
     </header>
 
     <div class="chat-messages-area" id="messagesContainer">
         <div class="message ai">
-            <div class="message-text">أهلاً بك يا مهندس في منصة <b>AXIOM</b>. كيف يمكنني مساعدتك اليوم؟</div>
+            <div class="message-text">أهلاً بك يا مهندس في منصة <b>AXIOM</b>. اختر إجراءً فورياً أو اكتب سؤالك بالأسفل:</div>
             <div class="message-footer">
                 <span class="message-time">الآن</span>
-                <button class="speak-audio-btn" onclick="speakText(this)">
+                <button class="mini-action-btn" onclick="speakText(this)">
                     <i data-lucide="volume-2" style="width: 14px; height: 14px;"></i> استماع
                 </button>
             </div>
             <div class="suggestions-row">
-                <span class="suggestion-chip" onclick="sendSuggestion(this)">لخّص الوثيقة النشطة</span>
-                <span class="suggestion-chip" onclick="sendSuggestion(this)">حلّل الصورة أو المخطط</span>
+                <span class="suggestion-chip" onclick="sendSuggestion(this)">لخّص الوثيقة النشطة في نقاط رئيسية</span>
+                <span class="suggestion-chip" onclick="sendSuggestion(this)">ولّد اختباراً من 5 أسئلة مع الحلول من الوثيقة</span>
             </div>
         </div>
     </div>
@@ -398,6 +255,7 @@
         lucide.createIcons();
 
         let currentSessionId = null;
+        let sessionMessages = [];
 
         window.addEventListener('load', () => {
             if (localStorage.getItem('axiom_theme') === 'space') {
@@ -430,11 +288,16 @@
                 }
             });
 
-            // تمدد تلقائي لحقل الكتابة عند تعدد الأسطر
             chatInput.addEventListener('input', function () {
                 this.style.height = 'auto';
                 this.style.height = Math.min(this.scrollHeight, 110) + 'px';
             });
+
+            const autoPrompt = localStorage.getItem('axiom_auto_prompt');
+            if (autoPrompt) {
+                localStorage.removeItem('axiom_auto_prompt');
+                setTimeout(() => sendMessage(autoPrompt), 200);
+            }
         });
 
         function loadSavedSession(sessionId) {
@@ -443,13 +306,13 @@
             if (session && session.messages && session.messages.length > 0) {
                 const container = document.getElementById('messagesContainer');
                 container.innerHTML = '';
-                session.messages.forEach(msg => {
-                    appendMessageDOM(msg.role, msg.text, false);
-                });
+                sessionMessages = [...session.messages];
+                session.messages.forEach(msg => appendMessageDOM(msg.role, msg.text, false));
             }
         }
 
         function saveMessageToHistory(role, text) {
+            sessionMessages.push({ role, text });
             let history = JSON.parse(localStorage.getItem('axiom_chats_history') || '[]');
             if (!currentSessionId) {
                 currentSessionId = Date.now();
@@ -467,6 +330,23 @@
                 history[idx].time = 'الآن';
                 localStorage.setItem('axiom_chats_history', JSON.stringify(history));
             }
+        }
+
+        function exportChatSession() {
+            if (sessionMessages.length === 0) {
+                alert("⚠️ لا توجد رسائل في الجلسة الحالية لتصديرها بعد.");
+                return;
+            }
+            const activeDoc = localStorage.getItem('axiom_active_doc') || 'جلسة_عامة';
+            const header = `# تقرير AXIOM الذكي - ${activeDoc}\nتاريخ التصدير: ${new Date().toLocaleString('ar-DZ')}\n\n---\n\n`;
+            const body = sessionMessages.map(m => (m.role === 'user' ? `### 👤 المهندس:\n${m.text}` : `### 🤖 AXIOM:\n${m.text}`)).join('\n\n---\n\n');
+            const blob = new Blob([header + body], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `AXIOM_${activeDoc.replace(/[^a-zA-Z0-9\u0600-\u06FF_-]/g, '_')}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
         }
 
         function openWorldSwitcher() {
@@ -488,8 +368,15 @@
             closeWorldSwitcher();
         }
 
-        function sendSuggestion(chip) {
-            sendMessage(chip.innerText);
+        function sendSuggestion(chip) { sendMessage(chip.innerText); }
+
+        function copyMessageText(btn) {
+            const textEl = btn.closest('.message').querySelector('.message-text');
+            navigator.clipboard.writeText(textEl.innerText).then(() => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '✓ تم النسخ';
+                setTimeout(() => { btn.innerHTML = orig; }, 1500);
+            });
         }
 
         function appendMessageDOM(role, text, withSuggestions = true) {
@@ -507,14 +394,17 @@
                     <div class="message-text">${escapeHtml(text)}</div>
                     <div class="message-footer">
                         <span class="message-time">الآن</span>
-                        <button class="speak-audio-btn" onclick="speakText(this)">
+                        <button class="mini-action-btn" onclick="speakText(this)">
                             <i data-lucide="volume-2" style="width: 14px; height: 14px;"></i> استماع
+                        </button>
+                        <button class="mini-action-btn" onclick="copyMessageText(this)">
+                            <i data-lucide="copy" style="width: 13px; height: 13px;"></i> نسخ
                         </button>
                     </div>
                     ${withSuggestions ? `
                     <div class="suggestions-row">
-                        <span class="suggestion-chip" onclick="sendSuggestion(this)">تلخيص النتائج في نقاط</span>
-                        <span class="suggestion-chip" onclick="sendSuggestion(this)">أعطني تفاصيل تقنية أكثر</span>
+                        <span class="suggestion-chip" onclick="sendSuggestion(this)">ولّد اختباراً إضافياً من هذه النقاط</span>
+                        <span class="suggestion-chip" onclick="sendSuggestion(this)">تلخيص مختصر جداً في 3 أسطر</span>
                     </div>` : ''}
                 `;
             }
@@ -530,6 +420,7 @@
             const text = customText || input.value.trim();
             if (!text) return;
 
+            const historySnapshot = [...sessionMessages];
             appendMessageDOM('user', text, false);
             saveMessageToHistory('user', text);
             if (!customText) {
@@ -560,7 +451,8 @@
                         imageBase64: imageBase64,
                         world: currentWorld,
                         activeDoc: activeDoc,
-                        docContent: docContent
+                        docContent: docContent,
+                        history: historySnapshot
                     })
                 });
 
@@ -572,8 +464,7 @@
                 saveMessageToHistory('ai', replyText);
             } catch (err) {
                 typingDiv.remove();
-                const fallbackMsg = "⚠️ تعذر الاتصال بالخادم (Server). تأكد من تشغيل server.js وأن الإنترنت متصل.";
-                appendMessageDOM('ai', fallbackMsg, false);
+                appendMessageDOM('ai', "⚠️ تعذر الاتصال بالخادم (Server). تأكد من تشغيل server.js وأن الإنترنت متصل.", false);
             }
         }
 
@@ -613,10 +504,8 @@
 
         function stopRecordingState() {
             isRecording = false;
-            const micBtn = document.getElementById('micBtn');
-            const input = document.getElementById('chatInput');
-            micBtn.classList.remove('recording');
-            input.placeholder = "اكتب رسالتك هنا لـ AXIOM...";
+            document.getElementById('micBtn').classList.remove('recording');
+            document.getElementById('chatInput').placeholder = "اكتب رسالتك هنا لـ AXIOM...";
         }
 
         function speakText(btn) {
