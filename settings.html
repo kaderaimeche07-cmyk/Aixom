@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="htmlRoot">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,15 +11,16 @@
             --onion-bg: #1c1815;
             --onion-surface: #26211d;
             --onion-accent: #d4a373;
+            
             --pom-primary: #e63946;
             --pom-secondary: #9b2226;
             --pom-glow: rgba(230, 57, 70, 0.25);
+            
             --text-main: #f8f9fa;
             --text-dim: #adb5bd;
             --border: rgba(255, 255, 255, 0.08);
         }
 
-        /* ثيم الوضع الليلي الهادئ */
         body.theme-space {
             --onion-bg: #0b131d;
             --onion-surface: #132235;
@@ -35,359 +36,287 @@
             background-color: var(--onion-bg);
             color: var(--text-main);
             min-height: 100vh;
-            padding: 20px 20px 100px 20px;
-            display: flex;
-            justify-content: center;
-            transition: background-color 0.3s ease;
+            padding-bottom: 110px;
+            overflow-x: hidden;
         }
 
-        .settings-container {
-            width: 100%;
+        .top-header {
+            padding: 22px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            background: rgba(28, 24, 21, 0.85);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .top-header h1 { font-size: 1.15rem; font-weight: 900; color: var(--onion-accent); }
+
+        .container {
+            padding: 20px;
             max-width: 480px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 18px;
         }
 
-        /* رأس الصفحة */
-        .settings-header {
+        /* بطاقة الملف الشخصي */
+        .profile-card {
             background: var(--onion-surface);
             border: 1px solid var(--border);
-            border-radius: 22px;
-            padding: 18px 20px;
+            border-radius: 26px;
+            padding: 22px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            gap: 16px;
         }
-        .settings-title h1 { font-size: 1.12rem; font-weight: 900; color: var(--text-main); }
-        .settings-title p { font-size: 0.73rem; color: var(--onion-accent); margin-top: 2px; }
+        .profile-avatar {
+            width: 60px; height: 60px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
+            box-shadow: 0 10px 25px var(--pom-glow);
+            flex-shrink: 0;
+        }
+        .profile-details h2 { font-size: 1.05rem; font-weight: 900; margin-bottom: 2px; }
+        .profile-details p { font-size: 0.75rem; color: var(--text-dim); }
+        .xp-badge {
+            display: inline-block;
+            margin-top: 6px;
+            background: rgba(212, 163, 115, 0.14);
+            color: var(--onion-accent);
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 12px;
+        }
 
-        .back-btn {
-            background: rgba(255, 255, 255, 0.05);
+        /* مجموعات الإعدادات */
+        .settings-group {
+            background: var(--onion-surface);
             border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .setting-item:last-child { border-bottom: none; }
+        .setting-item:hover { background: rgba(255, 255, 255, 0.03); }
+
+        .setting-left { display: flex; align-items: center; gap: 12px; }
+        .setting-icon {
             width: 38px; height: 38px;
             border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
             display: flex; align-items: center; justify-content: center;
-            color: var(--text-main);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .back-btn:hover { border-color: var(--pom-primary); color: var(--pom-primary); }
-
-        /* الأقسام */
-        .settings-section {
-            background: var(--onion-surface);
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        }
-
-        .section-label {
-            font-size: 0.82rem;
-            font-weight: 900;
             color: var(--onion-accent);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 8px;
         }
-
-        .setting-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-        }
-
-        .setting-info h4 { font-size: 0.85rem; font-weight: 800; }
-        .setting-info p { font-size: 0.68rem; color: var(--text-dim); margin-top: 2px; }
-
-        .borderless-trigger {
-            background: none;
-            border: none;
-            color: var(--onion-accent);
-            font-size: 0.82rem;
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 6px 10px;
-            border-radius: 10px;
-            transition: background 0.2s;
-        }
-        .borderless-trigger:hover { background: rgba(255, 255, 255, 0.05); }
-
-        .inline-options-popup {
-            display: none;
-            position: absolute;
-            left: 0; top: 100%;
-            background: rgba(30, 26, 23, 0.95);
-            backdrop-filter: blur(15px);
-            border-radius: 16px;
-            padding: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            z-index: 50;
-            min-width: 160px;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .inline-options-popup.show { display: flex; }
-        .popup-option {
-            background: none;
-            border: none;
-            color: var(--text-main);
-            text-align: right;
-            padding: 8px 12px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .popup-option:hover { background: rgba(212, 163, 115, 0.15); color: var(--onion-accent); }
+        .setting-text h4 { font-size: 0.86rem; font-weight: 800; }
+        .setting-text span { font-size: 0.7rem; color: var(--text-dim); }
 
         /* سجل المحادثات */
+        .history-section h3 {
+            font-size: 0.88rem;
+            font-weight: 900;
+            color: var(--onion-accent);
+            margin-bottom: 10px;
+        }
         .history-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            max-height: 180px;
-            overflow-y: auto;
+            gap: 10px;
         }
-        .history-item {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 10px 14px;
-            border-radius: 14px;
+        .history-card {
+            background: var(--onion-surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 14px 16px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .history-item:hover { background: rgba(255, 255, 255, 0.07); }
-        .history-item span { font-size: 0.8rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 240px; }
-        .history-item small { font-size: 0.65rem; color: var(--text-dim); }
-
-        .setting-btn {
-            background: rgba(230, 57, 70, 0.15);
-            border: none;
-            color: var(--pom-primary);
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 800;
+            justify-content: space-between;
             cursor: pointer;
             transition: all 0.2s;
         }
-        .setting-btn:hover { background: rgba(230, 57, 70, 0.25); }
+        .history-card:hover { border-color: var(--onion-accent); }
+        .history-info h4 { font-size: 0.82rem; font-weight: 800; margin-bottom: 2px; }
+        .history-info span { font-size: 0.68rem; color: var(--text-dim); }
 
-        /* النوافذ المنبثقة */
-        .custom-modal {
+        .logout-btn {
+            width: 100%;
+            background: rgba(230, 57, 70, 0.12);
+            border: 1px solid rgba(230, 57, 70, 0.35);
+            color: #ff6b6b;
+            padding: 14px;
+            border-radius: 18px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .logout-btn:hover { background: rgba(230, 57, 70, 0.22); }
+
+        /* الشريط السفلي العائم */
+        .floating-navbar {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            bottom: 18px; left: 16px; right: 16px;
+            max-width: 450px; margin: 0 auto;
+            background: rgba(38, 33, 29, 0.92);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 26px;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+        .nav-link {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .nav-link.active { color: var(--onion-accent); }
+        .nav-link.chat-central {
+            background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
+            color: #fff;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            justify-content: center;
+            margin-top: -22px;
+            box-shadow: 0 8px 20px var(--pom-glow);
+        }
+
+        /* نافذة الإحصائيات */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
             background: rgba(10, 8, 7, 0.85);
             backdrop-filter: blur(12px);
             display: none;
-            justify-content: center;
             align-items: center;
-            z-index: 3000;
+            justify-content: center;
             padding: 20px;
+            z-index: 2500;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        .custom-modal.show { display: flex; opacity: 1; }
-        .modal-card {
+        .modal-overlay.show { opacity: 1; }
+        .modal-box {
             background: var(--onion-surface);
             border: 1px solid rgba(212, 163, 115, 0.3);
             border-radius: 26px;
             width: 100%;
-            max-width: 340px;
-            padding: 26px;
+            max-width: 350px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.9);
-            text-align: center;
+            gap: 12px;
         }
-        .modal-card h3 { font-size: 1.1rem; font-weight: 900; color: var(--onion-accent); }
-        .modal-card p { font-size: 0.78rem; color: var(--text-dim); line-height: 1.6; }
-
-        /* الشريط السفلي العائم */
-        .floating-navbar {
-            position: fixed; bottom: 20px; left: 20px; right: 20px;
-            max-width: 440px; margin: 0 auto;
-            background: rgba(38, 33, 29, 0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 26px; padding: 10px 15px;
-            display: flex; justify-content: space-around; align-items: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            z-index: 1000;
+        .modal-box h3 { font-size: 1rem; color: var(--onion-accent); text-align: center; }
+        .modal-box p { font-size: 0.82rem; color: var(--text-main); line-height: 1.7; }
+        .close-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            color: var(--onion-accent);
+            padding: 11px;
+            border-radius: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 6px;
         }
-        .nav-link {
-            display: flex; flex-direction: column; align-items: center; gap: 3px;
-            color: var(--text-dim); font-size: 0.68rem; cursor: pointer; background: none; border: none;
-            transition: transform 0.15s;
-        }
-        .nav-link:active { transform: scale(0.92); }
-        .nav-link.active { color: var(--onion-accent); font-weight: 700; }
-        .nav-link i { width: 20px; height: 20px; }
-        .nav-link.chat-central {
-            background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
-            color: white; width: 52px; height: 52px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 5px 20px var(--pom-glow); margin-top: -15px; border: 3px solid var(--onion-bg);
-        }
-        .nav-link.chat-central i { width: 24px; height: 24px; }
     </style>
 </head>
 <body>
 
-    <div class="settings-container">
-        
-        <!-- رأس الإعدادات -->
-        <div class="settings-header">
-            <div class="settings-title">
-                <h1 id="txtTitle">حسابي والإعدادات</h1>
-                <p id="txtSub">إدارة التفضيلات والذاكرة الهندسية</p>
+    <header class="top-header">
+        <h1>حسابي والإعدادات</h1>
+    </header>
+
+    <main class="container">
+        <div class="profile-card">
+            <div class="profile-avatar" id="avatarInitial">A</div>
+            <div class="profile-details">
+                <h2 id="profileName">م. عبد القادر</h2>
+                <p id="profileEmail">engineer@axiom.ai</p>
+                <span class="xp-badge" id="profileXP">0 XP مكتسبة</span>
             </div>
-            <button class="back-btn" onclick="location.href='dashboard.html'" title="الرئيسية">
-                <i data-lucide="arrow-right" style="width: 20px; height: 20px;" id="backIcon"></i>
-            </button>
         </div>
 
-        <!-- 1. المظهر واللغة -->
-        <div class="settings-section">
-            <div class="section-label">
-                <i data-lucide="palette" style="width: 16px; height: 16px;"></i> <span id="txtThemeLang">المظهر واللغة</span>
-            </div>
-            
-            <div class="setting-row">
-                <div class="setting-info">
-                    <h4 id="txtLangTitle">لغة الواجهة</h4>
-                    <p id="txtLangDesc">اختر لغة عرض التطبيق المفضلة</p>
-                </div>
-                <div>
-                    <button class="borderless-trigger" onclick="togglePopup('langPopup')">
-                        <span id="currentLangLabel">العربية</span> <i data-lucide="chevron-down" style="width:14px;height:14px;"></i>
-                    </button>
-                    <div class="inline-options-popup" id="langPopup">
-                        <button class="popup-option" onclick="setLanguage('ar', 'العربية')">العربية</button>
-                        <button class="popup-option" onclick="setLanguage('en', 'English')">English</button>
-                        <button class="popup-option" onclick="setLanguage('fr', 'Français')">Français</button>
+        <div class="settings-group">
+            <div class="setting-item" onclick="toggleTheme()">
+                <div class="setting-left">
+                    <div class="setting-icon"><i data-lucide="palette"></i></div>
+                    <div class="setting-text">
+                        <h4>المظهر البصري (الثيم)</h4>
+                        <span id="themeStatusText">الوضع الدافئ (الافتراضي)</span>
                     </div>
                 </div>
+                <i data-lucide="chevron-left" style="width: 18px; color: var(--text-dim);"></i>
             </div>
 
-            <div class="setting-row">
-                <div class="setting-info">
-                    <h4 id="txtVisualTitle">الوضع البصري</h4>
-                    <p id="txtVisualDesc">ثيم الألوان الأساسي للنظام</p>
-                </div>
-                <div>
-                    <button class="borderless-trigger" onclick="togglePopup('themePopup')">
-                        <span id="currentThemeLabel">الوضع الداكن العميق</span> <i data-lucide="chevron-down" style="width:14px;height:14px;"></i>
-                    </button>
-                    <div class="inline-options-popup" id="themePopup">
-                        <button class="popup-option" onclick="setTheme('onion', 'الوضع الداكن العميق')">الوضع الداكن العميق</button>
-                        <button class="popup-option" onclick="setTheme('space', 'الوضع الليلي الهادئ')">الوضع الليلي الهادئ</button>
+            <div class="setting-item" onclick="openAnalyticsModal()">
+                <div class="setting-left">
+                    <div class="setting-icon"><i data-lucide="bar-chart-3"></i></div>
+                    <div class="setting-text">
+                        <h4>إحصائيات الأداء</h4>
+                        <span>عدد الملفات المحفوظة وجلسات التحليل</span>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- 2. سجل المحادثات السابقة -->
-        <div class="settings-section">
-            <div class="section-label">
-                <i data-lucide="message-square-history" style="width: 16px; height: 16px;"></i> <span id="txtHistoryTitle">سجل المحادثات السابقة</span>
-            </div>
-            <p style="font-size:0.7rem; color:var(--text-dim); margin-top:-8px;" id="txtHistoryDesc">انقر على أي جلسة لاستئناف العمل عليها فوراً</p>
-            
-            <div class="history-list" id="historyListContainer"></div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
-                <button class="setting-btn" onclick="clearHistory()" id="btnClear">مسح السجل بالكامل</button>
-                <button class="setting-btn" style="background: rgba(42,157,143,0.15); color:#2a9d8f;" onclick="location.href='chat.html'" id="btnNewChat">محادثة جديدة ✨</button>
-            </div>
-        </div>
-
-        <!-- 3. كفاءة المحرك والذاكرة الهندسية -->
-        <div class="settings-section">
-            <div class="section-label">
-                <i data-lucide="cpu" style="width: 16px; height: 16px;"></i> <span id="txtEngineTitle">كفاءة المحرك والذاكرة</span>
+                <i data-lucide="chevron-left" style="width: 18px; color: var(--text-dim);"></i>
             </div>
 
-            <div class="setting-row">
-                <div class="setting-info">
-                    <h4 id="txtCacheTitle">حالة الذاكرة المؤقتة (Cache)</h4>
-                    <p id="txtCacheDesc">مساحة تخزين المستندات والأكواد المحلية</p>
+            <div class="setting-item" onclick="clearChatHistory()">
+                <div class="setting-left">
+                    <div class="setting-icon" style="color: #ff6b6b;"><i data-lucide="trash-2"></i></div>
+                    <div class="setting-text">
+                        <h4>مسح سجل المحادثات</h4>
+                        <span>حذف جميع الجلسات المحفوظة محلياً</span>
+                    </div>
                 </div>
-                <span style="font-size: 0.72rem; color: var(--onion-accent); font-weight: 800;" id="cacheSizeIndicator">14.2 MB 📊</span>
-            </div>
-
-            <div class="setting-row">
-                <div class="setting-info">
-                    <h4 id="txtPerfTitle">تحليل الأداء والإحصائيات</h4>
-                    <p id="txtPerfDesc">عرض عدد المستندات والجلسات المحللة</p>
-                </div>
-                <button class="setting-btn" style="background:rgba(255,255,255,0.05); color:var(--onion-accent);" onclick="openAnalyticsModal()" id="btnShow">عرض 📈</button>
+                <i data-lucide="chevron-left" style="width: 18px; color: var(--text-dim);"></i>
             </div>
         </div>
 
-        <!-- 4. حول التطبيق -->
-        <div class="settings-section">
-            <div class="section-label">
-                <i data-lucide="info" style="width: 16px; height: 16px;"></i> <span id="txtAboutTitle">حول التطبيق</span>
-            </div>
-
-            <div class="setting-row" onclick="openAboutModal()" style="cursor: pointer;">
-                <div class="setting-info">
-                    <h4>منصة AXIOM الذكية</h4>
-                    <p id="txtVersion">الإصدار v2.6 • انقر لعرض تفاصيل النظام</p>
-                </div>
-                <i data-lucide="chevron-left" style="width: 18px; height: 18px; color: var(--text-dim);" id="aboutArrow"></i>
-            </div>
+        <div class="history-section">
+            <h3>🕒 سجل المحادثات الأخيرة</h3>
+            <div class="history-list" id="chatHistoryList"></div>
         </div>
 
-    </div>
+        <button class="logout-btn" onclick="logoutUser()">
+            <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+            تسجيل الخروج
+        </button>
+    </main>
 
-    <!-- نافذة منبثقة "إحصائيات الأداء" -->
-    <div class="custom-modal" id="analyticsModal" onclick="closeAnalyticsModal()">
-        <div class="modal-card" onclick="event.stopPropagation()">
-            <h3 id="anaTitle">📊 إحصائيات الأداء الهندسي</h3>
-            <p id="anaP1">• إجمالي الملفات المحللة: <b>12 ملفاً</b></p>
-            <p id="anaP2">• الجلسات الدراسية النشطة: <b>5 جلسات</b></p>
-            <p id="anaP3">• استقرار محرك الذكاء الاصطناعي: <b>99.8%</b></p>
-            <button class="setting-btn" style="margin-top: 10px;" onclick="closeAnalyticsModal()" id="anaClose">إغلاق</button>
-        </div>
-    </div>
-
-    <!-- نافذة منبثقة "حول التطبيق" -->
-    <div class="custom-modal" id="aboutModal" onclick="closeAboutModal()">
-        <div class="modal-card" onclick="event.stopPropagation()">
-            <h3>🚀 AXIOM Intelligence</h3>
-            <p id="aboutDesc">منصة ذكية متكاملة لإدارة المستندات، التحليل الأكاديمي، والمساعدات الهندسية.</p>
-            <p style="font-size: 0.68rem; color: var(--onion-accent);" id="aboutRights">تصميم وهندسة مخصصة • جميع الحقوق محفوظة © 2026</p>
-            <button class="setting-btn" style="margin-top: 10px;" onclick="closeAboutModal()" id="aboutClose">إغلاق</button>
-        </div>
-    </div>
-
-    <!-- الشريط السفلي العائم -->
     <nav class="floating-navbar">
         <button class="nav-link" onclick="location.href='dashboard.html'">
             <i data-lucide="home"></i>
             <span id="navHome">الرئيسية</span>
         </button>
-        <button class="nav-link" onclick="location.href='vault.html'">
+        <button class="nav-link" onclick="location.href='dashboard.html'">
             <i data-lucide="compass"></i>
             <span id="navWorlds">العوالم</span>
         </button>
@@ -402,200 +331,105 @@
             <i data-lucide="user"></i>
             <span id="navProfile">حسابي</span>
         </button>
-    </nav><router></router>
+    </nav>
+
+    <!-- نافذة إحصائيات الأداء -->
+    <div class="modal-overlay" id="analyticsModal" onclick="closeAnalyticsModal()">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <h3>📊 إحصائيات الأداء الفعلية</h3>
+            <p id="anaP1">• إجمالي الملفات المحفوظة: <b>0 ملف</b></p>
+            <p id="anaP2">• الجلسات المحفوظة في السجل: <b>0 جلسات</b></p>
+            <p id="anaP3">• نقاط الخبرة المتراكمة: <b>0 XP</b></p>
+            <button class="close-btn" onclick="closeAnalyticsModal()">إغلاق</button>
+        </div>
+    </div>
 
     <script>
         lucide.createIcons();
 
         window.addEventListener('load', () => {
-            loadSettings();
-            renderHistory();
+            if (localStorage.getItem('axiom_theme') === 'space') {
+                document.body.classList.add('theme-space');
+                document.getElementById('themeStatusText').innerText = 'الوضع الفضائي الأزرق';
+            }
+
+            const name = localStorage.getItem('axiom_user_name') || 'م. عبد القادر';
+            const email = localStorage.getItem('axiom_user_email') || 'engineer@axiom.ai';
+            const xp = localStorage.getItem('axiom_xp') || '0';
+
+            document.getElementById('profileName').innerText = name;
+            document.getElementById('profileEmail').innerText = email;
+            document.getElementById('profileXP').innerText = `${xp} XP مكتسبة`;
+            document.getElementById('avatarInitial').innerText = name.trim().charAt(0).toUpperCase();
+
+            renderChatHistory();
         });
 
-        function togglePopup(popupId) {
-            const popup = document.getElementById(popupId);
-            document.querySelectorAll('.inline-options-popup').forEach(p => {
-                if(p.id !== popupId) p.classList.remove('show');
-            });
-            popup.classList.toggle('show');
+        function toggleTheme() {
+            const isSpace = document.body.classList.toggle('theme-space');
+            localStorage.setItem('axiom_theme', isSpace ? 'space' : 'default');
+            document.getElementById('themeStatusText').innerText = isSpace ? 'الوضع الفضائي الأزرق' : 'الوضع الدافئ (الافتراضي)';
         }
 
-        window.addEventListener('click', (e) => {
-            if (!e.target.closest('.setting-row')) {
-                document.querySelectorAll('.inline-options-popup').forEach(p => p.classList.remove('show'));
-            }
-        });
+        function renderChatHistory() {
+            const list = document.getElementById('chatHistoryList');
+            const history = JSON.parse(localStorage.getItem('axiom_chats_history') || '[]');
 
-        // قاموس اللغات لتغيير نصوص واجهة الإعدادات وترجمتها فوراً
-        const translations = {
-            ar: {
-                title: "حسابي والإعدادات", sub: "إدارة التفضيلات والذاكرة الهندسية",
-                themeLang: "المظهر واللغة", langTitle: "لغة الواجهة", langDesc: "اختر لغة عرض التطبيق المفضلة",
-                visualTitle: "الوضع البصري", visualDesc: "ثيم الألوان الأساسي للنظام",
-                historyTitle: "سجل المحادثات السابقة", historyDesc: "انقر على أي جلسة لاستئناف العمل عليها فوراً",
-                btnClear: "مسح السجل بالكامل", btnNewChat: "محادثة جديدة ✨",
-                engineTitle: "كفاءة المحرك والذاكرة", cacheTitle: "حالة الذاكرة المؤقتة (Cache)", cacheDesc: "مساحة تخزين المستندات والأكواد المحلية",
-                perfTitle: "تحليل الأداء والإحصائيات", perfDesc: "عرض عدد المستندات والجلسات المحللة", btnShow: "عرض 📈",
-                aboutTitle: "حول التطبيق", version: "الإصدار v2.6 • انقر لعرض تفاصيل النظام",
-                navHome: "الرئيسية", navWorlds: "العوالم", navVault: "الخزنة", navProfile: "حسابي",
-                close: "إغلاق"
-            },
-            en: {
-                title: "My Account & Settings", sub: "Manage preferences and engineering memory",
-                themeLang: "Appearance & Language", langTitle: "Interface Language", langDesc: "Choose your preferred application language",
-                visualTitle: "Visual Mode", visualDesc: "Primary color theme of the system",
-                historyTitle: "Chat History", historyDesc: "Click any session to resume work instantly",
-                btnClear: "Clear All History", btnNewChat: "New Chat ✨",
-                engineTitle: "Engine & Memory Efficiency", cacheTitle: "Cache Status", cacheDesc: "Local document and code storage space",
-                perfTitle: "Performance & Analytics", perfDesc: "View analyzed documents and active sessions count", btnShow: "View 📈",
-                aboutTitle: "About App", version: "v2.6 • Click to view system details",
-                navHome: "Home", navWorlds: "Worlds", navVault: "Vault", navProfile: "Profile",
-                close: "Close"
-            },
-            fr: {
-                title: "Mon Compte & Paramètres", sub: "Gérer les préférences et la mémoire",
-                themeLang: "Apparence & Langue", langTitle: "Langue de l'interface", langDesc: "Choisissez votre langue préférée",
-                visualTitle: "Mode Visuel", visualDesc: "Thème de couleur principal du système",
-                historyTitle: "Historique des chats", historyDesc: "Cliquez sur une session pour reprendre",
-                btnClear: "Effacer l'historique", btnNewChat: "Nouveau Chat ✨",
-                engineTitle: "Efficacité du Moteur & Mémoire", cacheTitle: "État du Cache", cacheDesc: "Espace de stockage local des documents",
-                perfTitle: "Performance & Analyses", perfDesc: "Afficher les statistiques du système", btnShow: "Voir 📈",
-                aboutTitle: "À propos", version: "v2.6 • Cliquez pour voir les détails",
-                navHome: "Accueil", navWorlds: "Mondes", navVault: "Coffre", navProfile: "Profil",
-                close: "Fermer"
-            }
-        };
-
-        function setLanguage(code, name) {
-            localStorage.setItem('axiom_lang', code);
-            document.getElementById('currentLangLabel').innerText = name;
-            document.getElementById('langPopup').classList.remove('show');
-            
-            // تطبيق الاتجاه واللغة فعلياً على الصفحة بالكامل
-            const htmlRoot = document.getElementById('htmlRoot');
-            htmlRoot.setAttribute('lang', code);
-            htmlRoot.setAttribute('dir', code === 'ar' ? 'rtl' : 'ltr');
-            
-            applyTranslations(code);
-        }
-
-        function applyTranslations(code) {
-            const t = translations[code] || translations['ar'];
-            document.getElementById('txtTitle').innerText = t.title;
-            document.getElementById('txtSub').innerText = t.sub;
-            document.getElementById('txtThemeLang').innerText = t.themeLang;
-            document.getElementById('txtLangTitle').innerText = t.langTitle;
-            document.getElementById('txtLangDesc').innerText = t.langDesc;
-            document.getElementById('txtVisualTitle').innerText = t.visualTitle;
-            document.getElementById('txtVisualDesc').innerText = t.visualDesc;
-            document.getElementById('txtHistoryTitle').innerText = t.historyTitle;
-            document.getElementById('txtHistoryDesc').innerText = t.historyDesc;
-            document.getElementById('btnClear').innerText = t.btnClear;
-            document.getElementById('btnNewChat').innerText = t.btnNewChat;
-            document.getElementById('txtEngineTitle').innerText = t.engineTitle;
-            document.getElementById('txtCacheTitle').innerText = t.cacheTitle;
-            document.getElementById('txtCacheDesc').innerText = t.cacheDesc;
-            document.getElementById('txtPerfTitle').innerText = t.perfTitle;
-            document.getElementById('txtPerfDesc').innerText = t.perfDesc;
-            document.getElementById('btnShow').innerText = t.btnShow;
-            document.getElementById('txtAboutTitle').innerText = t.aboutTitle;
-            document.getElementById('txtVersion').innerText = t.version;
-            document.getElementById('navHome').innerText = t.navHome;
-            document.getElementById('navWorlds').innerText = t.navWorlds;
-            document.getElementById('navVault').innerText = t.navVault;
-            document.getElementById('navProfile').innerText = t.navProfile;
-            document.getElementById('anaClose').innerText = t.close;
-            document.getElementById('aboutClose').innerText = t.close;
-        }
-
-        function setTheme(themeCode, themeName) {
-            localStorage.setItem('axiom_theme', themeCode);
-            document.getElementById('currentThemeLabel').innerText = themeName;
-            document.getElementById('themePopup').classList.remove('show');
-            
-            // تطبيق الثيم بكسر أو إضافة الكلاس البصري للـ body
-            if(themeCode === 'space') {
-                document.body.classList.add('theme-space');
-            } else {
-                document.body.classList.remove('theme-space');
-            }
-        }
-
-        function loadSettings() {
-            const lang = localStorage.getItem('axiom_lang') || 'ar';
-            if(lang === 'en') {
-                document.getElementById('currentLangLabel').innerText = 'English';
-                setLanguage('en', 'English');
-            } else if(lang === 'fr') {
-                document.getElementById('currentLangLabel').innerText = 'Français';
-                setLanguage('fr', 'Français');
-            } else {
-                setLanguage('ar', 'العربية');
+            if (history.length === 0) {
+                list.innerHTML = `<p style="font-size: 0.78rem; color: var(--text-dim); text-align: center; padding: 14px;">لا توجد محادثات محفوظة بعد.</p>`;
+                return;
             }
 
-            const theme = localStorage.getItem('axiom_theme');
-            if(theme === 'space') {
-                document.body.classList.add('theme-space');
-                document.getElementById('currentThemeLabel').innerText = 'الوضع الليلي الهادئ';
-            } else {
-                document.body.classList.remove('theme-space');
-                document.getElementById('currentThemeLabel').innerText = 'الوضع الداكن العميق';
-            }
-        }
-
-        function renderHistory() {
-            const container = document.getElementById('historyListContainer');
-            let history = JSON.parse(localStorage.getItem('axiom_chats_history') || '[]');
-            
-            if(history.length === 0) {
-                history = [
-                    { id: 1, title: 'تحليل هيكل الخرسانة المسلحة', time: 'منذ ساعتين' },
-                    { id: 2, title: 'شرح أكواد بايثون للذكاء الاصطناعي', time: 'أمس' }
-                ];
-                localStorage.setItem('axiom_chats_history', JSON.stringify(history));
-            }
-
-            container.innerHTML = history.map(chat => `
-                <div class="history-item" onclick="resumeChat(${chat.id})">
-                    <span>💬 ${chat.title}</span>
-                    <small>${chat.time}</small>
+            list.innerHTML = history.map(chat => `
+                <div class="history-card" onclick="openSavedChat(${chat.id})">
+                    <div class="history-info">
+                        <h4>${escapeHtml(chat.title)}</h4>
+                        <span>${chat.time || 'محفوظة'} • ${(chat.messages || []).length} رسائل</span>
+                    </div>
+                    <i data-lucide="arrow-up-left" style="width: 16px; color: var(--onion-accent);"></i>
                 </div>
             `).join('');
             lucide.createIcons();
         }
 
-        function resumeChat(chatId) {
+        function openSavedChat(chatId) {
             localStorage.setItem('axiom_active_chat_id', chatId);
-            location.href = 'chat.html';
+            window.location.href = 'chat.html';
         }
 
-        function clearHistory() {
-            if(confirm("⚠️ هل تريد مسح سجل المحادثات بالكامل؟")) {
+        function clearChatHistory() {
+            if (confirm("هل أنت متأكد من حذف جميع المحادثات المحفوظة؟")) {
                 localStorage.removeItem('axiom_chats_history');
-                renderHistory();
+                renderChatHistory();
             }
         }
 
         function openAnalyticsModal() {
+            const filesCount = JSON.parse(localStorage.getItem('axiom_vault_files') || '[]').length;
+            const chatsCount = JSON.parse(localStorage.getItem('axiom_chats_history') || '[]').length;
+            const xp = localStorage.getItem('axiom_xp') || '0';
+
+            document.getElementById('anaP1').innerHTML = `• إجمالي الملفات المحفوظة: <b>${filesCount} ملف</b>`;
+            document.getElementById('anaP2').innerHTML = `• الجلسات المحفوظة في السجل: <b>${chatsCount} جلسات</b>`;
+            document.getElementById('anaP3').innerHTML = `• نقاط الخبرة المتراكمة: <b>${xp} XP</b>`;
+
             const modal = document.getElementById('analyticsModal');
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('show'), 10);
         }
+
         function closeAnalyticsModal() {
             const modal = document.getElementById('analyticsModal');
             modal.classList.remove('show');
             setTimeout(() => modal.style.display = 'none', 300);
         }
 
-        function openAboutModal() {
-            const modal = document.getElementById('aboutModal');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('show'), 10);
+        function logoutUser() {
+            window.location.href = 'Login.html';
         }
-        function closeAboutModal() {
-            const modal = document.getElementById('aboutModal');
-            modal.classList.remove('show');
-            setTimeout(() => modal.style.display = 'none', 300);
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
     </script>
 </body>
