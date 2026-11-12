@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
     <title>AXIOM | المحادثة الذكية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -32,21 +32,24 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
 
-        body {
+        html, body {
             background-color: var(--onion-bg);
             color: var(--text-main);
-            height: 100vh;
+            height: 100%;
+            height: 100dvh;
+            width: 100%;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            position: relative;
         }
 
         /* الرأس العلوي العائم المنظم */
         .chat-floating-header {
-            position: absolute;
-            top: 15px; left: 15px; right: 15px;
-            max-width: 450px; margin: 0 auto;
-            background: rgba(38, 33, 29, 0.85);
+            position: fixed;
+            top: 12px; left: 15px; right: 15px;
+            max-width: 480px; margin: 0 auto;
+            background: rgba(38, 33, 29, 0.92);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--border);
@@ -55,8 +58,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            z-index: 100;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.55);
+            z-index: 1000;
+        }
+
+        body.theme-space .chat-floating-header {
+            background: rgba(19, 34, 53, 0.92);
         }
 
         .header-left-group {
@@ -72,6 +79,7 @@
             border-radius: 50%;
             box-shadow: 0 0 10px #2a9d8f;
             animation: pulseGlow 2s infinite;
+            flex-shrink: 0;
         }
         @keyframes pulseGlow {
             0% { transform: scale(0.95); opacity: 0.8; }
@@ -88,51 +96,55 @@
             gap: 4px;
         }
         .header-title-wrap p {
-            font-size: 0.62rem;
+            font-size: 0.65rem;
             color: var(--onion-accent);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 180px;
+            max-width: 195px;
         }
 
         .floating-icon-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: none;
-            width: 34px; height: 34px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            width: 36px; height: 36px;
             border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
             color: var(--text-main);
             cursor: pointer;
             transition: all 0.2s;
         }
-        .floating-icon-btn:hover { background: rgba(255, 255, 255, 0.12); color: var(--onion-accent); }
+        .floating-icon-btn:hover { background: rgba(255, 255, 255, 0.14); color: var(--onion-accent); }
 
         /* منطقة الرسائل */
         .chat-messages-area {
             flex: 1;
-            padding: 100px 20px 20px 20px;
+            width: 100%;
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 88px 18px 105px 18px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 18px;
             scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
         .message {
             display: flex;
             flex-direction: column;
-            max-width: 85%;
-            animation: fadeIn 0.3s ease;
+            max-width: 86%;
+            animation: fadeIn 0.25s ease;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
         .message.user { align-self: flex-end; }
         .message.ai { align-self: flex-start; }
 
         .message-text {
             font-size: 0.88rem;
-            line-height: 1.6;
+            line-height: 1.65;
             color: var(--text-main);
             word-wrap: break-word;
             white-space: pre-wrap;
@@ -140,15 +152,17 @@
 
         .message.user .message-text {
             background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
-            padding: 12px 18px;
+            padding: 12px 16px;
             border-radius: 20px 20px 4px 20px;
             color: #fff;
             box-shadow: 0 6px 20px var(--pom-glow);
         }
 
         .message.ai .message-text {
-            background: transparent;
-            padding: 4px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 20px 20px 20px 4px;
             color: var(--text-main);
         }
 
@@ -157,12 +171,10 @@
             align-items: center;
             gap: 12px;
             margin-top: 6px;
+            padding: 0 4px;
         }
 
-        .message-time {
-            font-size: 0.6rem;
-            color: var(--text-dim);
-        }
+        .message-time { font-size: 0.62rem; color: var(--text-dim); }
 
         .speak-audio-btn {
             background: none;
@@ -171,13 +183,11 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 3px;
-            font-size: 0.62rem;
+            gap: 4px;
+            font-size: 0.65rem;
             padding: 2px 6px;
             border-radius: 8px;
-            transition: background 0.2s;
         }
-        .speak-audio-btn:hover { background: rgba(212, 163, 115, 0.1); }
 
         /* اقتراحات إكمال الموضوع */
         .suggestions-row {
@@ -190,7 +200,7 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             color: var(--onion-accent);
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             font-weight: 700;
             padding: 6px 12px;
             border-radius: 14px;
@@ -200,59 +210,70 @@
         .suggestion-chip:hover {
             background: rgba(212, 163, 115, 0.15);
             border-color: var(--onion-accent);
-            transform: translateY(-2px);
         }
 
-        /* الشريط السفلي */
+        /* الشريط السفلي المثبت والمضمون الظهور دائماً */
         .chat-input-bar {
-            background: rgba(28, 24, 21, 0.95);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            padding: 12px 20px 25px 20px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            max-width: 520px;
+            margin: 0 auto;
+            background: var(--onion-surface);
+            border-top: 1px solid var(--border);
+            padding: 10px 14px calc(12px + env(safe-area-inset-bottom, 0px)) 14px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            z-index: 10;
+            gap: 8px;
+            z-index: 2000;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
         }
 
         .chat-input-field {
             flex: 1;
-            background: rgba(255, 255, 255, 0.04);
-            border: none;
+            min-width: 0;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
             border-radius: 20px;
-            padding: 12px 18px;
+            padding: 11px 16px;
             color: var(--text-main);
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             outline: none;
             font-family: 'Cairo', sans-serif;
             resize: none;
-            max-height: 120px;
+            max-height: 110px;
+            line-height: 1.4;
         }
-        .chat-input-field:focus { background: rgba(255, 255, 255, 0.08); }
+        .chat-input-field:focus {
+            border-color: var(--onion-accent);
+            background: rgba(255, 255, 255, 0.09);
+        }
 
         .action-icon-circle {
-            background: rgba(255, 255, 255, 0.04);
-            border: none;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
             color: var(--onion-accent);
-            width: 44px; height: 44px;
+            width: 42px; height: 42px;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
             flex-shrink: 0;
         }
-        .action-icon-circle:hover { background: rgba(212, 163, 115, 0.15); }
-        
+        .action-icon-circle:hover { background: rgba(212, 163, 115, 0.16); }
+
         .action-icon-circle.recording {
             background: var(--pom-primary);
             color: #fff;
+            border-color: var(--pom-primary);
             box-shadow: 0 0 15px var(--pom-primary);
             animation: pulseRec 1.2s infinite;
         }
         @keyframes pulseRec {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
         }
 
         .send-btn {
@@ -269,10 +290,10 @@
         }
         .send-btn:active { transform: scale(0.92); }
 
-        /* نافذة تبديل العالم السريعة */
+        /* نافذة تبديل العالم */
         .world-switcher-modal {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            inset: 0;
             background: rgba(10, 8, 7, 0.85);
             backdrop-filter: blur(12px);
             display: none;
@@ -281,7 +302,7 @@
             z-index: 3000;
             padding: 20px;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.25s ease;
         }
         .world-switcher-modal.show { display: flex; opacity: 1; }
 
@@ -294,14 +315,10 @@
             padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
             box-shadow: 0 25px 60px rgba(0,0,0,0.9);
-            transform: scale(0.85);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-align: center;
         }
-        .world-switcher-modal.show .switcher-card { transform: scale(1); }
-
         .switcher-card h3 { font-size: 1rem; font-weight: 900; color: var(--onion-accent); }
         .world-option-btn {
             background: rgba(255, 255, 255, 0.05);
@@ -315,7 +332,7 @@
             transition: all 0.2s;
         }
         .world-option-btn:hover { background: rgba(212, 163, 115, 0.15); border-color: var(--onion-accent); }
-        .close-switcher { background: none; border: none; color: var(--text-dim); font-size: 0.8rem; cursor: pointer; margin-top: 5px; }
+        .close-switcher { background: none; border: none; color: var(--text-dim); font-size: 0.82rem; cursor: pointer; margin-top: 4px; }
     </style>
 </head>
 <body>
@@ -330,16 +347,14 @@
         </div>
         <div class="header-actions">
             <button class="floating-icon-btn" onclick="location.href='dashboard.html'" title="الرئيسية">
-                <i data-lucide="home" style="width: 17px; height: 17px;"></i>
+                <i data-lucide="home" style="width: 18px; height: 18px;"></i>
             </button>
         </div>
     </header>
 
     <div class="chat-messages-area" id="messagesContainer">
         <div class="message ai">
-            <div class="message-text">
-                أهلاً بك يا مهندس في منصة <b>AXIOM</b>. كيف يمكنني مساعدتك اليوم؟
-            </div>
+            <div class="message-text">أهلاً بك يا مهندس في منصة <b>AXIOM</b>. كيف يمكنني مساعدتك اليوم؟</div>
             <div class="message-footer">
                 <span class="message-time">الآن</span>
                 <button class="speak-audio-btn" onclick="speakText(this)">
@@ -347,24 +362,25 @@
                 </button>
             </div>
             <div class="suggestions-row">
-                <span class="suggestion-chip" onclick="sendSuggestion(this)">اشرح لي فكرة التطبيق</span>
-                <span class="suggestion-chip" onclick="sendSuggestion(this)">كيف أحلل مستنداتي؟</span>
+                <span class="suggestion-chip" onclick="sendSuggestion(this)">لخّص الوثيقة النشطة</span>
+                <span class="suggestion-chip" onclick="sendSuggestion(this)">حلّل الصورة أو المخطط</span>
             </div>
         </div>
     </div>
 
     <div class="chat-input-bar">
+        <button class="action-icon-circle" onclick="location.href='vault.html'" title="خزنة المستندات">
+            <i data-lucide="folder-kanban" style="width: 19px; height: 19px;"></i>
+        </button>
+
+        <textarea id="chatInput" class="chat-input-field" rows="1" placeholder="اكتب رسالتك هنا لـ AXIOM..."></textarea>
+
+        <button class="action-icon-circle" id="micBtn" onclick="toggleVoiceRecording()" title="التسجيل الصوتي">
+            <i data-lucide="mic" style="width: 19px; height: 19px;"></i>
+        </button>
+
         <button class="send-btn" onclick="sendMessage()" title="إرسال">
             <i data-lucide="send" style="width: 18px; height: 18px;"></i>
-        </button>
-        <button class="action-icon-circle" id="micBtn" onclick="toggleVoiceRecording()" title="التسجيل الصوتي">
-            <i data-lucide="mic" style="width: 20px; height: 20px;"></i>
-        </button>
-        
-        <textarea id="chatInput" class="chat-input-field" rows="1" placeholder="اسأل AXIOM..."></textarea>
-        
-        <button class="action-icon-circle" onclick="location.href='vault.html'" title="خزنة المستندات">
-            <i data-lucide="folder-kanban" style="width: 20px; height: 20px;"></i>
         </button>
     </div>
 
@@ -390,7 +406,7 @@
 
             const currentWorld = localStorage.getItem('axiom_current_world');
             if (currentWorld) {
-                document.getElementById('worldTitleDisplay').innerHTML = `${currentWorld} <i data-lucide="chevron-down" style="width:14px; height:14px;"></i>`;
+                document.getElementById('worldTitleDisplay').innerHTML = `${escapeHtml(currentWorld)} <i data-lucide="chevron-down" style="width:14px; height:14px;"></i>`;
                 lucide.createIcons();
             }
 
@@ -406,11 +422,18 @@
                 localStorage.removeItem('axiom_active_chat_id');
             }
 
-            document.getElementById('chatInput').addEventListener('keydown', (e) => {
+            const chatInput = document.getElementById('chatInput');
+            chatInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     sendMessage();
                 }
+            });
+
+            // تمدد تلقائي لحقل الكتابة عند تعدد الأسطر
+            chatInput.addEventListener('input', function () {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 110) + 'px';
             });
         });
 
@@ -455,12 +478,12 @@
         function closeWorldSwitcher() {
             const modal = document.getElementById('worldSwitcherModal');
             modal.classList.remove('show');
-            setTimeout(() => modal.style.display = 'none', 300);
+            setTimeout(() => modal.style.display = 'none', 250);
         }
 
         function switchWorld(worldName) {
             localStorage.setItem('axiom_current_world', worldName);
-            document.getElementById('worldTitleDisplay').innerHTML = `${worldName} <i data-lucide="chevron-down" style="width:14px; height:14px;"></i>`;
+            document.getElementById('worldTitleDisplay').innerHTML = `${escapeHtml(worldName)} <i data-lucide="chevron-down" style="width:14px; height:14px;"></i>`;
             lucide.createIcons();
             closeWorldSwitcher();
         }
@@ -509,7 +532,10 @@
 
             appendMessageDOM('user', text, false);
             saveMessageToHistory('user', text);
-            if (!customText) input.value = '';
+            if (!customText) {
+                input.value = '';
+                input.style.height = 'auto';
+            }
 
             const container = document.getElementById('messagesContainer');
             const typingDiv = document.createElement('div');
@@ -519,8 +545,10 @@
             container.scrollTop = container.scrollHeight;
 
             const activeDoc = localStorage.getItem('axiom_active_doc') || '';
+            const docContent = localStorage.getItem('axiom_active_doc_content') || '';
+            const imageBase64 = localStorage.getItem('axiom_active_image_base64') || '';
             const currentWorld = localStorage.getItem('axiom_current_world') || 'العالم الحر';
-            const isImageDoc = /\.(jpg|jpeg|png|webp|gif)$/i.test(activeDoc);
+            const isImageDoc = Boolean(imageBase64) || /\.(jpg|jpeg|png|webp|gif)$/i.test(activeDoc);
 
             try {
                 const response = await fetch('/api/chat', {
@@ -529,8 +557,10 @@
                     body: JSON.stringify({
                         prompt: text,
                         hasImage: isImageDoc,
+                        imageBase64: imageBase64,
                         world: currentWorld,
-                        activeDoc: activeDoc
+                        activeDoc: activeDoc,
+                        docContent: docContent
                     })
                 });
 
@@ -540,7 +570,6 @@
                 const replyText = data.reply || data.error || "⚠️ تعذر الحصول على رد من المحرك.";
                 appendMessageDOM('ai', replyText, true);
                 saveMessageToHistory('ai', replyText);
-                speakString(replyText);
             } catch (err) {
                 typingDiv.remove();
                 const fallbackMsg = "⚠️ تعذر الاتصال بالخادم (Server). تأكد من تشغيل server.js وأن الإنترنت متصل.";
@@ -587,18 +616,14 @@
             const micBtn = document.getElementById('micBtn');
             const input = document.getElementById('chatInput');
             micBtn.classList.remove('recording');
-            input.placeholder = "اسأل AXIOM...";
+            input.placeholder = "اكتب رسالتك هنا لـ AXIOM...";
         }
 
         function speakText(btn) {
             const textEl = btn.closest('.message').querySelector('.message-text');
-            speakString(textEl.innerText);
-        }
-
-        function speakString(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
+                const utterance = new SpeechSynthesisUtterance(textEl.innerText);
                 utterance.lang = 'ar-SA';
                 utterance.rate = 1.0;
                 window.speechSynthesis.speak(utterance);
@@ -606,7 +631,7 @@
         }
 
         function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
     </script>
 </body>
