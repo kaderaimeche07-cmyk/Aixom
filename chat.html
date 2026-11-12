@@ -21,6 +21,15 @@
             --border: rgba(255, 255, 255, 0.08);
         }
 
+        body.theme-space {
+            --onion-bg: #0b131d;
+            --onion-surface: #132235;
+            --onion-accent: #48cae4;
+            --pom-primary: #4361ee;
+            --pom-secondary: #3a0ca3;
+            --pom-glow: rgba(67, 97, 238, 0.3);
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
@@ -126,6 +135,7 @@
             line-height: 1.6;
             color: var(--text-main);
             word-wrap: break-word;
+            white-space: pre-wrap;
         }
 
         .message.user .message-text {
@@ -193,7 +203,7 @@
             transform: translateY(-2px);
         }
 
-        /* 🌟 الشريط السفلي (الإرسال والصوت على اليمين، المستندات على اليسار) */
+        /* الشريط السفلي */
         .chat-input-bar {
             background: rgba(28, 24, 21, 0.95);
             backdrop-filter: blur(25px);
@@ -310,7 +320,6 @@
 </head>
 <body>
 
-    <!-- الرأس العلوي العائم المنظم -->
     <header class="chat-floating-header">
         <div class="header-left-group" onclick="openWorldSwitcher()" title="انقر لتغيير العالم">
             <div class="ai-pulse-dot"></div>
@@ -326,11 +335,10 @@
         </div>
     </header>
 
-    <!-- منطقة الرسائل -->
     <div class="chat-messages-area" id="messagesContainer">
         <div class="message ai">
             <div class="message-text">
-                أهلاً بك يا مهندس في منصة <b>AXIOM</b>. . كيف يمكنني مساعدتك اليوم؟
+                أهلاً بك يا مهندس في منصة <b>AXIOM</b>. كيف يمكنني مساعدتك اليوم؟
             </div>
             <div class="message-footer">
                 <span class="message-time">الآن</span>
@@ -345,9 +353,7 @@
         </div>
     </div>
 
-    <!-- 🌟 الشريط السفلي (زر الإرسال والصوت على اليمين، المستندات على اليسار) -->
     <div class="chat-input-bar">
-        <!-- زر الإرسال والتسجيل الصوتي على اليمين -->
         <button class="send-btn" onclick="sendMessage()" title="إرسال">
             <i data-lucide="send" style="width: 18px; height: 18px;"></i>
         </button>
@@ -355,16 +361,13 @@
             <i data-lucide="mic" style="width: 20px; height: 20px;"></i>
         </button>
         
-        <!-- حقل الكتابة -->
         <textarea id="chatInput" class="chat-input-field" rows="1" placeholder="اسأل AXIOM..."></textarea>
         
-        <!-- زر المستندات على اليسار -->
         <button class="action-icon-circle" onclick="location.href='vault.html'" title="خزنة المستندات">
             <i data-lucide="folder-kanban" style="width: 20px; height: 20px;"></i>
         </button>
     </div>
 
-    <!-- نافذة تبديل العالم السريعة -->
     <div class="world-switcher-modal" id="worldSwitcherModal" onclick="closeWorldSwitcher()">
         <div class="switcher-card" onclick="event.stopPropagation()">
             <h3>🌍 اختر العالم المناسب</h3>
@@ -378,7 +381,13 @@
     <script>
         lucide.createIcons();
 
+        let currentSessionId = null;
+
         window.addEventListener('load', () => {
+            if (localStorage.getItem('axiom_theme') === 'space') {
+                document.body.classList.add('theme-space');
+            }
+
             const currentWorld = localStorage.getItem('axiom_current_world');
             if (currentWorld) {
                 document.getElementById('worldTitleDisplay').innerHTML = `${currentWorld} <i data-lucide="chevron-down" style="width:14px; height:14px;"></i>`;
@@ -389,7 +398,53 @@
             if (activeDoc) {
                 document.getElementById('activeDocIndicator').innerText = `📄 ${activeDoc}`;
             }
+
+            const activeChatId = localStorage.getItem('axiom_active_chat_id');
+            if (activeChatId) {
+                currentSessionId = Number(activeChatId);
+                loadSavedSession(currentSessionId);
+                localStorage.removeItem('axiom_active_chat_id');
+            }
+
+            document.getElementById('chatInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
         });
+
+        function loadSavedSession(sessionId) {
+            const history = JSON.parse(localStorage.getItem('axiom_chats_history') || '[]');
+            const session = history.find(h => h.id === sessionId);
+            if (session && session.messages && session.messages.length > 0) {
+                const container = document.getElementById('messagesContainer');
+                container.innerHTML = '';
+                session.messages.forEach(msg => {
+                    appendMessageDOM(msg.role, msg.text, false);
+                });
+            }
+        }
+
+        function saveMessageToHistory(role, text) {
+            let history = JSON.parse(localStorage.getItem('axiom_chats_history') || '[]');
+            if (!currentSessionId) {
+                currentSessionId = Date.now();
+                history.unshift({
+                    id: currentSessionId,
+                    title: text.slice(0, 38) + (text.length > 38 ? '...' : ''),
+                    time: 'الآن',
+                    messages: []
+                });
+            }
+            const idx = history.findIndex(h => h.id === currentSessionId);
+            if (idx !== -1) {
+                history[idx].messages = history[idx].messages || [];
+                history[idx].messages.push({ role, text });
+                history[idx].time = 'الآن';
+                localStorage.setItem('axiom_chats_history', JSON.stringify(history));
+            }
+        }
 
         function openWorldSwitcher() {
             const modal = document.getElementById('worldSwitcherModal');
@@ -414,45 +469,83 @@
             sendMessage(chip.innerText);
         }
 
-        function sendMessage(customText = null) {
-            const input = document.getElementById('chatInput');
-            const text = customText || input.value.trim();
-            if (!text) return;
-
+        function appendMessageDOM(role, text, withSuggestions = true) {
             const container = document.getElementById('messagesContainer');
-            
-            const userMsg = document.createElement('div');
-            userMsg.className = 'message user';
-            userMsg.innerHTML = `
-                <div class="message-text">${escapeHtml(text)}</div>
-                <div class="message-footer"><span class="message-time">الآن</span></div>
-            `;
-            container.appendChild(userMsg);
-            if (!customText) input.value = '';
-            container.scrollTop = container.scrollHeight;
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${role}`;
 
-            setTimeout(() => {
-                const replyText = `تم استلام استفسارك حول (${text}). محركات AXIOM جاهزة لتقديم التحليل الكامل استناداً إلى سياق العالم والوثائق النشطة.`;
-                const aiMsg = document.createElement('div');
-                aiMsg.className = 'message ai';
-                aiMsg.innerHTML = `
-                    <div class="message-text">${escapeHtml(replyText)}</div>
+            if (role === 'user') {
+                msgDiv.innerHTML = `
+                    <div class="message-text">${escapeHtml(text)}</div>
+                    <div class="message-footer"><span class="message-time">الآن</span></div>
+                `;
+            } else {
+                msgDiv.innerHTML = `
+                    <div class="message-text">${escapeHtml(text)}</div>
                     <div class="message-footer">
                         <span class="message-time">الآن</span>
                         <button class="speak-audio-btn" onclick="speakText(this)">
                             <i data-lucide="volume-2" style="width: 14px; height: 14px;"></i> استماع
                         </button>
                     </div>
+                    ${withSuggestions ? `
                     <div class="suggestions-row">
                         <span class="suggestion-chip" onclick="sendSuggestion(this)">تلخيص النتائج في نقاط</span>
                         <span class="suggestion-chip" onclick="sendSuggestion(this)">أعطني تفاصيل تقنية أكثر</span>
-                    </div>
+                    </div>` : ''}
                 `;
-                container.appendChild(aiMsg);
-                container.scrollTop = container.scrollHeight;
-                lucide.createIcons();
+            }
+
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+            lucide.createIcons();
+            return msgDiv;
+        }
+
+        async function sendMessage(customText = null) {
+            const input = document.getElementById('chatInput');
+            const text = customText || input.value.trim();
+            if (!text) return;
+
+            appendMessageDOM('user', text, false);
+            saveMessageToHistory('user', text);
+            if (!customText) input.value = '';
+
+            const container = document.getElementById('messagesContainer');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai';
+            typingDiv.innerHTML = `<div class="message-text" style="color: var(--onion-accent);">⏳ جاري التحليل عبر محرك AXIOM...</div>`;
+            container.appendChild(typingDiv);
+            container.scrollTop = container.scrollHeight;
+
+            const activeDoc = localStorage.getItem('axiom_active_doc') || '';
+            const currentWorld = localStorage.getItem('axiom_current_world') || 'العالم الحر';
+            const isImageDoc = /\.(jpg|jpeg|png|webp|gif)$/i.test(activeDoc);
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        prompt: text,
+                        hasImage: isImageDoc,
+                        world: currentWorld,
+                        activeDoc: activeDoc
+                    })
+                });
+
+                const data = await response.json();
+                typingDiv.remove();
+
+                const replyText = data.reply || data.error || "⚠️ تعذر الحصول على رد من المحرك.";
+                appendMessageDOM('ai', replyText, true);
+                saveMessageToHistory('ai', replyText);
                 speakString(replyText);
-            }, 1000);
+            } catch (err) {
+                typingDiv.remove();
+                const fallbackMsg = "⚠️ تعذر الاتصال بالخادم (Server). تأكد من تشغيل server.js وأن الإنترنت متصل.";
+                appendMessageDOM('ai', fallbackMsg, false);
+            }
         }
 
         let isRecording = false;
