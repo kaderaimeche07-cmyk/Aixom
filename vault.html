@@ -11,14 +11,21 @@
             --onion-bg: #1c1815;
             --onion-surface: #26211d;
             --onion-accent: #d4a373;
-            
             --pom-primary: #e63946;
             --pom-secondary: #9b2226;
             --pom-glow: rgba(230, 57, 70, 0.25);
-            
             --text-main: #f8f9fa;
             --text-dim: #adb5bd;
             --border: rgba(255, 255, 255, 0.08);
+        }
+
+        body.theme-space {
+            --onion-bg: #0b131d;
+            --onion-surface: #132235;
+            --onion-accent: #48cae4;
+            --pom-primary: #4361ee;
+            --pom-secondary: #3a0ca3;
+            --pom-glow: rgba(67, 97, 238, 0.3);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -27,20 +34,14 @@
             background-color: var(--onion-bg);
             color: var(--text-main);
             min-height: 100vh;
-            padding: 20px 20px 110px 20px;
+            padding: 20px 20px 115px 20px;
             display: flex;
             justify-content: center;
+            overflow-x: hidden;
         }
 
-        .vault-container {
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
+        .vault-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 16px; }
 
-        /* رأس الخزنة */
         .vault-header {
             background: var(--onion-surface);
             border: 1px solid var(--border);
@@ -49,7 +50,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.45);
         }
         .vault-title h1 { font-size: 1.12rem; font-weight: 900; color: var(--text-main); }
         .vault-title p { font-size: 0.73rem; color: var(--onion-accent); margin-top: 2px; }
@@ -57,388 +58,174 @@
         .back-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
-            width: 38px; height: 38px;
-            border-radius: 12px;
+            width: 38px; height: 38px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            color: var(--text-main);
-            cursor: pointer;
-            transition: all 0.2s;
+            color: var(--text-main); cursor: pointer; transition: all 0.2s;
         }
-        .back-btn:hover { border-color: var(--pom-primary); color: var(--pom-primary); }
+        .back-btn:hover { border-color: var(--onion-accent); color: var(--onion-accent); }
 
-        /* صندوق رفع الملفات */
         .upload-dropzone {
-            background: linear-gradient(135deg, rgba(26, 9, 14, 0.9), rgba(15, 5, 7, 0.95));
-            border: 2px dashed rgba(230, 57, 70, 0.4);
+            background: var(--onion-surface);
+            border: 2px dashed rgba(212, 163, 115, 0.45);
             border-radius: 22px;
             padding: 26px 20px;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
             cursor: pointer;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.45);
             transition: all 0.2s ease;
         }
-        .upload-dropzone:active { transform: scale(0.98); }
+        .upload-dropzone:hover { border-color: var(--onion-accent); transform: translateY(-2px); }
 
         .dropzone-icon {
             width: 52px; height: 52px;
-            background: rgba(230, 57, 70, 0.15);
-            border: 1px solid var(--pom-primary);
+            background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: var(--pom-primary);
+            color: #fff; box-shadow: 0 8px 22px var(--pom-glow);
         }
         .dropzone-text h3 { font-size: 0.98rem; font-weight: 900; }
         .dropzone-text p { font-size: 0.74rem; color: var(--text-dim); margin-top: 2px; }
 
-        /* شريط التحكم بالملفات */
-        .section-header-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 5px;
-        }
-        .section-title {
-            font-size: 0.88rem;
-            font-weight: 700;
-            color: var(--text-dim);
-        }
+        .section-header-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
+        .section-title { font-size: 0.88rem; font-weight: 700; color: var(--text-dim); }
         .btn-delete-all {
-            background: rgba(230, 57, 70, 0.1);
-            border: 1px solid rgba(230, 57, 70, 0.3);
-            color: var(--pom-primary);
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: rgba(230, 57, 70, 0.12);
+            border: 1px solid rgba(230, 57, 70, 0.35);
+            color: #ff6b6b; padding: 5px 12px; border-radius: 10px;
+            font-size: 0.72rem; font-weight: 700; cursor: pointer;
         }
-        .btn-delete-all:hover { background: rgba(230, 57, 70, 0.2); }
 
-        .files-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .files-list { display: flex; flex-direction: column; gap: 10px; }
 
         .file-card {
             background: var(--onion-surface);
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            transition: border-color 0.3s;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            transition: all 0.25s ease;
         }
-        .file-card.active-doc {
-            border-color: #2a9d8f;
-            background: rgba(42, 157, 143, 0.05);
-        }
+        .file-card.active-doc { border-color: #2a9d8f; background: rgba(42, 157, 143, 0.08); }
 
-        .file-info-wrap {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            overflow: hidden;
-        }
+        .file-info-wrap { display: flex; align-items: center; gap: 12px; overflow: hidden; }
         .file-icon {
             width: 40px; height: 40px;
             background: rgba(212, 163, 115, 0.1);
             border: 1px solid rgba(212, 163, 115, 0.3);
             border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            color: var(--onion-accent);
-            flex-shrink: 0;
+            color: var(--onion-accent); flex-shrink: 0;
         }
-        .file-details h4 { font-size: 0.85rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .file-details h4 { font-size: 0.85rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 210px; }
         .file-details p { font-size: 0.68rem; color: var(--text-dim); margin-top: 2px; }
 
-        .file-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
+        .file-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         .action-icon-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
-            width: 32px; height: 32px;
-            border-radius: 10px;
+            width: 34px; height: 34px; border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
-            color: var(--text-dim);
-            cursor: pointer;
-            transition: all 0.2s;
+            color: var(--text-dim); cursor: pointer;
         }
         .action-icon-btn:hover { color: var(--text-main); border-color: var(--onion-accent); }
-        .action-icon-btn.delete:hover { color: var(--pom-primary); border-color: var(--pom-primary); }
+        .action-icon-btn.delete:hover { color: #ff6b6b; border-color: #ff6b6b; }
 
-        /* نافذة الدوائر العائمة الرئيسية */
         .source-modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(10, 8, 7, 0.82);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2500;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            position: fixed; inset: 0;
+            background: rgba(10, 8, 7, 0.85); backdrop-filter: blur(14px);
+            display: none; justify-content: center; align-items: center;
+            z-index: 2500; padding: 20px; opacity: 0; transition: opacity 0.3s ease;
         }
         .source-modal-overlay.show { display: flex; opacity: 1; }
 
         .floating-circles-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 25px;
-            width: 100%;
-            max-width: 360px;
-            transform: scale(0.6) translateY(30px);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; align-items: center; gap: 25px;
+            width: 100%; max-width: 360px;
+            transform: scale(0.75) translateY(20px);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .source-modal-overlay.show .floating-circles-container {
-            transform: scale(1) translateY(0);
-        }
+        .source-modal-overlay.show .floating-circles-container { transform: scale(1) translateY(0); }
 
-        .circles-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .circle-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        .circle-item:active { transform: scale(0.9); }
-
+        .circles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; text-align: center; }
+        .circle-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
         .circle-bubble {
-            width: 60px; height: 60px;
-            border-radius: 50%;
+            width: 60px; height: 60px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
-            margin: 0 auto;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5); margin: 0 auto;
         }
         .circle-bubble.pdf { background: linear-gradient(135deg, #2a9d8f, #21867a); color: #fff; }
         .circle-bubble.img { background: linear-gradient(135deg, #f4a261, #e76f51); color: #fff; }
         .circle-bubble.drive { background: linear-gradient(135deg, #3a86ff, #4361ee); color: #fff; }
         .circle-bubble.link { background: linear-gradient(135deg, #9b5de5, #7209b7); color: #fff; }
-
-        .circle-item span {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-main);
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-        }
+        .circle-item span { font-size: 0.76rem; font-weight: 700; color: var(--text-main); }
 
         .btn-floating-cancel {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            color: var(--text-main);
-            padding: 10px 30px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.82rem;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: all 0.2s;
+            color: var(--text-main); padding: 10px 30px; border-radius: 20px;
+            font-weight: 700; font-size: 0.82rem; cursor: pointer;
         }
-        .btn-floating-cancel:active { transform: scale(0.96); background: rgba(255, 255, 255, 0.15); }
 
-        /* شاشة الكاميرا المباشرة داخل التطبيق */
         .camera-modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: #000;
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 4000;
-            padding: 30px 20px;
+            position: fixed; inset: 0; background: #000;
+            display: none; flex-direction: column; justify-content: space-between; align-items: center;
+            z-index: 4000; padding: 30px 20px;
         }
         .camera-modal-overlay.show { display: flex; }
-        
         .camera-preview-wrap {
-            width: 100%;
-            max-width: 400px;
-            height: 70vh;
-            border-radius: 24px;
-            overflow: hidden;
-            background: #111;
-            position: relative;
-            border: 2px solid var(--onion-accent);
+            width: 100%; max-width: 400px; height: 68vh; border-radius: 24px;
+            overflow: hidden; background: #111; border: 2px solid var(--onion-accent);
         }
-        #cameraStreamVideo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .camera-actions-bar {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            width: 100%;
-            max-width: 400px;
-            justify-content: space-around;
-        }
-        .capture-btn {
-            width: 70px; height: 70px;
-            background: #fff;
-            border-radius: 50%;
-            border: 4px solid var(--onion-accent);
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(212, 163, 115, 0.5);
-            transition: transform 0.1s;
-        }
-        .capture-btn:active { transform: scale(0.9); }
-        .close-camera-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--border);
-            color: #fff;
-            padding: 12px 25px;
-            border-radius: 16px;
-            font-weight: 700;
-            cursor: pointer;
-        }
+        #cameraStreamVideo { width: 100%; height: 100%; object-fit: cover; }
+        .camera-actions-bar { display: flex; gap: 20px; align-items: center; width: 100%; max-width: 400px; justify-content: space-around; }
+        .capture-btn { width: 68px; height: 68px; background: #fff; border-radius: 50%; border: 4px solid var(--onion-accent); cursor: pointer; }
+        .close-camera-btn { background: rgba(255,255,255,0.12); border: 1px solid var(--border); color: #fff; padding: 12px 24px; border-radius: 16px; font-weight: 700; cursor: pointer; }
 
-        /* نافذة إدخال مخصصة وراقية */
         .custom-prompt-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(10, 8, 7, 0.85);
-            backdrop-filter: blur(10px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 3500;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            position: fixed; inset: 0; background: rgba(10, 8, 7, 0.85);
+            backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center;
+            z-index: 3500; padding: 20px; opacity: 0; transition: opacity 0.3s ease;
         }
         .custom-prompt-overlay.show { display: flex; opacity: 1; }
-
         .custom-prompt-card {
-            background: var(--onion-surface);
-            border: 1px solid rgba(212, 163, 115, 0.3);
-            border-radius: 24px;
-            width: 100%;
-            max-width: 340px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
-            transform: scale(0.85);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: var(--onion-surface); border: 1px solid rgba(212, 163, 115, 0.3);
+            border-radius: 24px; width: 100%; max-width: 340px; padding: 24px;
+            display: flex; flex-direction: column; gap: 14px; box-shadow: 0 20px 50px rgba(0,0,0,0.9);
         }
-        .custom-prompt-overlay.show .custom-prompt-card { transform: scale(1); }
-
-        .custom-prompt-card h4 {
-            font-size: 0.95rem;
-            font-weight: 900;
-            color: var(--onion-accent);
-        }
+        .custom-prompt-card h4 { font-size: 0.95rem; font-weight: 900; color: var(--onion-accent); }
         .custom-prompt-card input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px;
-            color: var(--text-main);
-            font-size: 0.85rem;
-            outline: none;
-            font-family: 'Cairo', sans-serif;
+            width: 100%; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+            border-radius: 12px; padding: 12px; color: var(--text-main); font-size: 0.85rem; outline: none;
         }
-        .custom-prompt-card input:focus { border-color: var(--onion-accent); }
-
-        .prompt-actions {
-            display: flex;
-            gap: 10px;
-        }
-        .prompt-btn {
-            flex: 1;
-            padding: 10px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 0.8rem;
-            cursor: pointer;
-            border: none;
-        }
-        .prompt-btn.cancel { background: rgba(255,255,255,0.05); color: var(--text-dim); }
+        .prompt-actions { display: flex; gap: 10px; }
+        .prompt-btn { flex: 1; padding: 11px; border-radius: 12px; font-weight: 700; font-size: 0.82rem; cursor: pointer; border: none; }
+        .prompt-btn.cancel { background: rgba(255,255,255,0.06); color: var(--text-dim); }
         .prompt-btn.confirm { background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary)); color: #fff; }
 
-        /* Toast Notification */
-        #axiomToast {
-            position: fixed;
-            bottom: 90px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--onion-surface, #26211d);
-            border: 1px solid var(--onion-accent, #d4a373);
-            color: var(--text-main, #f8f9fa);
-            padding: 12px 20px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            z-index: 4000;
-            font-size: 0.82rem;
-            font-weight: 700;
-            text-align: center;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            opacity: 0;
-            max-width: 90%;
-        }
-
-        /* الشريط السفلي العائم */
         .floating-navbar {
-            position: fixed; bottom: 20px; left: 20px; right: 20px;
-            max-width: 440px; margin: 0 auto;
-            background: rgba(38, 33, 29, 0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 26px; padding: 10px 15px;
+            position: fixed; bottom: 18px; left: 16px; right: 16px;
+            max-width: 450px; margin: 0 auto;
+            background: rgba(38, 33, 29, 0.92); backdrop-filter: blur(25px);
+            border: 1px solid var(--border); border-radius: 26px; padding: 10px 16px;
             display: flex; justify-content: space-around; align-items: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            z-index: 1000;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7); z-index: 1000;
         }
         .nav-link {
-            display: flex; flex-direction: column; align-items: center; gap: 3px;
-            color: var(--text-dim); font-size: 0.68rem; cursor: pointer; background: none; border: none;
-            transition: transform 0.15s;
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            color: var(--text-dim); font-size: 0.65rem; font-weight: 700; cursor: pointer; background: none; border: none;
         }
-        .nav-link:active { transform: scale(0.92); }
-        .nav-link.active { color: var(--onion-accent); font-weight: 700; }
-        .nav-link i { width: 20px; height: 20px; }
+        .nav-link.active { color: var(--onion-accent); }
         .nav-link.chat-central {
             background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
-            color: white; width: 52px; height: 52px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 5px 20px var(--pom-glow); margin-top: -15px; border: 3px solid var(--onion-bg);
+            color: #fff; width: 50px; height: 50px; border-radius: 50%;
+            justify-content: center; margin-top: -22px; box-shadow: 0 8px 20px var(--pom-glow);
         }
-        .nav-link.chat-central i { width: 24px; height: 24px; }
     </style>
 </head>
 <body>
 
     <div class="vault-container">
-        
-        <!-- رأس الخزنة -->
         <div class="vault-header">
             <div class="vault-title">
                 <h1>خزنة الوثائق والدروس</h1>
@@ -449,89 +236,58 @@
             </button>
         </div>
 
-        <!-- صندوق رفع الملفات -->
         <div class="upload-dropzone" onclick="triggerFeedback(); openSourceModal()">
             <div class="dropzone-icon">
                 <i data-lucide="upload-cloud" style="width: 26px; height: 26px;"></i>
             </div>
             <div class="dropzone-text">
                 <h3>إضافة وثائق جديدة</h3>
-                <p>استيراد ملفات متعددة أو صور ومصادر سحابية</p>
+                <p>استيراد ملفات نصية، PDF، أو صور ومخططات لتحليلها</p>
             </div>
         </div>
 
-        <!-- شريط التحكم بالملفات -->
         <div class="section-header-bar">
             <span class="section-title">الملفات المحفوظة (<span id="fileCountBadge">0</span>)</span>
             <button class="btn-delete-all" onclick="triggerFeedback(); deleteAllDocs()">حذف الكل 🗑️</button>
         </div>
 
-        <div class="files-list" id="filesListContainer">
-            <!-- سيتم توليد الملفات برمجياً هنا -->
-        </div>
-
+        <div class="files-list" id="filesListContainer"></div>
     </div>
 
-    <!-- مداخل الملفات المستقلة في جذر الصفحة تماماً لمنع حظر المتصفح -->
-    <input type="file" id="globalFileInput" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" multiple style="display: none;" onchange="handleFilesSelected(event)">
+    <input type="file" id="globalFileInput" accept=".pdf,.doc,.docx,.txt,.md,.csv,.json,.js,.py,.html" multiple style="display: none;" onchange="handleFilesSelected(event)">
     <input type="file" id="globalGalleryInput" accept="image/*" multiple style="display: none;" onchange="handleGalleryImage(event)">
 
-    <!-- نافذة الدوائر العائمة الرئيسية -->
-    <div class="source-modal-overlay" id="sourceModal" onclick="maybeCloseModal(event)">
+    <div class="source-modal-overlay" id="sourceModal" onclick="closeSourceModal()">
         <div class="floating-circles-container" onclick="event.stopPropagation()">
-            
             <div class="circles-grid">
-                <!-- مستندات -->
                 <div class="circle-item" onclick="triggerFeedback(); triggerGlobalPicker('file')">
-                    <div class="circle-bubble pdf">
-                        <i data-lucide="files" style="width: 24px; height: 24px;"></i>
-                    </div>
+                    <div class="circle-bubble pdf"><i data-lucide="files" style="width: 24px; height: 24px;"></i></div>
                     <span>مستندات</span>
                 </div>
-
-                <!-- صور المعرض (تستدعي المدخل المستقل عبر timeout بعد إغلاق النافذة بأمان) -->
                 <div class="circle-item" onclick="triggerFeedback(); triggerGlobalPicker('gallery')">
-                    <div class="circle-bubble img">
-                        <i data-lucide="image" style="width: 24px; height: 24px;"></i>
-                    </div>
+                    <div class="circle-bubble img"><i data-lucide="image" style="width: 24px; height: 24px;"></i></div>
                     <span>صور المعرض</span>
                 </div>
-
-                <!-- التصوير المباشر -->
                 <div class="circle-item" onclick="triggerFeedback(); openCameraModal()">
-                    <div class="circle-bubble img" style="background: linear-gradient(135deg, #e76f51, #9b2226);">
-                        <i data-lucide="camera" style="width: 24px; height: 24px;"></i>
-                    </div>
+                    <div class="circle-bubble img" style="background: linear-gradient(135deg, #e76f51, #9b2226);"><i data-lucide="camera" style="width: 24px; height: 24px;"></i></div>
                     <span>التصوير</span>
                 </div>
-
-                <!-- Google Drive -->
                 <div class="circle-item" onclick="triggerFeedback(); openCloudImport()">
-                    <div class="circle-bubble drive">
-                        <i data-lucide="cloud" style="width: 24px; height: 24px;"></i>
-                    </div>
+                    <div class="circle-bubble drive"><i data-lucide="cloud" style="width: 24px; height: 24px;"></i></div>
                     <span>Google Drive</span>
                 </div>
-
-                <!-- رابط خارجي -->
                 <div class="circle-item" onclick="triggerFeedback(); openWebImport()">
-                    <div class="circle-bubble link">
-                        <i data-lucide="link" style="width: 24px; height: 24px;"></i>
-                    </div>
+                    <div class="circle-bubble link"><i data-lucide="link" style="width: 24px; height: 24px;"></i></div>
                     <span>رابط خارجي</span>
                 </div>
             </div>
-
             <button class="btn-floating-cancel" onclick="triggerFeedback(); closeSourceModal()">إلغاء</button>
         </div>
     </div>
 
-    <!-- شاشة الكاميرا المباشرة داخل التطبيق -->
     <div class="camera-modal-overlay" id="cameraModal">
         <div style="color: var(--onion-accent); font-weight: 900; font-size: 1rem;">📸 التقط صورة الوثيقة أو الدرس</div>
-        <div class="camera-preview-wrap">
-            <video id="cameraStreamVideo" autoplay playsinline></video>
-        </div>
+        <div class="camera-preview-wrap"><video id="cameraStreamVideo" autoplay playsinline></video></div>
         <div class="camera-actions-bar">
             <button class="close-camera-btn" onclick="stopLiveCamera()">إلغاء</button>
             <button class="capture-btn" onclick="capturePhotoFromStream()" title="التقاط"></button>
@@ -539,7 +295,6 @@
     </div>
     <canvas id="captureCanvas" style="display:none;"></canvas>
 
-    <!-- نافذة إدخال مخصصة (للروابط و Drive) -->
     <div class="custom-prompt-overlay" id="customPromptModal">
         <div class="custom-prompt-card">
             <h4 id="promptTitle">عنوان النافذة</h4>
@@ -551,32 +306,30 @@
         </div>
     </div>
 
-    <!-- نافذة تأكيد الحذف المخصصة (نعم / لا) -->
     <div class="custom-prompt-overlay" id="confirmModal">
         <div class="custom-prompt-card">
-            <h4 id="confirmTitle" style="color: var(--pom-primary);">⚠️ تأكيد الحذف</h4>
-            <p id="confirmMessage" style="font-size: 0.85rem; color: var(--text-dim); margin: 5px 0 10px 0;">هل أنت متأكد من رغبتك في الحذف؟</p>
+            <h4 id="confirmTitle" style="color: #ff6b6b;">⚠️ تأكيد الحذف</h4>
+            <p id="confirmMessage" style="font-size: 0.85rem; color: var(--text-dim);">هل أنت متأكد من رغبتك في الحذف؟</p>
             <div class="prompt-actions">
                 <button class="prompt-btn cancel" id="confirmNoBtn">لا</button>
-                <button class="prompt-btn confirm" id="confirmYesBtn" style="background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));">نعم</button>
+                <button class="prompt-btn confirm" id="confirmYesBtn">نعم</button>
             </div>
         </div>
     </div>
 
-    <!-- الشريط السفلي العائم -->
     <nav class="floating-navbar">
         <button class="nav-link" onclick="location.href='dashboard.html'">
             <i data-lucide="home"></i>
             <span>الرئيسية</span>
         </button>
-        <button class="nav-link" onclick="location.href='vault.html'">
+        <button class="nav-link" onclick="location.href='dashboard.html'">
             <i data-lucide="compass"></i>
             <span>العوالم</span>
         </button>
         <button class="nav-link chat-central" onclick="location.href='chat.html'">
             <i data-lucide="message-square"></i>
         </button>
-        <button class="nav-link active" onclick="location.href='vault.html'">
+        <button class="nav-link active">
             <i data-lucide="folder-kanban"></i>
             <span>الخزنة</span>
         </button>
@@ -589,54 +342,31 @@
     <script>
         lucide.createIcons();
 
-        function triggerFeedback() {
-            if (navigator.vibrate) {
-                navigator.vibrate(15);
-            }
+        function triggerFeedback() { if (navigator.vibrate) navigator.vibrate(15); }
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
         }
 
         window.addEventListener('load', () => {
+            if (localStorage.getItem('axiom_theme') === 'space') {
+                document.body.classList.add('theme-space');
+            }
             renderFiles();
         });
 
-        // دالة إظهار إشعار عائم أنيق
         function showToast(message) {
             let toast = document.getElementById('axiomToast');
             if (!toast) {
                 toast = document.createElement('div');
                 toast.id = 'axiomToast';
-                toast.style.position = 'fixed';
-                toast.style.bottom = '90px';
-                toast.style.left = '50%';
-                toast.style.transform = 'translateX(-50%) translateY(100px)';
-                toast.style.background = 'var(--onion-surface, #26211d)';
-                toast.style.border = '1px solid var(--onion-accent, #d4a373)';
-                toast.style.color = 'var(--text-main, #f8f9fa)';
-                toast.style.padding = '12px 20px';
-                toast.style.borderRadius = '16px';
-                toast.style.boxShadow = '0 10px 30px rgba(0,0,0,0.6)';
-                toast.style.zIndex = '4000';
-                toast.style.fontSize = '0.82rem';
-                toast.style.fontWeight = '700';
-                toast.style.textAlign = 'center';
-                toast.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-                toast.style.opacity = '0';
-                toast.style.maxWidth = '90%';
+                toast.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--onion-surface);border:1px solid var(--onion-accent);color:var(--text-main);padding:12px 20px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,0.6);z-index:4000;font-size:0.82rem;font-weight:700;text-align:center;transition:transform 0.3s ease,opacity 0.3s ease;opacity:0;max-width:90%;';
                 document.body.appendChild(toast);
             }
             toast.innerHTML = message;
-            setTimeout(() => {
-                toast.style.transform = 'translateX(-50%) translateY(0)';
-                toast.style.opacity = '1';
-            }, 10);
-
-            setTimeout(() => {
-                toast.style.transform = 'translateX(-50%) translateY(100px)';
-                toast.style.opacity = '0';
-            }, 3500);
+            setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(0)'; toast.style.opacity = '1'; }, 10);
+            setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(100px)'; toast.style.opacity = '0'; }, 3500);
         }
 
-        // دالة نافذة التأكيد (نعم / لا)
         function showConfirmDialog(title, message, onYes) {
             const modal = document.getElementById('confirmModal');
             document.getElementById('confirmTitle').innerText = title;
@@ -646,21 +376,13 @@
 
             const yesBtn = document.getElementById('confirmYesBtn');
             const noBtn = document.getElementById('confirmNoBtn');
+            const newYes = yesBtn.cloneNode(true);
+            const newNo = noBtn.cloneNode(true);
+            yesBtn.parentNode.replaceChild(newYes, yesBtn);
+            noBtn.parentNode.replaceChild(newNo, noBtn);
 
-            const newYesBtn = yesBtn.cloneNode(true);
-            yesBtn.parentNode.replaceChild(newYesBtn, yesBtn);
-
-            const newNoBtn = noBtn.cloneNode(true);
-            noBtn.parentNode.replaceChild(newNoBtn, noBtn);
-
-            newYesBtn.addEventListener('click', () => {
-                closeConfirmModal();
-                onYes();
-            });
-
-            newNoBtn.addEventListener('click', () => {
-                closeConfirmModal();
-            });
+            newYes.addEventListener('click', () => { closeConfirmModal(); onYes(); });
+            newNo.addEventListener('click', () => closeConfirmModal());
         }
 
         function closeConfirmModal() {
@@ -674,37 +396,51 @@
             if (stored) {
                 try { return JSON.parse(stored); } catch(e) { return []; }
             }
-            const oldDoc = localStorage.getItem('axiom_active_doc');
-            if (oldDoc) {
-                return [{ name: oldDoc, size: '2.4 MB', date: 'اليوم', active: true }];
-            }
             return [];
         }
 
-        function saveStoredFiles(files) {
-            localStorage.setItem('axiom_vault_files', JSON.stringify(files));
-            const active = files.find(f => f.active) || files[0];
-            if (active) {
-                localStorage.setItem('axiom_active_doc', active.name);
-            } else {
+        function syncActivePayload(fileObj) {
+            if (!fileObj) {
                 localStorage.removeItem('axiom_active_doc');
+                localStorage.removeItem('axiom_active_doc_content');
+                localStorage.removeItem('axiom_active_image_base64');
+                return;
             }
+            localStorage.setItem('axiom_active_doc', fileObj.name);
+            if (fileObj.imageBase64) {
+                localStorage.setItem('axiom_active_image_base64', fileObj.imageBase64);
+                localStorage.removeItem('axiom_active_doc_content');
+            } else {
+                localStorage.removeItem('axiom_active_image_base64');
+                if (fileObj.content) localStorage.setItem('axiom_active_doc_content', fileObj.content);
+                else localStorage.removeItem('axiom_active_doc_content');
+            }
+        }
+
+        function saveStoredFiles(files) {
+            try {
+                localStorage.setItem('axiom_vault_files', JSON.stringify(files));
+            } catch (e) {
+                const slimFiles = files.map(({ imageBase64, ...rest }) => rest);
+                localStorage.setItem('axiom_vault_files', JSON.stringify(slimFiles));
+            }
+            const active = files.find(f => f.active) || files[0];
+            syncActivePayload(active);
         }
 
         function renderFiles() {
             const container = document.getElementById('filesListContainer');
             const files = getStoredFiles();
-            
             document.getElementById('fileCountBadge').innerText = files.length;
 
-            if(files.length === 0) {
+            if (files.length === 0) {
                 container.innerHTML = `
                     <div style="text-align:center; padding: 35px 20px; display:flex; flex-direction:column; align-items:center; gap:10px; color: var(--text-dim); background: var(--onion-surface); border: 1px dashed var(--border); border-radius: 18px;">
                         <div style="width:48px; height:48px; background:rgba(212,163,115,0.08); border-radius:14px; display:flex; align-items:center; justify-content:center; color:var(--onion-accent);">
                             <i data-lucide="folder-open" style="width:24px; height:24px;"></i>
                         </div>
                         <div style="font-size:0.82rem; font-weight:800; color:var(--text-main);">لا توجد وثائق محفوظة حالياً</div>
-                        <div style="font-size:0.7rem; color:var(--text-dim);">ابدأ برفع مستنداتك لتفعيل المحركات الذكية</div>
+                        <div style="font-size:0.7rem; color:var(--text-dim);">ابدأ برفع مستنداتك أو صورك لتفعيل المحركات الذكية</div>
                     </div>
                 `;
                 lucide.createIcons();
@@ -715,11 +451,11 @@
                 <div class="file-card ${file.active ? 'active-doc' : ''}">
                     <div class="file-info-wrap">
                         <div class="file-icon">
-                            <i data-lucide="file-text" style="width: 20px; height: 20px;"></i>
+                            <i data-lucide="${file.isImage ? 'image' : 'file-text'}" style="width: 20px; height: 20px;"></i>
                         </div>
                         <div class="file-details">
-                            <h4>${file.name}</h4>
-                            <p>${file.size} • ${file.date} ${file.active ? '• (نشط ✨)' : ''}</p>
+                            <h4>${escapeHtml(file.name)}</h4>
+                            <p>${escapeHtml(file.size)} • ${escapeHtml(file.date)} ${file.active ? '• (نشط ✨)' : ''}</p>
                         </div>
                     </div>
                     <div class="file-actions">
@@ -732,7 +468,6 @@
                     </div>
                 </div>
             `).join('');
-            
             lucide.createIcons();
         }
 
@@ -748,11 +483,6 @@
             setTimeout(() => modal.style.display = 'none', 300);
         }
 
-        function maybeCloseModal(event) {
-            closeSourceModal();
-        }
-
-        // دالة آمنة تضمن إغلاق النافذة أولاً ثم فتح مستعرض الملفات أو المعرض خارج النافذة تماماً
         function triggerGlobalPicker(type) {
             closeSourceModal();
             setTimeout(() => {
@@ -766,22 +496,76 @@
             }, 150);
         }
 
-        function openCameraModal() {
-            closeSourceModal();
-            startLiveCamera();
+        function readFileContent(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                if (file.type.startsWith('image/')) {
+                    reader.onload = () => resolve({ isImage: true, imageBase64: reader.result });
+                    reader.onerror = () => resolve({ isImage: true });
+                    reader.readAsDataURL(file);
+                } else if (/\.(txt|md|csv|json|js|py|html|css)$/i.test(file.name)) {
+                    reader.onload = () => resolve({ isImage: false, content: String(reader.result).slice(0, 14000) });
+                    reader.onerror = () => resolve({ isImage: false });
+                    reader.readAsText(file);
+                } else {
+                    resolve({ isImage: false, content: `ملف مستند مرفوع باسم: ${file.name}` });
+                }
+            });
         }
+
+        async function processUploadedList(uploadedFiles, successMsg) {
+            if (!uploadedFiles || uploadedFiles.length === 0) return;
+            let currentFiles = getStoredFiles();
+            currentFiles.forEach(f => f.active = false);
+
+            for (let i = 0; i < uploadedFiles.length; i++) {
+                const file = uploadedFiles[i];
+                const originalName = file.name && file.name.trim() !== '' ? file.name : `ملف_${Date.now().toString().slice(-4)}`;
+                let finalName = originalName;
+                let counter = 1;
+                while (currentFiles.some(f => f.name === finalName)) {
+                    const parts = originalName.split('.');
+                    const ext = parts.length > 1 ? `.${parts.pop()}` : '';
+                    finalName = `${parts.join('.')}_(${counter})${ext}`;
+                    counter++;
+                }
+
+                const extracted = await readFileContent(file);
+                const fileSize = file.size ? (file.size / (1024 * 1024)).toFixed(1) + ' MB' : '1.2 MB';
+
+                currentFiles.unshift({
+                    name: finalName,
+                    size: fileSize,
+                    date: 'اليوم',
+                    active: (i === 0),
+                    ...extracted
+                });
+            }
+
+            saveStoredFiles(currentFiles);
+            renderFiles();
+            showToast(successMsg);
+        }
+
+        function handleFilesSelected(event) {
+            processUploadedList(event.target.files, `✨ تم حفظ المستندات وقراءة محتواها بنجاح`);
+            event.target.value = '';
+        }
+
+        function handleGalleryImage(event) {
+            processUploadedList(event.target.files, `✨ تم حفظ الصورة وتجهيزها للمحرك البصري`);
+            event.target.value = '';
+        }
+
+        function openCameraModal() { closeSourceModal(); startLiveCamera(); }
 
         let mediaStream = null;
         async function startLiveCamera() {
             const cameraModal = document.getElementById('cameraModal');
             const videoElement = document.getElementById('cameraStreamVideo');
-            
             cameraModal.classList.add('show');
             try {
-                mediaStream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'environment' }, 
-                    audio: false 
-                });
+                mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
                 videoElement.srcObject = mediaStream;
             } catch (err) {
                 showToast("⚠️ تعذر الوصول إلى كاميرا الهاتف.");
@@ -790,8 +574,7 @@
         }
 
         function stopLiveCamera() {
-            const cameraModal = document.getElementById('cameraModal');
-            cameraModal.classList.remove('show');
+            document.getElementById('cameraModal').classList.remove('show');
             if (mediaStream) {
                 mediaStream.getTracks().forEach(track => track.stop());
                 mediaStream = null;
@@ -801,141 +584,52 @@
         function capturePhotoFromStream() {
             const videoElement = document.getElementById('cameraStreamVideo');
             const canvas = document.getElementById('captureCanvas');
-            
             canvas.width = videoElement.videoWidth || 1280;
             canvas.height = videoElement.videoHeight || 720;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-            
-            canvas.toBlob((blob) => {
-                if (blob) {
-                    const originalName = `تصوير_مباشر_${Date.now().toString().slice(-4)}.jpg`;
-                    let currentFiles = getStoredFiles();
-                    currentFiles.forEach(f => f.active = false);
-                    
-                    let finalName = originalName;
-                    let counter = 1;
-                    while (currentFiles.some(f => f.name === finalName)) {
-                        finalName = `تصوير_مباشر_${Date.now().toString().slice(-4)}_${counter}.jpg`;
-                        counter++;
-                    }
+            canvas.getContext('2d').drawImage(videoElement, 0, 0, canvas.width, canvas.height);
 
-                    const fileSize = (blob.size / (1024 * 1024)).toFixed(1) + ' MB';
-                    currentFiles.unshift({
-                        name: finalName,
-                        size: fileSize || '1.2 MB',
-                        date: 'اليوم',
-                        active: true
-                    });
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            const finalName = `تصوير_مباشر_${Date.now().toString().slice(-4)}.jpg`;
+            let currentFiles = getStoredFiles();
+            currentFiles.forEach(f => f.active = false);
 
-                    saveStoredFiles(currentFiles);
-                    renderFiles();
-                    showToast(`✨ تم حفظ الصورة بنجاح`);
-                }
-                stopLiveCamera();
-            }, 'image/jpeg', 0.85);
-        }
+            currentFiles.unshift({
+                name: finalName,
+                size: '1.1 MB',
+                date: 'اليوم',
+                active: true,
+                isImage: true,
+                imageBase64: dataUrl
+            });
 
-        // معالجة المستندات
-        function handleFilesSelected(event) {
-            const uploadedFiles = event.target.files;
-            if (uploadedFiles && uploadedFiles.length > 0) {
-                let currentFiles = getStoredFiles();
-                currentFiles.forEach(f => f.active = false);
-
-                for (let i = 0; i < uploadedFiles.length; i++) {
-                    const file = uploadedFiles[i];
-                    let originalName = file.name && file.name.trim() !== '' ? file.name : `ملف_${Date.now().toString().slice(-4)}.pdf`;
-                    
-                    let finalName = originalName;
-                    let counter = 1;
-                    while (currentFiles.some(f => f.name === finalName)) {
-                        const parts = originalName.split('.');
-                        const ext = parts.length > 1 ? `.${parts.pop()}` : '';
-                        const base = parts.join('.');
-                        finalName = `${base}_(${counter})${ext}`;
-                        counter++;
-                    }
-
-                    const fileSize = file.size ? (file.size / (1024 * 1024)).toFixed(1) + ' MB' : '1.5 MB';
-                    
-                    currentFiles.unshift({
-                        name: finalName,
-                        size: fileSize,
-                        date: 'اليوم',
-                        active: (i === 0)
-                    });
-                }
-
-                saveStoredFiles(currentFiles);
-                renderFiles();
-                showToast(`✨ تم حفظ المستندات بنجاح`);
-                event.target.value = '';
-            }
-        }
-
-        // معالجة وحفظ صور المعرض بضمان تشغيل مباشر ومستقل
-        function handleGalleryImage(event) {
-            const uploadedFiles = event.target.files;
-            if (uploadedFiles && uploadedFiles.length > 0) {
-                let currentFiles = getStoredFiles();
-                currentFiles.forEach(f => f.active = false);
-
-                for (let i = 0; i < uploadedFiles.length; i++) {
-                    const file = uploadedFiles[i];
-                    let originalName = file.name && file.name.trim() !== '' ? file.name : `صورة_معرض_${Date.now().toString().slice(-4)}.jpg`;
-                    
-                    let finalName = originalName;
-                    let counter = 1;
-                    while (currentFiles.some(f => f.name === finalName)) {
-                        const parts = originalName.split('.');
-                        const ext = parts.length > 1 ? `.${parts.pop()}` : '';
-                        const base = parts.join('.');
-                        finalName = `${base}_(${counter})${ext}`;
-                        counter++;
-                    }
-
-                    const fileSize = file.size ? (file.size / (1024 * 1024)).toFixed(1) + ' MB' : '1.2 MB';
-                    
-                    currentFiles.unshift({
-                        name: finalName,
-                        size: fileSize,
-                        date: 'اليوم',
-                        active: (i === 0)
-                    });
-                }
-
-                saveStoredFiles(currentFiles);
-                renderFiles();
-                showToast(`✨ تم حفظ الصورة من المعرض بنجاح`);
-                event.target.value = '';
-            }
+            saveStoredFiles(currentFiles);
+            renderFiles();
+            showToast(`✨ تم التقاط الصورة وتفعيلها للمحرك البصري`);
+            stopLiveCamera();
         }
 
         function showCustomPrompt(title, placeholder, callback) {
             closeSourceModal();
             const modal = document.getElementById('customPromptModal');
-            const titleEl = document.getElementById('promptTitle');
             const inputEl = document.getElementById('promptInput');
             const confirmBtn = document.getElementById('promptConfirmBtn');
 
-            titleEl.innerText = title;
+            document.getElementById('promptTitle').innerText = title;
             inputEl.placeholder = placeholder;
             inputEl.value = '';
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('show'), 10);
             inputEl.focus();
 
+            const submitAction = () => {
+                const val = inputEl.value.trim();
+                if (val) { closePromptModal(); callback(val); }
+            };
+
             const newBtn = confirmBtn.cloneNode(true);
             confirmBtn.parentNode.replaceChild(newBtn, confirmBtn);
-
-            newBtn.addEventListener('click', () => {
-                const val = inputEl.value.trim();
-                if (val) {
-                    closePromptModal();
-                    callback(val);
-                }
-            });
+            newBtn.addEventListener('click', submitAction);
+            inputEl.onkeydown = (e) => { if (e.key === 'Enter') submitAction(); };
         }
 
         function closePromptModal() {
@@ -948,7 +642,7 @@
             showCustomPrompt("🔗 استيراد من Google Drive", "أدخل اسم المستند أو الرابط السحابي...", (docName) => {
                 let currentFiles = getStoredFiles();
                 currentFiles.forEach(f => f.active = false);
-                currentFiles.unshift({ name: docName, size: '3.1 MB', date: 'اليوم', active: true });
+                currentFiles.unshift({ name: docName, size: '3.1 MB', date: 'اليوم', active: true, content: `مستند مستورد من Google Drive: ${docName}` });
                 saveStoredFiles(currentFiles);
                 renderFiles();
                 showToast(`✨ تم استيراد المستند بنجاح`);
@@ -959,7 +653,7 @@
             showCustomPrompt("🌐 استيراد من رابط خارجي", "أدخل رابط المستند المباشر...", (linkUrl) => {
                 let currentFiles = getStoredFiles();
                 currentFiles.forEach(f => f.active = false);
-                currentFiles.unshift({ name: "مستند_من_الويب.pdf", size: '1.8 MB', date: 'اليوم', active: true });
+                currentFiles.unshift({ name: "مستند_من_الويب.pdf", size: '1.8 MB', date: 'اليوم', active: true, content: `مستند خارجي من الرابط: ${linkUrl}` });
                 saveStoredFiles(currentFiles);
                 renderFiles();
                 showToast(`✨ تم استيراد الرابط بنجاح`);
@@ -971,16 +665,18 @@
             files.forEach((f, i) => f.active = (i === index));
             saveStoredFiles(files);
             renderFiles();
-            showToast(`✨ تم تعيين المستند كنشط`);
+            showToast(`✨ تم تعيين (${files[index].name}) كوثيقة نشطة`);
         }
 
-        // حذف ملف مع نافذة تأكيد (نعم / لا)
         function deleteFile(index) {
             let vaultFiles = getStoredFiles();
             if (index > -1 && index < vaultFiles.length) {
                 const deletedName = vaultFiles[index].name;
                 showConfirmDialog("🗑️ تأكيد الحذف", `هل أنت متأكد من رغبتك في حذف (${deletedName})؟`, () => {
                     vaultFiles.splice(index, 1);
+                    if (vaultFiles.length > 0 && !vaultFiles.some(f => f.active)) {
+                        vaultFiles[0].active = true;
+                    }
                     saveStoredFiles(vaultFiles);
                     showToast(`🗑️ تم حذف الملف (${deletedName}) بنجاح`);
                     renderFiles();
@@ -988,13 +684,12 @@
             }
         }
 
-        // حذف الكل مع نافذة تأكيد (نعم / لا)
         function deleteAllDocs() {
             let files = getStoredFiles();
             if (files.length === 0) return;
             showConfirmDialog("⚠️ إفراغ الخزنة", "هل أنت متأكد من رغبتك في حذف جميع الوثائق؟", () => {
                 localStorage.removeItem('axiom_vault_files');
-                localStorage.removeItem('axiom_active_doc');
+                syncActivePayload(null);
                 renderFiles();
                 showToast(`🗑️ تم تفريغ الخزنة بالكامل`);
             });
