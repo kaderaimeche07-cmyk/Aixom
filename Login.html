@@ -21,6 +21,15 @@
             --border: rgba(255, 255, 255, 0.08);
         }
 
+        body.theme-space {
+            --onion-bg: #0b131d;
+            --onion-surface: #132235;
+            --onion-accent: #48cae4;
+            --pom-primary: #4361ee;
+            --pom-secondary: #3a0ca3;
+            --pom-glow: rgba(67, 97, 238, 0.35);
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
@@ -36,7 +45,7 @@
 
         .bg-blobs {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            inset: 0;
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
@@ -56,7 +65,6 @@
             100% { transform: translate(30px, 40px) scale(1.1); }
         }
 
-        /* شاشة الانطلاق */
         #splashScreen {
             position: fixed;
             inset: 0;
@@ -66,7 +74,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition: opacity 0.45s ease, transform 0.45s ease;
         }
         .splash-logo {
             width: 85px; height: 85px;
@@ -90,23 +98,25 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* حاوية البطاقات */
         .auth-wrapper {
             position: relative;
             z-index: 10;
             width: 90%;
             max-width: 400px;
-            background: rgba(38, 33, 29, 0.85);
+            background: rgba(38, 33, 29, 0.88);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border);
             border-radius: 28px;
-            padding: 32px 26px;
+            padding: 30px 24px;
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
             display: none;
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.4s ease;
+            transition: all 0.35s ease;
+        }
+        body.theme-space .auth-wrapper {
+            background: rgba(19, 34, 53, 0.88);
         }
         .auth-wrapper.active {
             display: block;
@@ -114,31 +124,34 @@
             transform: translateY(0);
         }
 
-        .brand-header {
-            text-align: center;
-            margin-bottom: 26px;
-        }
+        .brand-header { text-align: center; margin-bottom: 22px; }
         .brand-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            display: inline-flex; align-items: center; justify-content: center;
             width: 56px; height: 56px;
             background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
-            border-radius: 18px;
-            margin-bottom: 12px;
+            border-radius: 18px; margin-bottom: 12px;
             box-shadow: 0 8px 25px var(--pom-glow);
         }
-        .brand-header h1 {
-            font-size: 1.5rem;
-            font-weight: 900;
-            margin-bottom: 4px;
-        }
-        .brand-header p {
-            font-size: 0.8rem;
-            color: var(--text-dim);
+        .brand-header h1 { font-size: 1.45rem; font-weight: 900; margin-bottom: 4px; }
+        .brand-header p { font-size: 0.8rem; color: var(--text-dim); }
+
+        .quick-resume-btn {
+            width: 100%;
+            background: rgba(212, 163, 115, 0.14);
+            border: 1px solid var(--onion-accent);
+            color: var(--onion-accent);
+            border-radius: 16px;
+            padding: 12px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        /* زر Google */
         .google-btn {
             width: 100%;
             background: #fff;
@@ -148,125 +161,65 @@
             padding: 13px;
             font-size: 0.9rem;
             font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s;
         }
         .google-btn:active { transform: scale(0.98); }
 
         .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 20px 0;
-            color: var(--text-dim);
-            font-size: 0.75rem;
+            display: flex; align-items: center; text-align: center;
+            margin: 18px 0; color: var(--text-dim); font-size: 0.75rem;
         }
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid var(--border);
-        }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border); }
         .divider:not(:empty)::before { margin-left: 10px; }
         .divider:not(:empty)::after { margin-right: 10px; }
 
-        /* حقول الإدخال */
-        .input-group {
-            margin-bottom: 14px;
-            position: relative;
-        }
-        .input-group label {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--onion-accent);
-            margin-bottom: 6px;
-            font-weight: 700;
-        }
+        .input-group { margin-bottom: 14px; }
+        .input-group label { display: block; font-size: 0.75rem; color: var(--onion-accent); margin-bottom: 6px; font-weight: 700; }
         .input-field {
             width: 100%;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 12px 16px;
             color: var(--text-main);
             font-size: 0.88rem;
             outline: none;
-            transition: border-color 0.2s, background 0.2s;
         }
-        .input-field:focus {
-            border-color: var(--onion-accent);
-            background: rgba(255, 255, 255, 0.08);
-        }
+        .input-field:focus { border-color: var(--onion-accent); background: rgba(255, 255, 255, 0.08); }
 
         .primary-btn {
             width: 100%;
             background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
-            color: #fff;
-            border: none;
-            border-radius: 16px;
-            padding: 14px;
-            font-size: 0.92rem;
-            font-weight: 800;
-            cursor: pointer;
-            margin-top: 8px;
+            color: #fff; border: none; border-radius: 16px; padding: 14px;
+            font-size: 0.92rem; font-weight: 800; cursor: pointer; margin-top: 8px;
             box-shadow: 0 8px 25px var(--pom-glow);
-            transition: transform 0.2s;
         }
-        .primary-btn:active { transform: scale(0.98); }
 
-        /* نافذة حسابات Google */
         .modal-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            position: fixed; inset: 0;
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px;
         }
         .google-card {
             background: var(--onion-surface);
             border: 1px solid rgba(212, 163, 115, 0.3);
-            border-radius: 24px;
-            width: 100%;
-            max-width: 350px;
-            padding: 24px;
-            text-align: center;
+            border-radius: 24px; width: 100%; max-width: 350px; padding: 24px; text-align: center;
         }
         .google-card h3 { font-size: 1rem; margin-bottom: 6px; color: var(--onion-accent); }
         .google-card p { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 18px; }
         
         .account-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border);
-            padding: 12px;
-            border-radius: 16px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            text-align: right;
-            transition: all 0.2s;
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border);
+            padding: 12px; border-radius: 16px; margin-bottom: 10px;
+            cursor: pointer; text-align: right; transition: all 0.2s;
         }
-        .account-item:hover {
-            background: rgba(212, 163, 115, 0.12);
-            border-color: var(--onion-accent);
-        }
+        .account-item:hover { background: rgba(212, 163, 115, 0.12); border-color: var(--onion-accent); }
         .avatar-circle {
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            background: var(--pom-primary);
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 900;
-            color: #fff;
-            flex-shrink: 0;
+            width: 40px; height: 40px; border-radius: 50%; background: var(--pom-primary);
+            display: flex; align-items: center; justify-content: center; font-weight: 900; color: #fff; flex-shrink: 0;
         }
         .account-info h4 { font-size: 0.85rem; font-weight: 800; }
         .account-info span { font-size: 0.7rem; color: var(--text-dim); }
@@ -279,23 +232,22 @@
         <div class="blob blob-2"></div>
     </div>
 
-    <!-- شاشة الانطلاق -->
     <div id="splashScreen">
-        <div class="splash-logo">
-            <i data-lucide="cpu" style="width: 42px; height: 42px; color: #fff;"></i>
-        </div>
+        <div class="splash-logo"><i data-lucide="cpu" style="width: 42px; height: 42px; color: #fff;"></i></div>
         <div class="splash-title">AXIOM</div>
     </div>
 
-    <!-- 1. بطاقة تسجيل الدخول الرئيسية -->
     <div class="auth-wrapper active" id="authWrapper">
         <div class="brand-header">
-            <div class="brand-badge">
-                <i data-lucide="sparkles" style="width: 28px; height: 28px; color: #fff;"></i>
-            </div>
+            <div class="brand-badge"><i data-lucide="sparkles" style="width: 28px; height: 28px; color: #fff;"></i></div>
             <h1>مرحباً بك في AXIOM</h1>
             <p>مساعدك الهندسي والأكاديمي الذكي</p>
         </div>
+
+        <button class="quick-resume-btn" id="quickResumeBtn" onclick="enterAppDirectly()">
+            <i data-lucide="zap" style="width: 17px; height: 17px;"></i>
+            <span id="quickResumeText">المتابعة بالحساب المحفوظ</span>
+        </button>
 
         <button class="google-btn" onclick="openGoogleModal()">
             <svg width="20" height="20" viewBox="0 0 24 24">
@@ -322,33 +274,25 @@
         <button class="primary-btn" onclick="proceedToVerification()">متابعة الدخول</button>
     </div>
 
-    <!-- 2. بطاقة تأكيد الدخول -->
     <div class="auth-wrapper" id="verifyWrapper">
         <div class="brand-header">
-            <div class="brand-badge">
-                <i data-lucide="shield-check" style="width: 28px; height: 28px; color: #fff;"></i>
-            </div>
+            <div class="brand-badge"><i data-lucide="shield-check" style="width: 28px; height: 28px; color: #fff;"></i></div>
             <h1>تأكيد الجلسة</h1>
             <p>تم إعداد مساحة العمل الخاصة بك بنجاح</p>
         </div>
         <button class="primary-btn" onclick="enterAppDirectly()">الدخول إلى منصة AXIOM 🚀</button>
     </div>
 
-    <!-- 3. شاشة التهيئة والانتقال -->
     <div class="auth-wrapper" id="appDashboard" style="text-align: center;">
-        <div class="brand-badge" style="margin: 0 auto 16px auto;">
-            <i data-lucide="check-circle-2" style="width: 30px; height: 30px; color: #fff;"></i>
-        </div>
+        <div class="brand-badge" style="margin: 0 auto 16px auto;"><i data-lucide="check-circle-2" style="width: 30px; height: 30px; color: #fff;"></i></div>
         <h2 style="font-size: 1.2rem; margin-bottom: 8px; color: var(--onion-accent);">تم تسجيل الدخول بنجاح</h2>
         <p id="welcomeUserText" style="font-size: 0.82rem; color: var(--text-dim);">جاري نقلك إلى لوحة التحكم...</p>
     </div>
 
-    <!-- نافذة اختيار حساب Google -->
     <div class="modal-backdrop" id="googleModal" onclick="closeGoogleModal()">
         <div class="google-card" onclick="event.stopPropagation()">
             <h3>اختر حساباً للمتابعة</h3>
             <p>للمتابعة إلى منصة AXIOM</p>
-            
             <div class="account-item" onclick="selectGoogleAccount('م. عبد القادر', 'abdelkader.eng@gmail.com')">
                 <div class="avatar-circle">ع</div>
                 <div class="account-info">
@@ -356,7 +300,6 @@
                     <span>abdelkader.eng@gmail.com</span>
                 </div>
             </div>
-
             <div class="account-item" onclick="selectGoogleAccount('حساب طالب هندسة', 'civil.student@univ.dz')">
                 <div class="avatar-circle" style="background: #2a9d8f;">ط</div>
                 <div class="account-info">
@@ -371,14 +314,25 @@
         lucide.createIcons();
 
         window.addEventListener('load', () => {
+            if (localStorage.getItem('axiom_theme') === 'space') {
+                document.body.classList.add('theme-space');
+            }
+
+            const savedName = localStorage.getItem('axiom_user_name');
+            if (savedName) {
+                const resumeBtn = document.getElementById('quickResumeBtn');
+                resumeBtn.style.display = 'flex';
+                document.getElementById('quickResumeText').innerText = `الدخول السريع كـ (${savedName})`;
+            }
+
             setTimeout(() => {
                 const splash = document.getElementById('splashScreen');
                 if (splash) {
                     splash.style.opacity = '0';
                     splash.style.transform = 'scale(1.05)';
-                    setTimeout(() => splash.style.display = 'none', 500);
+                    setTimeout(() => splash.style.display = 'none', 450);
                 }
-            }, 1200);
+            }, 900);
         });
 
         function openGoogleModal() { document.getElementById('googleModal').style.display = 'flex'; }
@@ -388,10 +342,7 @@
             closeGoogleModal();
             localStorage.setItem('axiom_user_name', name);
             localStorage.setItem('axiom_user_email', email);
-            const welcomeText = document.getElementById('welcomeUserText');
-            if (welcomeText) {
-                welcomeText.innerText = `أهلاً بك يا ${name} (${email})، بيئة العمل جاهزة.`;
-            }
+            document.getElementById('welcomeUserText').innerText = `أهلاً بك يا ${name} (${email})، بيئة العمل جاهزة.`;
             enterAppDirectly();
         }
 
@@ -402,25 +353,19 @@
                 alert("يرجى إكمال الاسم والبريد الإلكتروني أولاً");
                 return;
             }
-            
             localStorage.setItem('axiom_user_name', name);
             localStorage.setItem('axiom_user_email', email);
 
             document.getElementById('authWrapper').classList.remove('active');
-            setTimeout(() => {
-                document.getElementById('verifyWrapper').classList.add('active');
-            }, 300);
+            setTimeout(() => document.getElementById('verifyWrapper').classList.add('active'), 250);
         }
 
         function enterAppDirectly() {
             document.querySelectorAll('.auth-wrapper').forEach(el => el.classList.remove('active'));
             setTimeout(() => {
-                const dashboard = document.getElementById('appDashboard');
-                if (dashboard) dashboard.classList.add('active');
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 900);
-            }, 300);
+                document.getElementById('appDashboard').classList.add('active');
+                setTimeout(() => window.location.href = 'dashboard.html', 750);
+            }, 250);
         }
     </script>
 </body>
