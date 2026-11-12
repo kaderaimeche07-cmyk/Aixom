@@ -36,7 +36,7 @@
             background-color: var(--onion-bg);
             color: var(--text-main);
             min-height: 100vh;
-            padding-bottom: 110px;
+            padding-bottom: 115px;
             overflow-x: hidden;
         }
 
@@ -44,8 +44,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
-            background: rgba(28, 24, 21, 0.85);
+            padding: 18px 20px;
+            background: rgba(28, 24, 21, 0.88);
             backdrop-filter: blur(20px);
             position: sticky;
             top: 0;
@@ -53,7 +53,11 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .user-greeting h2 { font-size: 1.1rem; font-weight: 900; }
+        body.theme-space .top-bar {
+            background: rgba(11, 19, 29, 0.88);
+        }
+
+        .user-greeting h2 { font-size: 1.08rem; font-weight: 900; }
         .user-greeting p { font-size: 0.72rem; color: var(--onion-accent); font-weight: 700; }
 
         .top-actions { display: flex; align-items: center; gap: 10px; }
@@ -125,8 +129,8 @@
 
         /* منطقة الرفع السريع */
         .upload-hero {
-            background: linear-gradient(145deg, rgba(38, 33, 29, 0.95), rgba(28, 24, 21, 0.95));
-            border: 1.5px dashed rgba(212, 163, 115, 0.4);
+            background: var(--onion-surface);
+            border: 1.5px dashed rgba(212, 163, 115, 0.45);
             border-radius: 26px;
             padding: 26px 20px;
             text-align: center;
@@ -312,23 +316,23 @@
         </div>
 
         <div class="upload-hero" onclick="document.getElementById('quickFileInput').click()">
-            <input type="file" id="quickFileInput" hidden accept=".pdf,.doc,.docx,.txt,image/*" onchange="handleFileSelected(this)">
+            <input type="file" id="quickFileInput" hidden accept=".pdf,.doc,.docx,.txt,.md,.csv,.json,.js,.py,.html,image/*" onchange="handleFileSelected(this)">
             <div class="upload-icon-wrap">
                 <i data-lucide="upload-cloud" style="width: 26px; height: 26px; color: #fff;"></i>
             </div>
             <h3>ارفع ملفاً أو صورة مخطط</h3>
-            <p>PDF، مستندات، أو صور هندسية لتفعيل المحرك فوراً (+50 XP)</p>
+            <p>مستندات، أكواد، أو صور هندسية لتفعيل المحرك فوراً (+50 XP)</p>
         </div>
 
         <div>
             <div class="section-title">⚡ أدوات التحليل السريع</div>
             <div class="tools-grid">
-                <div class="tool-card" onclick="performTask('تلخيص الوثيقة النشطة', 30)">
+                <div class="tool-card" onclick="launchSmartAction('لخّص لي الوثيقة النشطة في نقاط واضحة ومنظمة مع أبرز القوانين والاستنتاجات.', 30)">
                     <i data-lucide="file-text" style="width: 22px; height: 22px;"></i>
                     <h4>تلخيص ذكي</h4>
                     <span>استخراج أهم الأفكار والقوانين</span>
                 </div>
-                <div class="tool-card" onclick="performTask('توليد أسئلة اختبارية', 40)">
+                <div class="tool-card" onclick="launchSmartAction('أنشئ لي اختبار مراجعة من 5 أسئلة متنوعة بناءً على الوثيقة النشطة مع الحلول النموذجية.', 40)">
                     <i data-lucide="brain-circuit" style="width: 22px; height: 22px;"></i>
                     <h4>اختبار سريع</h4>
                     <span>أسئلة مراجعة من محتوى الملف</span>
@@ -390,7 +394,7 @@
         <div class="modal-box" onclick="event.stopPropagation()">
             <h3>📘 دليل AXIOM السريع</h3>
             <p style="font-size: 0.78rem; color: var(--text-dim); line-height: 1.7;">
-                1. ارفع أي ملف PDF أو صورة لتعيينها <b>كوثيقة نشطة</b>.<br>
+                1. ارفع أي ملف أو صورة لتعيينها <b>كوثيقة نشطة</b>.<br>
                 2. افتح المحادثة الذكية لطرح أسئلتك مباشرة حول الملف أو أي موضوع هندسي.<br>
                 3. أدر ملفاتك المحفوظة في أي وقت عبر <b>الخزنة</b>.
             </p>
@@ -452,67 +456,96 @@
             }, 3500);
         }
 
-        function handleFileSelected(input) {
+        function readFilePayload(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                if (file.type.startsWith('image/')) {
+                    reader.onload = () => resolve({ isImage: true, imageBase64: reader.result });
+                    reader.onerror = () => resolve({ isImage: true });
+                    reader.readAsDataURL(file);
+                } else if (/\.(txt|md|csv|json|js|py|html|css)$/i.test(file.name)) {
+                    reader.onload = () => resolve({ isImage: false, content: String(reader.result).slice(0, 14000) });
+                    reader.onerror = () => resolve({ isImage: false });
+                    reader.readAsText(file);
+                } else {
+                    resolve({ isImage: false, content: `ملف مستند مرفوع باسم: ${file.name}` });
+                }
+            });
+        }
+
+        async function handleFileSelected(input) {
             if (input.files && input.files[0]) {
                 const file = input.files[0];
                 const loader = document.getElementById('loadingOverlay');
                 const loadText = document.getElementById('loadingText');
                 
-                loadText.innerText = `جاري رفع ومعالجة (${file.name})...`;
+                loadText.innerText = `جاري قراءة وتفعيل (${file.name})...`;
                 loader.style.display = 'flex';
 
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                    localStorage.setItem('axiom_active_doc', file.name);
+                const extracted = await readFilePayload(file);
 
-                    let vaultFiles = JSON.parse(localStorage.getItem('axiom_vault_files') || '[]');
-                    vaultFiles.forEach(f => f.active = false);
-
-                    const existingIndex = vaultFiles.findIndex(f => f.name === file.name);
-                    if (existingIndex !== -1) {
-                        vaultFiles[existingIndex].active = true;
-                        vaultFiles[existingIndex].date = 'اليوم';
+                localStorage.setItem('axiom_active_doc', file.name);
+                if (extracted.imageBase64) {
+                    localStorage.setItem('axiom_active_image_base64', extracted.imageBase64);
+                    localStorage.removeItem('axiom_active_doc_content');
+                } else {
+                    localStorage.removeItem('axiom_active_image_base64');
+                    if (extracted.content) {
+                        localStorage.setItem('axiom_active_doc_content', extracted.content);
                     } else {
-                        vaultFiles.unshift({
-                            name: file.name,
-                            size: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
-                            date: 'اليوم',
-                            active: true
-                        });
+                        localStorage.removeItem('axiom_active_doc_content');
                     }
-                    localStorage.setItem('axiom_vault_files', JSON.stringify(vaultFiles));
+                }
 
-                    checkActiveDocument();
-                    currentXP += 50;
-                    localStorage.setItem('axiom_xp', currentXP);
-                    updateXPUI();
-                    
-                    showToast(`✨ تم رفع (${file.name}) وتعيينه نشطاً في الخزنة! (+50 XP)`);
-                    input.value = '';
-                }, 1200);
+                let vaultFiles = JSON.parse(localStorage.getItem('axiom_vault_files') || '[]');
+                vaultFiles.forEach(f => f.active = false);
+
+                const existingIndex = vaultFiles.findIndex(f => f.name === file.name);
+                if (existingIndex !== -1) {
+                    vaultFiles[existingIndex].active = true;
+                    vaultFiles[existingIndex].date = 'اليوم';
+                    Object.assign(vaultFiles[existingIndex], extracted);
+                } else {
+                    vaultFiles.unshift({
+                        name: file.name,
+                        size: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
+                        date: 'اليوم',
+                        active: true,
+                        ...extracted
+                    });
+                }
+
+                try {
+                    localStorage.setItem('axiom_vault_files', JSON.stringify(vaultFiles));
+                } catch (e) {
+                    const slimFiles = vaultFiles.map(({ imageBase64, ...rest }) => rest);
+                    localStorage.setItem('axiom_vault_files', JSON.stringify(slimFiles));
+                }
+
+                loader.style.display = 'none';
+                checkActiveDocument();
+                currentXP += 50;
+                localStorage.setItem('axiom_xp', currentXP);
+                updateXPUI();
+                
+                showToast(`✨ تم رفع (${file.name}) وتفعيل محتواه للمحادثة! (+50 XP)`);
+                input.value = '';
             }
         }
 
-        function performTask(taskName, xpReward) {
+        function launchSmartAction(promptText, xpReward) {
             const activeDoc = localStorage.getItem('axiom_active_doc');
             if (!activeDoc) {
                 showToast("⚠️ تنبيه: يرجى رفع ملف أو صورة أولاً لتفعيل المحرك.");
                 return;
             }
 
-            const loader = document.getElementById('loadingOverlay');
-            const loadText = document.getElementById('loadingText');
-            
-            loadText.innerText = `جاري ${taskName}...`;
-            loader.style.display = 'flex';
+            currentXP += xpReward;
+            localStorage.setItem('axiom_xp', currentXP);
+            updateXPUI();
 
-            setTimeout(() => {
-                loader.style.display = 'none';
-                currentXP += xpReward;
-                localStorage.setItem('axiom_xp', currentXP);
-                updateXPUI();
-                showToast(`✨ تم إتمام (${taskName}) بنجاح! (+${xpReward} XP)`);
-            }, 1200);
+            localStorage.setItem('axiom_auto_prompt', promptText);
+            window.location.href = 'chat.html';
         }
 
         function openGuideModal() {
