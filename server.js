@@ -12,27 +12,28 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'Login.html'));
 });
 
-// 🧠 نقطة الاتصال الذكية المزدوجة (توزيع الأدوار بين المفتاحين)
+// 🧠 نقطة الاتصال الذكية المزدوجة (توزيع الأدوار + حقن سياق العالم والوثيقة)
 app.post('/api/chat', async (req, res) => {
-    const { prompt, hasImage } = req.body;
+    const { prompt, hasImage, world, activeDoc } = req.body;
 
-    // جلب المفتاحين والنموذجين من متغيرات البيئة السحابية
-    const keyVision = process.env.VISION_API_KEY;      // مفتاح نموذج الرؤية والـ OCR
-    const keyThinking = process.env.THINKING_API_KEY;  // مفتاح نموذج التفكير العميق والبرمجة
+    if (!prompt || typeof prompt !== 'string') {
+        return res.status(400).json({ error: "نص الطلب مفقود أو غير صالح." });
+    }
 
-    // اختيار المفتاح والنموذج المناسب بناءً على طبيعة الطلب
+    const keyVision = process.env.VISION_API_KEY;
+    const keyThinking = process.env.THINKING_API_KEY;
+
     let activeKey, activeModel, roleDescription;
+    const contextNote = `العالم النشط حالياً: (${world || 'العالم الحر'}). الوثيقة النشطة: (${activeDoc || 'لا توجد وثيقة'}).`;
 
     if (hasImage) {
-        // دور نموذج الرؤية: تحليل الصور، المخططات، الوثائق البصرية
-        activeKey = keyVision || keyThinking; // احتياطي في حال لم يُعرف الأول
+        activeKey = keyVision || keyThinking;
         activeModel = "Qwen/Qwen3-VL-32B-Instruct";
-        roleDescription = "أنت مساعد AXIOM البصري، مختص بقراءة وتحليل الصور والمستندات الهندسية بدقة.";
+        roleDescription = `أنت مساعد AXIOM البصري، مختص بقراءة وتحليل الصور والمستندات الهندسية بدقة. ${contextNote}`;
     } else {
-        // دور نموذج التفكير العميق: البرمجة، الحسابات الهندسية، التحليل المنطقي
         activeKey = keyThinking || keyVision;
         activeModel = "Qwen3-30B-A3B-Thinking";
-        roleDescription = "أنت مساعد AXIOM الهندسي والأكاديمي، مختص بالتفكير المنطقي، الحسابات، وكتابة الأكواد.";
+        roleDescription = `أنت مساعد AXIOM الهندسي والأكاديمي، مختص بالتفكير المنطقي، الحسابات، وكتابة الأكواد. ${contextNote}`;
     }
 
     if (!activeKey) {
@@ -58,12 +59,13 @@ app.post('/api/chat', async (req, res) => {
 
         const data = await response.json();
         if (data.choices && data.choices.length > 0) {
-            res.json({ 
-                reply: data.choices[0].message.content, 
-                engineUsed: activeModel 
+            res.json({
+                reply: data.choices[0].message.content,
+                engineUsed: activeModel
             });
         } else {
-            res.json({ reply: "⚠️ عذراً، لم يتلقَ المحرك استجابة صالحة." });
+            console.error("Unexpected API Response:", data);
+            res.status(502).json({ reply: "⚠️ عذراً، لم يتلقَ المحرك استجابة صالحة من المزود." });
         }
     } catch (error) {
         console.error("Server AI Error:", error);
