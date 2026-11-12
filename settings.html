@@ -36,20 +36,21 @@
             background-color: var(--onion-bg);
             color: var(--text-main);
             min-height: 100vh;
-            padding-bottom: 110px;
+            padding-bottom: 115px;
             overflow-x: hidden;
         }
 
         .top-header {
-            padding: 22px 20px;
+            padding: 20px;
             text-align: center;
             border-bottom: 1px solid var(--border);
-            background: rgba(28, 24, 21, 0.85);
+            background: rgba(28, 24, 21, 0.88);
             backdrop-filter: blur(20px);
             position: sticky;
             top: 0;
             z-index: 100;
         }
+        body.theme-space .top-header { background: rgba(11, 19, 29, 0.88); }
         .top-header h1 { font-size: 1.15rem; font-weight: 900; color: var(--onion-accent); }
 
         .container {
@@ -61,7 +62,6 @@
             gap: 18px;
         }
 
-        /* بطاقة الملف الشخصي */
         .profile-card {
             background: var(--onion-surface);
             border: 1px solid var(--border);
@@ -95,7 +95,6 @@
             border-radius: 12px;
         }
 
-        /* مجموعات الإعدادات */
         .settings-group {
             background: var(--onion-surface);
             border: 1px solid var(--border);
@@ -125,18 +124,13 @@
         .setting-text h4 { font-size: 0.86rem; font-weight: 800; }
         .setting-text span { font-size: 0.7rem; color: var(--text-dim); }
 
-        /* سجل المحادثات */
         .history-section h3 {
             font-size: 0.88rem;
             font-weight: 900;
             color: var(--onion-accent);
             margin-bottom: 10px;
         }
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .history-list { display: flex; flex-direction: column; gap: 10px; }
         .history-card {
             background: var(--onion-surface);
             border: 1px solid var(--border);
@@ -170,7 +164,6 @@
         }
         .logout-btn:hover { background: rgba(230, 57, 70, 0.22); }
 
-        /* الشريط السفلي العائم */
         .floating-navbar {
             position: fixed;
             bottom: 18px; left: 16px; right: 16px;
@@ -187,65 +180,36 @@
             z-index: 1000;
         }
         .nav-link {
-            background: none;
-            border: none;
-            color: var(--text-dim);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            cursor: pointer;
+            background: none; border: none; color: var(--text-dim);
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            font-size: 0.65rem; font-weight: 700; cursor: pointer;
         }
         .nav-link.active { color: var(--onion-accent); }
         .nav-link.chat-central {
             background: linear-gradient(135deg, var(--pom-primary), var(--pom-secondary));
-            color: #fff;
-            width: 50px; height: 50px;
-            border-radius: 50%;
-            justify-content: center;
-            margin-top: -22px;
-            box-shadow: 0 8px 20px var(--pom-glow);
+            color: #fff; width: 50px; height: 50px; border-radius: 50%;
+            justify-content: center; margin-top: -22px; box-shadow: 0 8px 20px var(--pom-glow);
         }
 
-        /* نافذة الإحصائيات */
         .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(10, 8, 7, 0.85);
-            backdrop-filter: blur(12px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            z-index: 2500;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            position: fixed; inset: 0;
+            background: rgba(10, 8, 7, 0.85); backdrop-filter: blur(12px);
+            display: none; align-items: center; justify-content: center;
+            padding: 20px; z-index: 2500; opacity: 0; transition: opacity 0.3s ease;
         }
         .modal-overlay.show { opacity: 1; }
         .modal-box {
             background: var(--onion-surface);
             border: 1px solid rgba(212, 163, 115, 0.3);
-            border-radius: 26px;
-            width: 100%;
-            max-width: 350px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            border-radius: 26px; width: 100%; max-width: 350px; padding: 24px;
+            display: flex; flex-direction: column; gap: 12px;
         }
         .modal-box h3 { font-size: 1rem; color: var(--onion-accent); text-align: center; }
         .modal-box p { font-size: 0.82rem; color: var(--text-main); line-height: 1.7; }
         .close-btn {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border);
-            color: var(--onion-accent);
-            padding: 11px;
-            border-radius: 14px;
-            font-weight: 800;
-            cursor: pointer;
-            margin-top: 6px;
+            background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border);
+            color: var(--onion-accent); padding: 11px; border-radius: 14px;
+            font-weight: 800; cursor: pointer; margin-top: 6px;
         }
     </style>
 </head>
@@ -314,26 +278,25 @@
     <nav class="floating-navbar">
         <button class="nav-link" onclick="location.href='dashboard.html'">
             <i data-lucide="home"></i>
-            <span id="navHome">الرئيسية</span>
+            <span>الرئيسية</span>
         </button>
         <button class="nav-link" onclick="location.href='dashboard.html'">
             <i data-lucide="compass"></i>
-            <span id="navWorlds">العوالم</span>
+            <span>العوالم</span>
         </button>
         <button class="nav-link chat-central" onclick="location.href='chat.html'">
             <i data-lucide="message-square"></i>
         </button>
         <button class="nav-link" onclick="location.href='vault.html'">
             <i data-lucide="folder-kanban"></i>
-            <span id="navVault">الخزنة</span>
+            <span>الخزنة</span>
         </button>
         <button class="nav-link active">
             <i data-lucide="user"></i>
-            <span id="navProfile">حسابي</span>
+            <span>حسابي</span>
         </button>
     </nav>
 
-    <!-- نافذة إحصائيات الأداء -->
     <div class="modal-overlay" id="analyticsModal" onclick="closeAnalyticsModal()">
         <div class="modal-box" onclick="event.stopPropagation()">
             <h3>📊 إحصائيات الأداء الفعلية</h3>
@@ -381,10 +344,10 @@
             }
 
             list.innerHTML = history.map(chat => `
-                <div class="history-card" onclick="openSavedChat(${chat.id})">
+                <div class="history-card" onclick="openSavedChat(${Number(chat.id)})">
                     <div class="history-info">
                         <h4>${escapeHtml(chat.title)}</h4>
-                        <span>${chat.time || 'محفوظة'} • ${(chat.messages || []).length} رسائل</span>
+                        <span>${escapeHtml(chat.time || 'محفوظة')} • ${(chat.messages || []).length} رسائل</span>
                     </div>
                     <i data-lucide="arrow-up-left" style="width: 16px; color: var(--onion-accent);"></i>
                 </div>
@@ -429,7 +392,7 @@
         }
 
         function escapeHtml(str) {
-            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
         }
     </script>
 </body>
